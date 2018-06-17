@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import logo from '../../images/logo.png';
-import { FontIcon, TextField } from 'react-md';
+import { TextField } from 'react-md';
+import { Button } from 'react-md';
 
 export default class Footer extends Component{
     render() {
@@ -15,8 +16,10 @@ export default class Footer extends Component{
                         <li><a href="">Films</a></li>
                     </ul>
 
-                    <a href="" className="logo center tooltipped" data-position="bottom" data-tooltip="Film aléatoire">
-                        <img src={logo} alt="Logo Random Movie"/>
+                    <a href="" className="logo center">
+                        <Button flat tooltipLabel="Film aléatoire">
+                            <img src={logo} alt="Logo Random Movie"/>
+                        </Button>
                     </a>
 
                     <ul className="header_profile">

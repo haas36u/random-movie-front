@@ -43,6 +43,9 @@ ul {
   padding: 0;
 }
 
+.md-tooltip {
+  font-size: 0.8rem;
+}
 
 
 /** HOMEPAGE **/
@@ -177,11 +180,14 @@ header {
     }
     
     .logo {
-      height: 100%;
       position: absolute;
       left: 50%;
       top: 0.5rem;
       transform: translateX(-50%);
+
+      button:hover {
+        background-color: transparent;
+      }
 
       img {
          width: 66px;
