@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import logo from './images/logo.png';
 import './App.scss';
 
 import { login } from './actions/auth';
@@ -17,9 +16,9 @@ class App extends Component {
   render() {
     
     return (
-      <div>
+      <div className="wrapper">
         <Header></Header>
-        <div className="App">
+        <div className="App main">
         
         </div>
         <Footer></Footer>
