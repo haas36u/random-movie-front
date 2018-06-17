@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import { Grid, Cell } from 'react-md';
 
 export default class Footer extends Component{
     render() {
