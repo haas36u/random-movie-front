@@ -310,8 +310,28 @@ footer {
       text-align: left;
     }
 
+    #password-forgotten {
+      text-align: right;
+      color: #000000;
+      font-size: 0.8rem;
+      color: $error-color;
+      display: block;
+      margin-top: 1rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
     .btn:hover {
       cursor: pointer;
+    }
+
+    .login-btn a {
+      color: #000000;
+      font-size: 0.8rem;
+      margin-top: 2rem;
+      display: block;
     }
   }
 }

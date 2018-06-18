@@ -1,19 +1,20 @@
 import React, {Component} from "react";
+import { Link } from 'react-router-dom';
 import { TextField } from 'react-md';
 
-export default class Registration extends Component{
+export default class Connection extends Component{
     render() {
     
         return (
             <div id="registration-login">
                 <div className="registration-login_container-box">
-                    <h5>Inscription</h5>
-                    <TextField id="email" label="Adresse e-mail" lineDirection="center" className="md-cell--bottom" type="email"/>
+                    <h5>Se connecter</h5>
                     <TextField id="username" label="Nom d'utilisateur" lineDirection="center" className="md-cell--bottom"/>
                     <TextField id="password" label="Mot de passe" lineDirection="center" className="md-cell--bottom" type="password"/>
-                    <TextField id="repeat-password" label="Répéter le mot de passe" lineDirection="center" className="md-cell--bottom" type="password"/>
-                    <div className="mt-3">
-                        <span className="btn">Créer un compte</span>
+                    <a id="password-forgotten">Mot de passe oublié ?</a>
+                    <div className="mt-3 login-btn">
+                        <div className="btn">Connexion</div>
+                        <Link to="/registration">Créer un compte</Link>
                     </div>
                 </div>
             </div>
