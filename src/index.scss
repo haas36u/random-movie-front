@@ -54,6 +54,10 @@ p {
   font-size: 1rem;
 }
 
+h1, h2, h3, h4, h5, h6 {
+  line-height: normal;
+}
+
 
 /** HOMEPAGE **/
 #homepage {
@@ -242,4 +246,30 @@ footer {
   text-transform: uppercase;
   color: #ffffff;
   text-align: center;
+}
+
+
+
+/** ERROR 404 **/ 
+.error-container {
+  text-align: center;
+  margin-top: 2rem;
+
+  h1 {
+    font-size: 8rem;
+    text-shadow: 2px 2px 7px;
+    margin-bottom: 2rem;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  p:last-child{
+    margin-top: 2rem;
+  }
+  
+  a {
+    color: #000;
+  }
 }
