@@ -303,5 +303,15 @@ footer {
     .md-divider--text-field::after {
       background-color: $secondary-color;
     }
+
+    label, input {
+      left: 0;
+      width: 100%;
+      text-align: left;
+    }
+
+    .btn:hover {
+      cursor: pointer;
+    }
   }
 }
