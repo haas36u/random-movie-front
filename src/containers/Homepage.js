@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+
 import background from '../images/dark_vador_homepage.jpg';
 import popular from '../images/deadpool.jpg';
 import popular1 from '../images/starwars.jpg';
@@ -14,7 +16,7 @@ export default class Homepage extends Component {
               <h1>Random Movie</h1>
               <p>A cours d'idée pour vos soirées ?</p>
               <p>Nous nous occupons de tout !</p>
-              <a href="" className="btn mt-2">Rejoins la communauté</a>
+              <Link to="/registration" className="btn mt-2">Rejoins la communauté</Link>
           </div>
           <img src={background} alt=""/>
         </div>
