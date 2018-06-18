@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 
 import Header from './components/Base/Header';
 import Footer from './components/Base/Footer';
+import Homepage from './containers/Homepage';
 
 class App extends Component {
   
@@ -18,8 +19,8 @@ class App extends Component {
     return (
       <div className="wrapper">
         <Header></Header>
-        <div className="App main">
-        
+        <div className="main">
+          <Homepage></Homepage>
         </div>
         <Footer></Footer>
       </div>
