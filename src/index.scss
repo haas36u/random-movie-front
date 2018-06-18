@@ -25,6 +25,7 @@ body {
     flex-direction: column;
 
     .main {
+      margin: 1rem 0;
       flex: 1 0 auto;
     }
   }
@@ -271,5 +272,21 @@ footer {
   
   a {
     color: #000;
+  }
+}
+
+
+/** STATIC PAGES**/
+#cgu, #legal-mentions {
+  h5 {
+    font-size: 1.5em;
+    text-align: center;
+    margin: 2em 0;
+  }
+
+  h6 {
+    margin: 1.5em 0;
+    font-size: 1.2em;
+    font-weight: bold;
   }
 }

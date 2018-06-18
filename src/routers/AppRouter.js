@@ -1,6 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
 import Homepage from '../containers/Homepage';
+import Cgu from '../containers/static/Cgu';
+
 import NotFoundPage from '../components/NotFoundPage';
 import Header from '../components/Base/Header';
 import Footer from '../components/Base/Footer';
@@ -12,6 +15,7 @@ const AppRouter = () => (
         <div className="main">
             <Switch>
                 <Route path="/" component={Homepage} exact={true} />
+                <Route path="/cgu" component={Cgu} exact={true} />
                 <Route component={NotFoundPage} />
             </Switch>
         </div>
