@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Cell, Button, FontIcon } from 'react-md';
+import { Grid, Cell, Button, FontIcon, Card, CardText } from 'react-md';
 
 import poster from '../../images/deadpool.jpg';
 import actor from '../../images/ryan_reynolds.jpg';
@@ -12,13 +12,13 @@ export default class MovieShow extends Component {
     return (
       <div id="movieShow">
         
-        <div id="movieShow_informations-container">
+        <div id="movie-container">
             <div className="container">
                 <Grid>
                     <Cell size={4}><img src={poster} alt="Poster deadpool"/></Cell>
                     <Cell size={8}>
                         <Grid>
-                            <Cell size={6} id="movieShow_informations-container_infos">
+                            <Cell size={6} id="movie-container_infos">
                                 <h1>Deadpool</h1>
                                 <p><span className="text-bold">Date de sortie :</span>22/12/2018</p>
                                 <p><span className="text-bold">Durée :</span>120 min</p>
@@ -51,6 +51,66 @@ export default class MovieShow extends Component {
                                 </Grid>
                             </Cell>
                         </Grid>
+                    </Cell>
+                </Grid>
+            </div>
+
+            <div className="container" id="actors-container">
+                <h4>Acteurs</h4>
+                <Grid className="p-0">
+                    <Cell size={2}>
+                        <Card className="actor_container">
+                            <img src={actor} alt="Acteur deadpool" />
+                            <CardText>
+                                <p className="actor_name">Ryan Reynolds</p>
+                                <p className="actor_role">deadpool</p>
+                            </CardText>
+                        </Card>
+                    </Cell>
+                    <Cell size={2}>
+                        <Card className="actor_container">
+                            <img src={actor} alt="Acteur deadpool" />
+                            <CardText>
+                                <p className="actor_name">Ryan Reynolds</p>
+                                <p className="actor_role">deadpool</p>
+                            </CardText>
+                        </Card>
+                    </Cell>
+                    <Cell size={2}>
+                        <Card className="actor_container">
+                            <img src={actor} alt="Acteur deadpool" />
+                            <CardText>
+                                <p className="actor_name">Ryan Reynolds</p>
+                                <p className="actor_role">deadpool</p>
+                            </CardText>
+                        </Card>
+                    </Cell>
+                    <Cell size={2}>
+                        <Card className="actor_container">
+                            <img src={actor} alt="Acteur deadpool" />
+                            <CardText>
+                                <p className="actor_name">Ryan Reynolds</p>
+                                <p className="actor_role">deadpool</p>
+                            </CardText>
+                        </Card>
+                    </Cell>
+                    <Cell size={2}>
+                        <Card className="actor_container">
+                            <img src={actor} alt="Acteur deadpool" />
+                            <CardText>
+                                <p className="actor_name">Ryan Reynolds</p>
+                                <p className="actor_role">deadpool</p>
+                            </CardText>
+                        </Card>
+                    </Cell>
+                    <Cell size={2}>
+                        <Card className="actor_container">
+                            <img src={actor} alt="Acteur deadpool" />
+                            <CardText>
+                                <p className="actor_name">Ryan Reynolds</p>
+                                <p className="actor_role">deadpool</p>
+                            </CardText>
+                        </Card>
                     </Cell>
                 </Grid>
             </div>

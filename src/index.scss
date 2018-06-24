@@ -58,6 +58,10 @@ h1, h2, h3, h4, h5, h6 {
   line-height: normal;
 }
 
+h4 {
+  font-size: 1.6rem;
+}
+
 
 /** HOMEPAGE **/
 #homepage {
@@ -288,41 +292,66 @@ footer {
 
 
 /** MOVIE SHOW **/
-#movieShow_informations-container {
-  box-shadow: 0px -3px 20px 0px;
-  padding: 5rem 0;
+#movieShow {
 
-  img {
-    width: 100%;
+  #movie-container {
+    box-shadow: 0px -3px 20px 0px;
+    padding: 5rem 0;
+  
+    img {
+      width: 100%;
+    }
+  
+    #movie-container_infos {
+      margin-top: 0;
+  
+      h1 {
+        font-size: 1.5rem;
+        color: #000000;
+      }
+      p {
+        margin: 0.2rem 0;
+      }
+      .public_rate {
+        text-transform: uppercase;
+        margin-bottom: 0;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  
+    h5 {
+      margin-top: 0.8rem;
+      font-size: 1.2rem;
+    }
+  
+    .btn i {
+      margin-right: 0.5rem;
+    }
   }
 
-  #movieShow_informations-container_infos {
-    margin-top: 0;
+  #actors-container {
+    padding: 4rem 0;
 
-    h1 {
-      font-size: 1.5rem;
-      color: #000000;
-    }
-    p {
-      margin: 0.2rem 0;
-    }
-    .public_rate {
-      text-transform: uppercase;
-      margin-bottom: 0;
-      margin-top: 1rem;
-      font-size: 0.9rem;
-    }
-  }
+    .actor_container{
 
-  h5 {
-    margin-top: 0.8rem;
-    font-size: 1.2rem;
-  }
+      .md-card-text {
+        padding: 0.5rem;  
 
-  .btn i {
-    margin-right: 0.5rem;
+        .actor_name, .actor_role {
+          text-transform: capitalize;
+        }
+        .actor_name {
+          font-weight: bold;
+        }
+        .actor_role {
+          font-size: 0.9em;
+        } 
+      }
+    }
   }
 }
+
 
 .user_rate {
   vertical-align: middle;
@@ -334,18 +363,6 @@ footer {
   i {
     cursor: pointer;
     font-size: 35px !important;
-  }
-}
-
-.actor_container{
-  .card-content {
-    padding: 1em 0.5em;
-  }
-  .actor_name {
-    font-weight: bold;
-  }
-  .actor_role {
-    font-size: 0.9em;
   }
 }
 
