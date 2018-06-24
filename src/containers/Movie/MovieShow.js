@@ -13,7 +13,7 @@ export default class MovieShow extends Component {
       <div id="movieShow">
         
         <div id="movieShow_informations-container">
-            <div class="container">
+            <div className="container">
                 <Grid>
                     <Cell size={4}><img src={poster} alt="Poster deadpool"/></Cell>
                     <Cell size={8}>
@@ -29,17 +29,17 @@ export default class MovieShow extends Component {
                                     <span>Aucune note pour ce film</span>
                                 </div>
                             </Cell>
-                            <Cell size={6}>
+                            <Cell size={6} className="mt-0">
                                 <a href="{{ path('movie_random') }}" className="btn"> <i className="fas fa-random"></i>Film aléatoire</a>
-                                <Button icon className="addToWishList" active data-movie_id="1" tooltipLabel="Ajouter à vos favoris"><i className="fas fa-heart"></i></Button>
-                                <Button icon className="addToWishList" active data-movie_id="1" tooltipLabel="Ajouter aux films déjà vus"><i className="fas fa-eye"></i></Button>
-                                <Button icon className="addToWishList" active data-movie_id="1" tooltipLabel="Ajouter à votre liste de film à voir"><i className="fas fa-add"></i></Button>
+                                <Button icon className="addToWishList" active={true} data-movie_id="1" tooltipLabel="Ajouter à vos favoris"><i className="fas fa-heart"></i></Button>
+                                <Button icon className="addToWishList" active={true} data-movie_id="1" tooltipLabel="Ajouter aux films déjà vus"><i className="fas fa-eye"></i></Button>
+                                <Button icon className="addToWishList" active={true} data-movie_id="1" tooltipLabel="Ajouter à votre liste de film à voir"><i className="fas fa-plus-square"></i></Button>
                             </Cell>
                             <Cell size={12}>
                                 <h5>Synopsis et détails</h5>
                                 <p>Le super descriptif du film</p>
-                                <Grid>
-                                    <Cell size={6}>
+                                <Grid className="p-0">
+                                    <Cell size={6} className="ml-0">
                                         <div className="text-bold">Votre note</div>
                                         <div id="movie-rating" data-movie_id="1" data-rate="1"></div>
                                     </Cell>
