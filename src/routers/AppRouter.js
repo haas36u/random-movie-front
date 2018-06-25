@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Homepage from '../containers/Homepage';
+import Registration from '../containers/User/Registration';
+import Connection from '../containers/User/Connection';
 import Cgu from '../containers/static/Cgu';
 import LegalMentions from '../containers/static/LegalMentions';
 
@@ -16,6 +18,8 @@ const AppRouter = () => (
         <div className="main">
             <Switch>
                 <Route path="/" component={Homepage} exact={true} />
+                <Route path="/registration" component={Registration} exact={true} />
+                <Route path="/login" component={Connection} exact={true} />
                 <Route path="/cgu" component={Cgu} exact={true} />
                 <Route path="/legal-mentions" component={LegalMentions} exact={true} />
                 <Route component={NotFoundPage} />

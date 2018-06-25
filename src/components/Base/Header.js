@@ -1,13 +1,13 @@
 import React, {Component} from "react";
+import { TextField, Button } from 'react-md';
+import { Link } from 'react-router-dom';
 import logo from '../../images/logo.png';
-import { TextField } from 'react-md';
-import { Button } from 'react-md';
 
 export default class Footer extends Component{
     render() {
         return (
             <header>
-                <TextField id="search" placeholder="Rechercher" className="search" />
+                <TextField id="search" placeholder="Rechercher" className="search" type="search"/>
                 <nav>
                     <ul className="nav_right">
                         <li><a href="">Séries</a></li>
@@ -24,9 +24,9 @@ export default class Footer extends Component{
 
                     <ul className="header_profile">
                         <li>
-                            <a href={this.login}>
-                                <span className="hide-on-med-and-down">Connexion</span>
-                            </a>
+                            <Link to="/login">
+                                <span>Connexion</span>
+                            </Link>
                         </li>
                     </ul>
                 </nav>
