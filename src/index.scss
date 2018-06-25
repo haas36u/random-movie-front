@@ -25,12 +25,14 @@ body {
     flex-direction: column;
 
     .main {
+      display: flex;
       flex: 1 0 auto;
     }
   }
 }
 
 .container {
+  margin: 1rem 0;
   max-width: 1200px;
   margin: 0 auto;   
 }
@@ -249,11 +251,12 @@ footer {
 .btn {
   background-color: $secondary-color;
   padding: 0.5rem;
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   text-transform: uppercase;
   color: #ffffff;
   text-align: center;
 }
+
 .p-0 {
   padding: 0;
 }
@@ -269,8 +272,9 @@ footer {
 .mt-0 {
   margin-top: 0;
 }
-
-
+.mt-3 {
+  margin-top: 3rem;
+}
 
 /** ERROR 404 **/ 
 .error-container {
@@ -296,9 +300,9 @@ footer {
   }
 }
 
-
 /** MOVIE SHOW **/
 #movieShow {
+  width: 100%;
 
   #movie-container {
     box-shadow: 0px -3px 20px 0px;
@@ -483,5 +487,94 @@ footer {
       font-size: 1em;
       margin: 0;
     }
+  }
+}
+
+/** REGISTRATION / LOGIN **/
+#registration-login {
+  background-image: url('images/resgistration_login.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+
+  h5 {
+    font-size: 1.5rem;
+  }
+
+  .registration-login_container-box {
+    max-width: 480px;
+    margin: 0 auto;
+    margin-top: 4rem;
+    background-color: #ffffff;
+    padding: 3rem 2rem;
+    text-align: center;
+    font-size: 1.2rem;
+    
+    .md-text--theme-primary{
+      color: $secondary-color;
+    }
+
+    .md-divider--text-field::after {
+      background-color: $secondary-color;
+    }
+
+    label, input {
+      left: 0;
+      width: 100%;
+      text-align: left;
+    }
+
+    #password-forgotten {
+      text-align: right;
+      color: #000000;
+      font-size: 0.8rem;
+      color: $error-color;
+      display: block;
+      margin-top: 1rem;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    .btn:hover {
+      cursor: pointer;
+    }
+
+    .login-btn a {
+      color: #000000;
+      font-size: 0.8rem;
+      margin-top: 2rem;
+      display: block;
+    }
+  }
+}
+
+/** STATIC PAGES**/
+#cgu, #legal-mentions {
+  h5 {
+    font-size: 1.5em;
+    text-align: center;
+    margin: 2em 0;
+  }
+
+  h6 {
+    margin: 1.5em 0;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+  p.title {
+    color: #b51a00;
+  }
+
+  span {
+    color: #000000;
+    font-weight: bold;
+  }
+
+  a {
+    color: #000000;
   }
 }
