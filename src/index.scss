@@ -257,6 +257,12 @@ footer {
 .p-0 {
   padding: 0;
 }
+.m-0 {
+  margin: 0;
+}
+.pl-0 {
+  padding-left: 0;
+}
 .ml-0 {
   margin-left: 0;
 }
@@ -335,6 +341,10 @@ footer {
 
     .actor_container{
 
+      img {
+        width: 100%;
+      }
+
       .md-card-text {
         padding: 0.5rem;  
 
@@ -350,6 +360,43 @@ footer {
       }
     }
   }
+
+  .avatar_comments_container{
+    padding: 0;
+    width: 74px !important;
+    height: 74px;
+    overflow: hidden;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  #comments-container {
+    padding: 4rem 0;
+    background-color: #000000;
+    color: #ffffff;
+
+    p {
+      color: #ffffff;
+    }
+  
+    .title_comments {
+      font-weight: bold;
+    }
+    
+    h5 {
+      font-size: 1.4rem;
+      display: inline-block;
+      vertical-align: top;
+      margin-top: 0;
+      margin-bottom: 2rem;
+      color: #ffffff;
+    }
+  
+    a {
+      color: gold;
+    }
+  }
 }
 
 
@@ -363,36 +410,6 @@ footer {
   i {
     cursor: pointer;
     font-size: 35px !important;
-  }
-}
-
-.avatar_comments_container{
-  padding: 0;
-  width: 74px !important;
-  height: 74px;
-  overflow: hidden;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-
-.comments_container_movieShowPage {
-  padding: 2em 0;
-  background-color: #000000;
-  color: #ffffff;
-
-  .title_comments {
-    font-weight: bold;
-  }
-  
-  h5 {
-    display: inline-block;
-    vertical-align: top;
-    margin-top: 0;
-  }
-
-  a {
-    color: gold;
   }
 }
 
