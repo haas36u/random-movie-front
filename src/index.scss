@@ -32,6 +32,7 @@ body {
 }
 
 .container {
+  margin: 1rem 0;
   max-width: 1200px;
   margin: 0 auto;   
 }
@@ -333,5 +334,31 @@ footer {
       margin-top: 2rem;
       display: block;
     }
+
+/** STATIC PAGES**/
+#cgu, #legal-mentions {
+  h5 {
+    font-size: 1.5em;
+    text-align: center;
+    margin: 2em 0;
+  }
+
+  h6 {
+    margin: 1.5em 0;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+
+  p.title {
+    color: #b51a00;
+  }
+
+  span {
+    color: #000000;
+    font-weight: bold;
+  }
+
+  a {
+    color: #000000;
   }
 }
