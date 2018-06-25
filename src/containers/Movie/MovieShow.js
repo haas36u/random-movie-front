@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Grid, Cell, Button, FontIcon, Card, CardText, Media, MediaOverlay, CardTitle } from 'react-md';
+import { Grid, Cell, Button, FontIcon } from 'react-md';
+
+import ActorCard from '../../components/Actor/ActorCard';
 
 import poster from '../../images/deadpool.jpg';
 import actor from '../../images/ryan_reynolds.jpg';
-import popular1 from '../../images/starwars.jpg';
 
 export default class MovieShow extends Component {
-  
+
     render() {
 
         var imgUrl = require('../../images/ryan_reynolds.jpg');
@@ -18,6 +19,19 @@ export default class MovieShow extends Component {
         var starWarsBg = {
             backgroundImage: 'url(' + starWars + ')'
         }
+
+        var actorList = [
+            {"name": "Ryan Reynolds", "role" : "Deadpool", "img" : "http://fr.web.img6.acsta.net/c_215_290/pictures/16/02/09/12/32/028964.jpg"}, 
+            {"name": "Josh Brolin", "role" : "Cable", "img" : "https://vignette.wikia.nocookie.net/6a24792d-ddfa-4ca5-82ab-78cb58c25ff8/scale-to-width-down/800"}
+        ]
+
+        var actorsList = actorList.map(function(item) {
+            return (
+                <Cell size={2}>
+                    <ActorCard actor_img={actor} actor={item}/>
+                </Cell>
+            );
+        });
     
         return (
             <div id="movieShow">
@@ -68,60 +82,7 @@ export default class MovieShow extends Component {
                 <div className="container" id="actors-container">
                     <h4>Acteurs</h4>
                     <Grid className="p-0">
-                        <Cell size={2}>
-                            <Card className="actor_container">
-                                <img src={actor} alt="Acteur deadpool" />
-                                <CardText>
-                                    <p className="actor_name">Ryan Reynolds</p>
-                                    <p className="actor_role">deadpool</p>
-                                </CardText>
-                            </Card>
-                        </Cell>
-                        <Cell size={2}>
-                            <Card className="actor_container">
-                                <img src={actor} alt="Acteur deadpool" />
-                                <CardText>
-                                    <p className="actor_name">Ryan Reynolds</p>
-                                    <p className="actor_role">deadpool</p>
-                                </CardText>
-                            </Card>
-                        </Cell>
-                        <Cell size={2}>
-                            <Card className="actor_container">
-                                <img src={actor} alt="Acteur deadpool" />
-                                <CardText>
-                                    <p className="actor_name">Ryan Reynolds</p>
-                                    <p className="actor_role">deadpool</p>
-                                </CardText>
-                            </Card>
-                        </Cell>
-                        <Cell size={2}>
-                            <Card className="actor_container">
-                                <img src={actor} alt="Acteur deadpool" />
-                                <CardText>
-                                    <p className="actor_name">Ryan Reynolds</p>
-                                    <p className="actor_role">deadpool</p>
-                                </CardText>
-                            </Card>
-                        </Cell>
-                        <Cell size={2}>
-                            <Card className="actor_container">
-                                <img src={actor} alt="Acteur deadpool" />
-                                <CardText>
-                                    <p className="actor_name">Ryan Reynolds</p>
-                                    <p className="actor_role">deadpool</p>
-                                </CardText>
-                            </Card>
-                        </Cell>
-                        <Cell size={2}>
-                            <Card className="actor_container">
-                                <img src={actor} alt="Acteur deadpool" />
-                                <CardText>
-                                    <p className="actor_name">Ryan Reynolds</p>
-                                    <p className="actor_role">deadpool</p>
-                                </CardText>
-                            </Card>
-                        </Cell>
+                        {actorsList}
                     </Grid>
                 </div>
 
