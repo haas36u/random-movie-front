@@ -63,6 +63,9 @@ h1, h2, h3, h4, h5, h6 {
 h4 {
   font-size: 1.6rem;
 }
+h5 {
+  font-size: 1.4rem;
+}
 
 
 /** HOMEPAGE **/
@@ -275,6 +278,9 @@ footer {
 .mt-3 {
   margin-top: 3rem;
 }
+.pb-1 {
+  padding-bottom: 1rem;
+}
 
 /** ERROR 404 **/ 
 .error-container {
@@ -403,21 +409,15 @@ footer {
   }
 }
 
+/** MOVIE INDEX **/
+#movies-suggestion-container {
+  padding: 4rem 0; 
 
-.user_rate {
-  vertical-align: middle;
-}
-
-#movie-rating {
-  float: left;
-
-  i {
-    cursor: pointer;
-    font-size: 35px !important;
+  .movies-suggestion--movies {
+    padding: 1rem 0;
+    display: flex;
   }
 }
-
-/** MOVIE INDEX **/
 .movie_vignette {
   position: relative;
   border-bottom: solid 1px #2d2d2d;
@@ -426,6 +426,8 @@ footer {
   color: #ffffff;
   margin: 0;
   height: 290px;
+  flex-wrap: wrap;
+  flex-grow: 1;
 
   &>div:first-child {
     width:100%;
@@ -452,40 +454,35 @@ footer {
     i:hover {
       cursor: pointer;
     }
+
+    button {
+      color: #ffffff
+    }
   }
   &>div.movie_title {
     position: absolute;
     bottom: 0;
     width: 100%;
-    padding: 0 !important;
+    background-color: #000000;
+    color: #ffffff;
+    padding: 0.5em;
     
     &:hover {
       cursor: pointer;
     }
 
     p {
+      color: #ffffff;
       width: 85%;
       display: inline-block;
       vertical-align: top;
       padding-top: 0.1em;
       padding-left: 0.5em;
-    }
-
-    i {
-      float: right !important;
-      margin: 0;
-      padding-top: 0 !important;
-      color: #ffffff;
-    }
-  }
-  &>div.movie_title, div.card-reveal {
-    background-color: #000000;
-    color: #ffffff;
-    padding: 0.5em;
-
-    p {
       font-size: 1em;
       margin: 0;
+    }
+    button {
+      color: #ffffff
     }
   }
 }
