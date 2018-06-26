@@ -3,6 +3,8 @@ import { TextField, Button } from 'react-md';
 import { Link } from 'react-router-dom';
 import logo from '../../images/logo.png';
 
+import Menu from './Menu';
+
 export default class Footer extends Component{
     render() {
         return (
@@ -22,13 +24,7 @@ export default class Footer extends Component{
                         </Button>
                     </a>
 
-                    <ul className="header_profile">
-                        <li>
-                            <Link to="/login">
-                                <span>Connexion</span>
-                            </Link>
-                        </li>
-                    </ul>
+                    <Menu />
                 </nav>
             </header>
         )
