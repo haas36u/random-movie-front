@@ -650,7 +650,7 @@ footer {
 
 
 /* The side navigation menu */
-.sidenav {
+#sidenav {
   height: 100%;
   width: 0; 
   position: fixed; 
@@ -661,6 +661,11 @@ footer {
   overflow-x: hidden; 
   padding-top: 60px;
   transition: 0.5s;
+
+  canvas {
+    width: 100px;
+    height: 100px;
+  }
 
   a {
     padding: 8px 8px 8px 32px;
