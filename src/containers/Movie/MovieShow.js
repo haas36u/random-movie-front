@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Grid, Cell, Button, FontIcon } from 'react-md';
+import { Grid, Cell } from 'react-md';
 
 import ActorCard from '../../components/Actor/ActorCard';
 import MovieCard from '../../components/Movie/MovieCard';
+import MovieActions from '../../components/Movie/MovieActions';
 
 import poster from '../../images/deadpool.jpg';
 import actor from '../../images/ryan_reynolds.jpg';
@@ -62,9 +63,7 @@ export default class MovieShow extends Component {
                                     </Cell>
                                     <Cell size={6} className="mt-0">
                                         <a href="{{ path('movie_random') }}" className="btn"> <i className="fas fa-random"></i>Film aléatoire</a>
-                                        <Button icon className="addToWishList" active={true} data-movie_id="1" tooltipLabel="Ajouter à vos favoris"><i className="fas fa-heart"></i></Button>
-                                        <Button icon className="addToWishList" active={true} data-movie_id="1" tooltipLabel="Ajouter aux films déjà vus"><i className="fas fa-eye"></i></Button>
-                                        <Button icon className="addToWishList" active={true} data-movie_id="1" tooltipLabel="Ajouter à votre liste de film à voir"><i className="fas fa-plus-square"></i></Button>
+                                        <MovieActions />
                                     </Cell>
                                     <Cell size={12}>
                                         <h5>Synopsis et détails</h5>

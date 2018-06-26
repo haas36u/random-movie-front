@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button } from 'react-md';
+import MovieActions from '../../components/Movie/MovieActions';
 
 export default class MovieCard extends Component {
 
@@ -14,9 +14,7 @@ export default class MovieCard extends Component {
                 <div style={bg}></div>
                 <div className="actions_buttons">
                     <div className="right">
-                        <Button icon className="addToWishList" active={true} data-movie_id="1" tooltipLabel="Ajouter à vos favoris"><i className="fas fa-heart"></i></Button>
-                        <Button icon className="addToWishList" active={true} data-movie_id="1" tooltipLabel="Ajouter aux films déjà vus"><i className="fas fa-eye"></i></Button>
-                        <Button icon className="addToWishList" active={true} data-movie_id="1" tooltipLabel="Ajouter à votre liste de film à voir"><i className="fas fa-plus-square"></i></Button>
+                        <MovieActions />
                     </div>
                 </div>
                 <div className="movie_title">
