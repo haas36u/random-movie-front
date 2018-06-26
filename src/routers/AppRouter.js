@@ -20,8 +20,8 @@ const AppRouter = () => (
         <div className="main">
             <Switch>
                 <Route path="/" component={Homepage} exact={true} />
-                <Route path="/movies" component={MovieIndex} />
-                <Route path="/movies/id" component={MovieShow} />
+                <Route path="/movies" component={MovieIndex} exact={true}/>
+                <Route path="/movies/id" component={MovieShow} exact={true}/>
                 <Route path="/registration" component={Registration} exact={true} />
                 <Route path="/login" component={Connection} exact={true} />
                 <Route path="/cgu" component={Cgu} exact={true} />

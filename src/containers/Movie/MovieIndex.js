@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Cell,SelectField, DatePicker } from 'react-md';
+import { Grid, Cell,SelectField } from 'react-md';
 
 import MovieCard from '../../components/Movie/MovieCard';
 
@@ -19,12 +19,12 @@ export default class MovieShow extends Component {
           }];
 
         var movies = [
-            {"title" : "Star wars", "released" : "22/01/2018", "url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg'},
-            {"title" : "Star wars", "released" : "22/01/2018", "url" : require('../../images/deadpool.jpg')},
-            {"title" : "Star wars", "released" : "22/01/2018", "url" : require('../../images/deadpool.jpg')},
-            {"title" : "Star wars", "released" : "22/01/2018", "url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg'},
-            {"title" : "Star wars", "released" : "22/01/2018", "url" : require('../../images/deadpool.jpg')},
-            {"title" : "Star wars", "released" : "22/01/2018", "url" : require('../../images/deadpool.jpg')}
+            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg', "url" : "id"},
+            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg'), "url" : "deadpool"},
+            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg')},
+            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg'},
+            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg')},
+            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg')}
         ]
 
         var moviesList = movies.map(function(item){
