@@ -31,9 +31,9 @@ export default class MovieShow extends Component {
         });
 
         var movieSuggestionList = [
-            {"title" : "Star wars", "released" : "22/01/2018", "url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg'},
-            {"title" : "Star wars", "released" : "22/01/2018", "url" : require('../../images/deadpool.jpg')},
-            {"title" : "Star wars", "released" : "22/01/2018", "url" : require('../../images/deadpool.jpg')}
+            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg'},
+            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg')},
+            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg')}
         ]
 
         var suggestionList = movieSuggestionList.map(function(item){

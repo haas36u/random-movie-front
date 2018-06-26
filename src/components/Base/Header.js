@@ -13,7 +13,7 @@ export default class Footer extends Component{
                         <li><a href="">Séries</a></li>
                     </ul>
                     <ul className="nav_left">
-                        <li><a href="">Films</a></li>
+                        <li><Link to="/movies">Films</Link></li>
                     </ul>
 
                     <a href="" className="logo center">

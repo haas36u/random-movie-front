@@ -258,6 +258,7 @@ footer {
   text-transform: uppercase;
   color: #ffffff;
   text-align: center;
+  border: none;
 }
 
 .p-0 {
@@ -275,8 +276,14 @@ footer {
 .mt-0 {
   margin-top: 0;
 }
+.mr-0 {
+  margin-right: 0;
+}
 .mt-3 {
   margin-top: 3rem;
+}
+.mt-1 {
+  margin-top: 1rem;
 }
 .pb-1 {
   padding-bottom: 1rem;
@@ -418,6 +425,71 @@ footer {
     display: flex;
   }
 }
+#movieIndex {
+  background-color: #000000;
+  width: 100%;
+
+  .movie_tv_menu {
+    position: fixed;
+    color: #ffffff;
+    padding: 2rem 1rem;
+  
+    h2 {
+      font-size: 3em;
+      color: #ffffff;
+    }
+    
+    form {
+      margin-top: 1rem;
+
+      select {
+        display: block;
+        color: #000000;
+      }
+
+      #select-movie-menu{
+        width: 100%;
+
+        .md-select-field--btn {
+          color: $primary-color-light;
+          background-color: #ffffff;
+        }
+      }
+
+      input {
+        color: $primary-color-light;
+        padding: 0.4rem;
+      }
+      
+      .search {
+        margin-top: 1rem;
+        text-align: center;
+
+        input {
+          color: #ffffff;
+          padding: 0.6rem 1.8rem;
+          cursor: pointer;
+        }
+      }
+    }
+  
+    .line {
+      height: 1px;
+      width: 100%;
+      background-color: #ffffff;
+    }
+  
+    ul li {
+      margin: 1em 0;
+      font-size: 1.2em;
+    }
+  }
+
+  .movies-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
 .movie_vignette {
   position: relative;
   border-bottom: solid 1px #2d2d2d;
@@ -427,7 +499,7 @@ footer {
   margin: 0;
   height: 290px;
   flex-wrap: wrap;
-  flex-grow: 1;
+  flex: 1 0 30%;
 
   &>div:first-child {
     width:100%;
