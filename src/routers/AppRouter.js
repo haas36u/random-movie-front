@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Homepage from '../containers/Homepage';
+import MovieShow from '../containers/Movie/MovieShow';
 import Registration from '../containers/User/Registration';
 import Connection from '../containers/User/Connection';
 import Cgu from '../containers/static/Cgu';
@@ -18,6 +19,7 @@ const AppRouter = () => (
         <div className="main">
             <Switch>
                 <Route path="/" component={Homepage} exact={true} />
+                <Route path="/movies/id" component={MovieShow} />
                 <Route path="/registration" component={Registration} exact={true} />
                 <Route path="/login" component={Connection} exact={true} />
                 <Route path="/cgu" component={Cgu} exact={true} />
