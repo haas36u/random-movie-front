@@ -13,7 +13,7 @@ export default class MovieShow extends Component {
     render() {
 
         var imgUrl = require('../../images/ryan_reynolds.jpg');
-        var avatarComments = {
+        var avatarComments = {  
             backgroundImage: 'url(' + imgUrl + ')'
         }
 

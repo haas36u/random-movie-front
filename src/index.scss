@@ -669,6 +669,12 @@ footer {
   .sidenav_header {
     padding: 1rem 2rem;
     margin-bottom: 1.5rem;
+    
+    .md-avatar {
+      width: 60px;
+      height: 60px;
+      border: none;
+    }
 
     p {
       padding: 0;
