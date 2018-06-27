@@ -13,11 +13,15 @@ import NotFoundPage from '../components/NotFoundPage';
 import Header from '../components/Base/Header';
 import Footer from '../components/Base/Footer';
 
+const closeNav = () => {
+    document.getElementById("sidenav").style.width = "0";
+}
+
 const AppRouter = () => (
   <BrowserRouter>
     <div className="wrapper">
         <Header />
-        <div className="main">
+        <div className="main" onClick={closeNav}>
             <Switch>
                 <Route path="/" component={Homepage} exact={true} />
                 <Route path="/movies" component={MovieIndex} exact={true}/>

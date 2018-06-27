@@ -1,5 +1,5 @@
 $primary-color: #212121;
-$primary-color-light: #333333;
+$primary-color-light: #747474;
 $primary-color-dark: #0a0a0a;
 
 $secondary-color: #fbc02d;
@@ -250,6 +250,9 @@ footer {
 }
 .text-bold {
   font-weight: bold;
+}
+.text-capitalize {
+  text-transform: capitalize;
 }
 .btn {
   background-color: $secondary-color;
@@ -657,35 +660,49 @@ footer {
   z-index: 1000; 
   top: 0; 
   right: 0;
-  background-color: #000000; 
-  overflow-x: hidden; 
-  padding-top: 60px;
+  background-color: #ffffff; 
+  color: $primary-color;
+  overflow-x: hidden;
   transition: 0.5s;
+  font-size: 1.2rem;
 
-  canvas {
-    width: 100px;
-    height: 100px;
+  .sidenav_header {
+    padding: 1rem 2rem;
+    margin-bottom: 1.5rem;
+
+    p {
+      padding: 0;
+      margin: 0.4rem 0;
+    }
+  }
+
+  .line{
+    height: 1px;
+    background-color: $primary-color-light;
+  }
+
+  p {
+    margin-top: 1rem;
+  }
+
+  p, a {
+    padding: 0.6rem 2rem;
+    color: $primary-color-light;
   }
 
   a {
-    padding: 8px 8px 8px 32px;
-    text-decoration: none;
-    font-size: 25px;
-    color: #818181;
+    font-size: 1.2rem;
+    color: $primary-color-light;
     display: block;
     transition: 0.3s;
 
     &:hover {
-      color: #f1f1f1;
+      color: $secondary-color;
     }
   }
- 
-  .closebtn {
-    position: absolute;
-    top: 0;
-    right: 25px;
-    font-size: 36px;
-    margin-left: 50px;
+
+  i {
+    margin-right: 1rem;
   }
 }
 

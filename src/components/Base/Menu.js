@@ -9,12 +9,8 @@ export default class Menu extends Component {
 
   render() {
     const openNav = () => {
-        document.getElementById("sidenav").style.width = "250px";
-    }
-
-    const closeNav = () => {
-        document.getElementById("sidenav").style.width = "0";
-    }
+        document.getElementById("sidenav").style.width = "340px";
+    }   
 
     let pattern = Trianglify({
         x_colors: 'Blues'
@@ -28,14 +24,19 @@ export default class Menu extends Component {
 
     return (
         <span>
-
-        <div className="hello"></div>
-            <div id="sidenav" style={bgTriangle}>
-                <span className="closebtn" onClick={closeNav}>&times;</span>
-                <a href="#">About</a>
-                <a href="#">Services</a>
-                <a href="#">Clients</a>
-                <a href="#">Contact</a>
+            <div id="sidenav">
+                <div className="sidenav_header" style={bgTriangle}>
+                    <p>Myriam</p>
+                    <p className="text-capitalize">haasmyriam@ytahoo.com</p>
+                </div>
+                <a href="#"><i className="fas fa-tv"></i> Séries</a>
+                <a href="#"><i className="fas fa-film"></i>Films</a>
+                <div class="line"></div>
+                <p>Profil</p>
+                <a href="#"><i className="fas fa-th-large"></i>Dashboard</a>
+                <a href="#"><i className="fas fa-th-list"></i>Progression</a>
+                <a href="#"><i className="fas fa-heart"></i>Favoris, déjà vus, à voir</a>
+                <a href="#"><i className="fas fa-comments"></i>Notes et critiques</a>
             </div>
             <ul className="header_profile">
                 <li>
