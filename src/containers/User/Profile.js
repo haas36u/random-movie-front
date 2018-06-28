@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { Grid, Cell, Avatar } from 'react-md';
+import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
 import MovieActions from '../../components/Movie/MovieActions';
 var Trianglify = require('trianglify');
 var pattern = Trianglify({width: 200, height: 200})
@@ -62,7 +62,32 @@ export default class Profile extends Component {
                     </div>
                 </div>
             </div>
-       
+            
+            <TabsContainer>
+                <Tabs className="container">
+                    <Tab label="Résumé">
+                        
+                        <div className="container">
+                            <h3>Hello, World!</h3>
+                        </div>
+                    </Tab>
+                    <Tab label="Progression">
+                        <div className="container">
+                            <h3>Hello, World!</h3>
+                        </div>
+                    </Tab>
+                    <Tab label="Favoris, déjà vus, à voir">
+                        <div className="container">
+                            <h3>Hello, World!</h3>
+                        </div>
+                    </Tab>
+                    <Tab label="Notes & critiques">
+                        <div className="container">
+                            <h3>Hello, World!</h3>
+                        </div>
+                    </Tab>
+                </Tabs>
+            </TabsContainer>
         </div>
         );
     }

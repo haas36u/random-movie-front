@@ -768,16 +768,37 @@ footer {
     }
   }
 
-  .profile_menu {
+  .md-tabs {
+    margin-top: 0.5rem;
     text-align: center;
     text-transform: uppercase;
 
-    li.active {
-      border-bottom: 1px solid $secondary-color;
+    .md-tab {
+      max-width: none;
+    }
+    
+    .md-tab-label {
+      font-size: 1.2rem;
+    }
+
+    .md-tab-indicator {
+      background-color: $secondary-color !important;
+    }
+    .md-tab--inactive {
+      color: $primary-color-light ;
+    }
+    .md-tab--active {
+      color: $secondary-color;
     }
     a {
       color: $secondary-color;
     }
+  }
+}
+
+@media screen and (min-width: 1025px){
+  #user-profile .md-tab {
+    max-width: none;
   }
 }
 .background-trianglify {
