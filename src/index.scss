@@ -303,6 +303,15 @@ footer {
 .pb-1 {
   padding-bottom: 1rem;
 }
+.pt-1 {
+  padding-top: 1rem;
+}
+
+.movie-actions-container {
+  button.active i {
+    color: red;
+  }
+}
 
 
 /**OVERRIDE **/
@@ -900,35 +909,37 @@ footer {
         }
       }
     }
-
-    .profil_movie_vignette {
-      i {
-        color: #ffffff;
-      }
-      .favorite_action_container {
-        background-color: $primary-color;
-        color: #ffffff;
-        
-        i:hover {
-          cursor: pointer;
-        }
-      }
-
-      a, img {
-        width: 100%;
-        height: auto;
-      }
-    
-      .favorite_description_container {
-        text-align: center;
-    
-        p:last-child {
-          font-weight: bold;
-        }
-      }
-    }
     .watched_movies_container, .wished_movies_container {
       display: none;
+    }
+  }
+}
+
+.user-profile__movie-card {
+  line-height: 0;
+
+  i {
+    color: #ffffff;
+  }
+  .favorite_action_container {
+    background-color: $primary-color;
+    color: #ffffff;
+    
+    i:hover {
+      cursor: pointer;
+    }
+  }
+
+  a, img {
+    width: 100%;
+    height: auto;
+  }
+
+  .favorite_description_container {
+    text-align: center;
+
+    p:last-child {
+      font-weight: bold;
     }
   }
 }

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
 import MovieActions from '../../components/Movie/MovieActions';
+import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
 var Trianglify = require('trianglify');
 var pattern = Trianglify({width: 200, height: 200})
 
@@ -23,6 +24,20 @@ export default class Profile extends Component {
         let avatar = require('../../images/avatar_default.jpg');
 
         let img = require('../../images/deadpool.jpg');
+
+        let favoriteMovies = [
+            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg', "url": "id"},
+            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg'), "url": "id"},
+            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg'), "url": "id"}
+        ]
+
+        const favoriteMoviesList = favoriteMovies.map(function(item){
+            return(
+                <Cell size={3} className="user-profile__movie-card">
+                    <ProfileMovieCard movie={item} />
+                </Cell>
+            );
+        });
 
         return (
         <div id="user-profile">
@@ -139,86 +154,41 @@ export default class Profile extends Component {
                         </Grid>
                     </Tab>
                     <Tab label="Progression">
-                        <div className="container">
-                            <div id="progression">Fonctionnalité bientôt disponible</div>
+                        <div id="progression" className="container">
+                            Fonctionnalité bientôt disponible
                         </div>
                     </Tab>
                     <Tab label="Favoris, déjà vus, à voir">
-                        <div className="container">
-                            <div id="favorite">
-                                <Grid className="p-0 mt-1 mb-2">
-                                    <Cell size={12} className="text-right m-0">
-                                        <span className="btn active" onClick="Materialize.toast('Vous n\'avez pas ajouté vos films préférés!', 4000)">Favoris</span>
-                                        <span className="btn" onClick="Materialize.toast('Vous n\'avez pas ajouté les films que vous avez vu!', 4000)">Déjà vus</span>
-                                        <span className="btn" onClick="Materialize.toast('Vous n\'avez pas ajouter de film à voir!', 4000)">à voir</span>
-                                    </Cell>
-                                </Grid>
-                                <Grid className="favorite_movies_container">
-                                    <Cell size={3} className="profil_movie_vignette">
-                                        <Link to="movies/id"><img src={img} alt=""/></Link>
-                                        <div className="favorite_action_container text-right">
-                                            <MovieActions/>
-                                        </div>
-                                    </Cell>
-                                    <Cell size={3} className="profil_movie_vignette">
-                                        <Link to="movies/id"><img src={img} alt=""/></Link>
-                                        <div className="favorite_action_container text-right">
-                                            <MovieActions/>
-                                        </div>
-                                    </Cell>
-                                    <Cell size={3} className="profil_movie_vignette">
-                                        <Link to="movies/id"><img src={img} alt=""/></Link>
-                                        <div className="favorite_action_container text-right">
-                                            <MovieActions/>
-                                        </div>
-                                    </Cell>
-                                    <Cell size={3} className="profil_movie_vignette">
-                                        <Link to="movies/id"><img src={img} alt=""/></Link>
-                                        <div className="favorite_action_container text-right">
-                                            <MovieActions/>
-                                        </div>
-                                    </Cell>
-                                    <Cell size={3} className="profil_movie_vignette">
-                                        <Link to="movies/id"><img src={img} alt=""/></Link>
-                                        <div className="favorite_action_container text-right">
-                                            <MovieActions/>
-                                        </div>
-                                    </Cell>
-                                    <Cell size={3} className="profil_movie_vignette">
-                                        <Link to="movies/id"><img src={img} alt=""/></Link>
-                                        <div className="favorite_action_container text-right">
-                                            <MovieActions/>
-                                        </div>
-                                    </Cell>
-                                    <Cell size={3} className="profil_movie_vignette">
-                                        <Link to="movies/id"><img src={img} alt=""/></Link>
-                                        <div className="favorite_action_container text-right">
-                                            <MovieActions/>
-                                        </div>
-                                    </Cell>
-                                </Grid>
-                                <Grid className="watched_movies_container">
-                                    <Cell size={3} className="m-0 mt-2 profil_movie_vignette">
-                                        <Link to="movies/id"><img src={img} alt=""/></Link>
-                                        <div className="favorite_action_container">
-                                            <MovieActions />
-                                        </div>
-                                    </Cell>
-                                </Grid>
-                                <Grid className="wished_movies_container">
-                                    <Cell size={3} className="m-0 mt-2 profil_movie_vignette">
-                                        <Link to="movies/id"><img src={img} alt=""/></Link>
-                                        <div className="favorite_action_container">
-                                            <MovieActions />
-                                        </div>
-                                    </Cell>
-                                </Grid>
+                        <div id="favorite" className="container pt-1">
+                            <div className="text-right mb-2">
+                                <div className="btn active" onClick="Materialize.toast('Vous n\'avez pas ajouté vos films préférés!', 4000)">Favoris</div>
+                                <div className="btn" onClick="Materialize.toast('Vous n\'avez pas ajouté les films que vous avez vu!', 4000)">Déjà vus</div>
+                                <div className="btn" onClick="Materialize.toast('Vous n\'avez pas ajouter de film à voir!', 4000)">à voir</div>
                             </div>
+                            <Grid className="favorite_movies_container p-0">
+                                {favoriteMoviesList}
+                            </Grid>
+                            <Grid className="watched_movies_container">
+                                <Cell size={3} className="user-profile__movie-card">
+                                    <Link to="movies/id"><img src={img} alt=""/></Link>
+                                    <div className="favorite_action_container text-right">
+                                        <MovieActions/>
+                                    </div>
+                                </Cell>
+                            </Grid>
+                            <Grid className="wished_movies_container">
+                                <Cell size={3} className="user-profile__movie-card">
+                                    <Link to="movies/id"><img src={img} alt=""/></Link>
+                                    <div className="favorite_action_container text-right">
+                                        <MovieActions/>
+                                    </div>
+                                </Cell>
+                            </Grid>
                         </div>
                     </Tab>
                     <Tab label="Notes & critiques">
-                        <div className="container">
-                            <div id="rate">Fonctionnalité bientôt disponible</div>
+                        <div id="rate" className="container">
+                            Fonctionnalité bientôt disponible
                         </div>
                     </Tab>
                 </Tabs>
