@@ -36,7 +36,7 @@ export default class Menu extends Component {
                 <Link to="movies"><i class="material-icons md-xl">local_movies</i>Films</Link>
                 <div class="line"></div>
                 <p>Profil</p>
-                <a href="#"><i class="material-icons md-xl">dashboard</i> Dashboard</a>
+                <Link to="profile"><i class="material-icons md-xl">dashboard</i> Dashboard</Link>
                 <a href="#"><i className="fas fa-th-list"></i>Progression</a>
                 <a href="#"><i className="fas fa-heart"></i>Favoris, déjà vus, à voir</a>
                 <a href="#"><i className="fas fa-comments"></i>Notes et critiques</a>
