@@ -1,5 +1,5 @@
 $primary-color: #212121;
-$primary-color-light: #333333;
+$primary-color-light: #747474;
 $primary-color-dark: #0a0a0a;
 
 $secondary-color: #fbc02d;
@@ -58,6 +58,13 @@ p {
 
 h1, h2, h3, h4, h5, h6 {
   line-height: normal;
+}
+
+h4 {
+  font-size: 1.6rem;
+}
+h5 {
+  font-size: 1.4rem;
 }
 
 
@@ -241,16 +248,48 @@ footer {
 .right {
   float: right;
 }
+.text-bold {
+  font-weight: bold;
+}
+.text-capitalize {
+  text-transform: capitalize;
+}
 .btn {
   background-color: $secondary-color;
-  padding: 0.6rem 1.5rem;
+  padding: 0.5rem;
   font-size: 1.1rem;
   text-transform: uppercase;
   color: #ffffff;
   text-align: center;
+  border: none;
+}
+
+.p-0 {
+  padding: 0;
+}
+.m-0 {
+  margin: 0;
+}
+.pl-0 {
+  padding-left: 0;
+}
+.ml-0 {
+  margin-left: 0;
+}
+.mt-0 {
+  margin-top: 0;
+}
+.mr-0 {
+  margin-right: 0;
 }
 .mt-3 {
   margin-top: 3rem;
+}
+.mt-1 {
+  margin-top: 1rem;
+}
+.pb-1 {
+  padding-bottom: 1rem;
 }
 
 /** ERROR 404 **/ 
@@ -277,6 +316,253 @@ footer {
   }
 }
 
+/** MOVIE SHOW **/
+#movieShow {
+  width: 100%;
+
+  #movie-container {
+    box-shadow: 0px -3px 20px 0px;
+    padding: 5rem 0;
+  
+    img {
+      width: 100%;
+    }
+  
+    #movie-container_infos {
+      margin-top: 0;
+  
+      h1 {
+        font-size: 1.5rem;
+        color: #000000;
+      }
+      p {
+        margin: 0.2rem 0;
+      }
+      .public_rate {
+        text-transform: uppercase;
+        margin-bottom: 0;
+        margin-top: 1rem;
+        font-size: 0.9rem;
+      }
+    }
+  
+    h5 {
+      margin-top: 0.8rem;
+      font-size: 1.2rem;
+    }
+  
+    .btn i {
+      margin-right: 0.5rem;
+    }
+  }
+
+  #actors-container {
+    padding: 4rem 0;
+
+    .actor_container{
+
+      img {
+        width: 100%;
+      }
+
+      .md-card-text {
+        padding: 0.5rem;  
+
+        .actor_name, .actor_role {
+          text-transform: capitalize;
+        }
+        .actor_name {
+          font-weight: bold;
+        }
+        .actor_role {
+          font-size: 0.9em;
+        } 
+      }
+    }
+  }
+
+  .avatar_comments_container{
+    padding: 0;
+    width: 74px !important;
+    height: 74px;
+    overflow: hidden;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  
+  #comments-container {
+    padding: 4rem 0;
+    background-color: #000000;
+    color: #ffffff;
+
+    p {
+      color: #ffffff;
+    }
+  
+    .title_comments {
+      font-weight: bold;
+    }
+    
+    h5 {
+      font-size: 1.4rem;
+      display: inline-block;
+      vertical-align: top;
+      margin-top: 0;
+      margin-bottom: 2rem;
+      color: #ffffff;
+    }
+  
+    a {
+      color: gold;
+    }
+  }
+}
+
+/** MOVIE INDEX **/
+#movies-suggestion-container {
+  padding: 4rem 0; 
+
+  .movies-suggestion--movies {
+    padding: 1rem 0;
+    display: flex;
+  }
+}
+#movieIndex {
+  background-color: #000000;
+  width: 100%;
+
+  .movie_tv_menu {
+    position: fixed;
+    color: #ffffff;
+    padding: 2rem 1rem;
+  
+    h2 {
+      font-size: 3em;
+      color: #ffffff;
+    }
+    
+    form {
+      margin-top: 1rem;
+
+      select {
+        display: block;
+        color: #000000;
+      }
+
+      #select-movie-menu{
+        width: 100%;
+
+        .md-select-field--btn {
+          color: $primary-color-light;
+          background-color: #ffffff;
+        }
+      }
+
+      input {
+        color: $primary-color-light;
+        padding: 0.4rem;
+      }
+      
+      .search {
+        margin-top: 1rem;
+        text-align: center;
+
+        input {
+          color: #ffffff;
+          padding: 0.6rem 1.8rem;
+          cursor: pointer;
+        }
+      }
+    }
+  
+    .line {
+      height: 1px;
+      width: 100%;
+      background-color: #ffffff;
+    }
+  
+    ul li {
+      margin: 1em 0;
+      font-size: 1.2em;
+    }
+  }
+
+  .movies-list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+.movie_vignette {
+  position: relative;
+  border-bottom: solid 1px #2d2d2d;
+  border-right: solid 1px #2d2d2d;
+  background-color: #000000;
+  color: #ffffff;
+  margin: 0;
+  height: 290px;
+  flex-wrap: wrap;
+  flex: 1 0 30%;
+
+  &>div:first-child {
+    width:100%;
+    height: 250px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  .actions_buttons {
+    width:  100%;
+    height: 250px;
+    position: absolute;
+    top:0;
+    left:0;
+    opacity: 0;
+    transition: .5s ease;
+
+    &:hover {
+      opacity: 1;
+      background-color: rgba(0,0,0,0.7);
+      cursor: pointer;
+    }
+
+    i:hover {
+      cursor: pointer;
+    }
+
+    button {
+      color: #ffffff
+    }
+  }
+  &>div.movie_title {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-color: #000000;
+    color: #ffffff;
+    padding: 0.5em;
+    
+    &:hover {
+      cursor: pointer;
+    }
+
+    p {
+      color: #ffffff;
+      width: 85%;
+      display: inline-block;
+      vertical-align: top;
+      padding-top: 0.1em;
+      padding-left: 0.5em;
+      font-size: 1em;
+      margin: 0;
+    }
+    button {
+      color: #ffffff
+    }
+  }
+}
+
+/** REGISTRATION / LOGIN **/
 #registration-login {
   background-image: url('images/resgistration_login.jpg');
   background-size: cover;
@@ -334,6 +620,8 @@ footer {
       margin-top: 2rem;
       display: block;
     }
+  }
+}
 
 /** STATIC PAGES**/
 #cgu, #legal-mentions {
@@ -361,4 +649,70 @@ footer {
   a {
     color: #000000;
   }
+}
+
+
+/* The side navigation menu */
+#sidenav {
+  height: 100%;
+  width: 0; 
+  position: fixed; 
+  z-index: 1000; 
+  top: 0; 
+  right: 0;
+  background-color: #ffffff; 
+  color: $primary-color;
+  overflow-x: hidden;
+  transition: 0.5s;
+  font-size: 1.2rem;
+
+  .sidenav_header {
+    padding: 1rem 2rem;
+    margin-bottom: 1.5rem;
+    
+    .md-avatar {
+      width: 60px;
+      height: 60px;
+      border: none;
+    }
+
+    p {
+      padding: 0;
+      margin: 0.4rem 0;
+    }
+  }
+
+  .line{
+    height: 1px;
+    background-color: $primary-color-light;
+  }
+
+  p {
+    margin-top: 1rem;
+  }
+
+  p, a {
+    padding: 0.6rem 2rem;
+    color: $primary-color-light;
+  }
+
+  a {
+    font-size: 1.2rem;
+    color: $primary-color-light;
+    display: block;
+    transition: 0.3s;
+
+    &:hover {
+      color: $secondary-color;
+    }
+  }
+
+  i {
+    margin-right: 1rem;
+  }
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
 }

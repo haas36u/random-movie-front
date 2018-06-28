@@ -2,6 +2,8 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import Homepage from '../containers/Homepage';
+import MovieIndex from '../containers/Movie/MovieIndex';
+import MovieShow from '../containers/Movie/MovieShow';
 import Registration from '../containers/User/Registration';
 import Connection from '../containers/User/Connection';
 import Cgu from '../containers/static/Cgu';
@@ -11,13 +13,19 @@ import NotFoundPage from '../components/NotFoundPage';
 import Header from '../components/Base/Header';
 import Footer from '../components/Base/Footer';
 
+const closeNav = () => {
+    document.getElementById("sidenav").style.width = "0";
+}
+
 const AppRouter = () => (
   <BrowserRouter>
     <div className="wrapper">
         <Header />
-        <div className="main">
+        <div className="main" onClick={closeNav}>
             <Switch>
                 <Route path="/" component={Homepage} exact={true} />
+                <Route path="/movies" component={MovieIndex} exact={true}/>
+                <Route path="/movies/id" component={MovieShow} exact={true}/>
                 <Route path="/registration" component={Registration} exact={true} />
                 <Route path="/login" component={Connection} exact={true} />
                 <Route path="/cgu" component={Cgu} exact={true} />
