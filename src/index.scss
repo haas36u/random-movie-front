@@ -256,7 +256,7 @@ footer {
 }
 .btn {
   background-color: $secondary-color;
-  padding: 0.5rem;
+  padding: 0.5rem 1rem;
   font-size: 1.1rem;
   text-transform: uppercase;
   color: #ffffff;
@@ -290,6 +290,14 @@ footer {
 }
 .pb-1 {
   padding-bottom: 1rem;
+}
+
+
+/**OVERRIDE **/
+.md-avatar {
+  width: 60px;
+  height: 60px;
+  border: none;
 }
 
 /** ERROR 404 **/ 
@@ -669,12 +677,6 @@ footer {
   .sidenav_header {
     padding: 1rem 2rem;
     margin-bottom: 1.5rem;
-    
-    .md-avatar {
-      width: 60px;
-      height: 60px;
-      border: none;
-    }
 
     p {
       padding: 0;
@@ -709,10 +711,71 @@ footer {
 
   i {
     margin-right: 1rem;
+    vertical-align: middle;
   }
 }
 
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
+}
+
+/** USER PROFILE **/
+#user-profile {
+  width: 100%;
+
+  .user-profile__header {
+    padding-top: 2rem;
+
+    .user-profile__header__info {
+      display: inline-block;
+      vertical-align: top;
+      padding-left: 1em;
+  
+      h3, p {
+        margin: 0;
+      }
+  
+      h3 {
+        font-size: 1.9em;
+      }
+  
+      p {
+        font-size: 1.3em;
+        color: #4a4a4a;
+      }
+    }
+
+    .user-profile__header__tracking {
+      margin-top: 1rem;
+      padding: 1rem 0;
+      background: rgba(0, 0, 0, 0.6);
+      color: #ececec;
+      
+      p {
+        color: #ececec;
+      }
+    }
+  }
+
+  .profile_menu {
+    text-align: center;
+    text-transform: uppercase;
+
+    li.active {
+      border-bottom: 1px solid $secondary-color;
+    }
+    a {
+      color: $secondary-color;
+    }
+  }
+}
+.background-trianglify {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  z-index: -1;
 }

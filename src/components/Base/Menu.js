@@ -27,12 +27,12 @@ export default class Menu extends Component {
     return (
         <span>
             <div id="sidenav">
-                <div className="sidenav_header" style={bgTriangle}>
+                <div className="sidenav_header background-trianglify" style={bgTriangle}>
                     <Avatar src={avatar} role="presentation" />
                     <p>Myriam</p>
                     <p className="text-capitalize">haasmyriam@ytahoo.com</p>
                 </div>
-                <a href="#"><i className="fas fa-tv"></i> Séries</a>
+                <a href="#"> <i class="material-icons md-xl">live_tv</i> Séries</a>
                 <Link to="movies"><i className="fas fa-film"></i>Films</Link>
                 <div class="line"></div>
                 <p>Profil</p>
