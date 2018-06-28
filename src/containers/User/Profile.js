@@ -39,6 +39,22 @@ export default class Profile extends Component {
             );
         });
 
+        const wishedMoviesList = favoriteMovies.map(function(item){
+            return(
+                <Cell size={3} className="user-profile__movie-card">
+                    <ProfileMovieCard movie={item} />
+                </Cell>
+            );
+        });
+
+        const watchedMoviesList = favoriteMovies.map(function(item){
+            return(
+                <Cell size={3} className="user-profile__movie-card">
+                    <ProfileMovieCard movie={item} />
+                </Cell>
+            );
+        });
+
         return (
         <div id="user-profile">
             <div className="user-profile__header background-trianglify" style={bgTriangle}>
@@ -169,20 +185,10 @@ export default class Profile extends Component {
                                 {favoriteMoviesList}
                             </Grid>
                             <Grid className="watched_movies_container">
-                                <Cell size={3} className="user-profile__movie-card">
-                                    <Link to="movies/id"><img src={img} alt=""/></Link>
-                                    <div className="favorite_action_container text-right">
-                                        <MovieActions/>
-                                    </div>
-                                </Cell>
+                                {watchedMoviesList}
                             </Grid>
                             <Grid className="wished_movies_container">
-                                <Cell size={3} className="user-profile__movie-card">
-                                    <Link to="movies/id"><img src={img} alt=""/></Link>
-                                    <div className="favorite_action_container text-right">
-                                        <MovieActions/>
-                                    </div>
-                                </Cell>
+                                {wishedMoviesList}
                             </Grid>
                         </div>
                     </Tab>
