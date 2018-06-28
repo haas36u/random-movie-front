@@ -1,5 +1,5 @@
 $primary-color: #212121;
-$primary-color-light: #747474;
+$primary-color-light: #8E8E8E;
 $primary-color-dark: #0a0a0a;
 
 $secondary-color: #fbc02d;
@@ -248,6 +248,9 @@ footer {
 .right {
   float: right;
 }
+.text-right {
+  text-align: right;
+}
 .text-bold {
   font-weight: bold;
 }
@@ -256,12 +259,15 @@ footer {
 }
 .btn {
   background-color: $secondary-color;
-  padding: 0.5rem 1rem;
+  padding: 0.3rem 1.3rem;
   font-size: 1.1rem;
   text-transform: uppercase;
   color: #ffffff;
   text-align: center;
   border: none;
+  display: inline-block;
+  vertical-align: top;
+  box-shadow: 2px 2px 4px #d4d4d4;
 }
 
 .p-0 {
@@ -282,11 +288,17 @@ footer {
 .mr-0 {
   margin-right: 0;
 }
+.mr-1 {
+  margin-right: 1rem;
+}
 .mt-3 {
   margin-top: 3rem;
 }
 .mt-1 {
   margin-top: 1rem;
+}
+.mb-2 {
+  margin-bottom: 2rem;
 }
 .pb-1 {
   padding-bottom: 1rem;
@@ -681,6 +693,8 @@ footer {
     p {
       padding: 0;
       margin: 0.4rem 0;
+      color: #ffffff;
+      font-weight: bold;
     }
   }
 
@@ -800,6 +814,10 @@ footer {
     }
   }
 
+  .md-tabs-content {
+    margin: 1rem 0;
+  }
+
   .user-profile__title {
     margin-top: 2rem;
 
@@ -859,6 +877,58 @@ footer {
       font-size: 2.4rem;
       color: $secondary-color;
       margin: 0;
+    }
+  }
+
+  /** PROFILE FAVORITE **/
+  #favorite {
+    .btn {
+      background-color: $primary-color-light;
+      cursor: pointer;
+      transition: 0.5s background-color;
+      margin-left: 1rem;
+
+      &:hover {
+        background-color: lighten(#909090, 6%);
+      }
+    
+      &.active {
+        background-color: $secondary-color;
+    
+        &:hover {
+          background-color: lighten($secondary-color, 6%);
+        }
+      }
+    }
+
+    .profil_movie_vignette {
+      i {
+        color: #ffffff;
+      }
+      .favorite_action_container {
+        background-color: $primary-color;
+        color: #ffffff;
+        
+        i:hover {
+          cursor: pointer;
+        }
+      }
+
+      a, img {
+        width: 100%;
+        height: auto;
+      }
+    
+      .favorite_description_container {
+        text-align: center;
+    
+        p:last-child {
+          font-weight: bold;
+        }
+      }
+    }
+    .watched_movies_container, .wished_movies_container {
+      display: none;
     }
   }
 }

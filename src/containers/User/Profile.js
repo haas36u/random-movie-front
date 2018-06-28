@@ -22,6 +22,8 @@ export default class Profile extends Component {
         
         let avatar = require('../../images/avatar_default.jpg');
 
+        let img = require('../../images/deadpool.jpg');
+
         return (
         <div id="user-profile">
             <div className="user-profile__header background-trianglify" style={bgTriangle}>
@@ -138,17 +140,85 @@ export default class Profile extends Component {
                     </Tab>
                     <Tab label="Progression">
                         <div className="container">
-                            <h3>Hello, World!</h3>
+                            <div id="progression">Fonctionnalité bientôt disponible</div>
                         </div>
                     </Tab>
                     <Tab label="Favoris, déjà vus, à voir">
                         <div className="container">
-                            <h3>Hello, World!</h3>
+                            <div id="favorite">
+                                <Grid className="p-0 mt-1 mb-2">
+                                    <Cell size={12} className="text-right m-0">
+                                        <span className="btn active" onClick="Materialize.toast('Vous n\'avez pas ajouté vos films préférés!', 4000)">Favoris</span>
+                                        <span className="btn" onClick="Materialize.toast('Vous n\'avez pas ajouté les films que vous avez vu!', 4000)">Déjà vus</span>
+                                        <span className="btn" onClick="Materialize.toast('Vous n\'avez pas ajouter de film à voir!', 4000)">à voir</span>
+                                    </Cell>
+                                </Grid>
+                                <Grid className="favorite_movies_container">
+                                    <Cell size={3} className="profil_movie_vignette">
+                                        <Link to="movies/id"><img src={img} alt=""/></Link>
+                                        <div className="favorite_action_container text-right">
+                                            <MovieActions/>
+                                        </div>
+                                    </Cell>
+                                    <Cell size={3} className="profil_movie_vignette">
+                                        <Link to="movies/id"><img src={img} alt=""/></Link>
+                                        <div className="favorite_action_container text-right">
+                                            <MovieActions/>
+                                        </div>
+                                    </Cell>
+                                    <Cell size={3} className="profil_movie_vignette">
+                                        <Link to="movies/id"><img src={img} alt=""/></Link>
+                                        <div className="favorite_action_container text-right">
+                                            <MovieActions/>
+                                        </div>
+                                    </Cell>
+                                    <Cell size={3} className="profil_movie_vignette">
+                                        <Link to="movies/id"><img src={img} alt=""/></Link>
+                                        <div className="favorite_action_container text-right">
+                                            <MovieActions/>
+                                        </div>
+                                    </Cell>
+                                    <Cell size={3} className="profil_movie_vignette">
+                                        <Link to="movies/id"><img src={img} alt=""/></Link>
+                                        <div className="favorite_action_container text-right">
+                                            <MovieActions/>
+                                        </div>
+                                    </Cell>
+                                    <Cell size={3} className="profil_movie_vignette">
+                                        <Link to="movies/id"><img src={img} alt=""/></Link>
+                                        <div className="favorite_action_container text-right">
+                                            <MovieActions/>
+                                        </div>
+                                    </Cell>
+                                    <Cell size={3} className="profil_movie_vignette">
+                                        <Link to="movies/id"><img src={img} alt=""/></Link>
+                                        <div className="favorite_action_container text-right">
+                                            <MovieActions/>
+                                        </div>
+                                    </Cell>
+                                </Grid>
+                                <Grid className="watched_movies_container">
+                                    <Cell size={3} className="m-0 mt-2 profil_movie_vignette">
+                                        <Link to="movies/id"><img src={img} alt=""/></Link>
+                                        <div className="favorite_action_container">
+                                            <MovieActions />
+                                        </div>
+                                    </Cell>
+                                </Grid>
+                                <Grid className="wished_movies_container">
+                                    <Cell size={3} className="m-0 mt-2 profil_movie_vignette">
+                                        <Link to="movies/id"><img src={img} alt=""/></Link>
+                                        <div className="favorite_action_container">
+                                            <MovieActions />
+                                        </div>
+                                    </Cell>
+                                </Grid>
+                            </div>
                         </div>
                     </Tab>
                     <Tab label="Notes & critiques">
                         <div className="container">
-                            <h3>Hello, World!</h3>
+                            <div id="rate">Fonctionnalité bientôt disponible</div>
                         </div>
                     </Tab>
                 </Tabs>
