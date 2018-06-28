@@ -727,6 +727,12 @@ footer {
   .user-profile__header {
     padding-top: 2rem;
 
+
+    .md-avatar {
+      width: 100px;
+      height: 100px;
+    }
+
     .user-profile__header__info {
       display: inline-block;
       vertical-align: top;
@@ -751,6 +757,10 @@ footer {
       padding: 1rem 0;
       background: rgba(0, 0, 0, 0.6);
       color: #ececec;
+
+      i {
+        font-size: 2.5rem;
+      }
       
       p {
         color: #ececec;
