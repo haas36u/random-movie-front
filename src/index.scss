@@ -779,6 +779,11 @@ footer {
     
     .md-tab-label {
       font-size: 1.2rem;
+      transition: 0.5s color;
+
+      &:hover {
+        color: $secondary-color;
+      }
     }
 
     .md-tab-indicator {
@@ -792,6 +797,68 @@ footer {
     }
     a {
       color: $secondary-color;
+    }
+  }
+
+  .user-profile__title {
+    margin-top: 2rem;
+
+    i {
+      font-size: 2.2em;
+    }
+    h3 {
+      display: inline-block;
+      vertical-align: top;
+      font-size: 1.2em;
+      line-height: 2em;
+      margin: 0;
+    }
+  }
+
+  .user-profile__favorite-type {
+    padding: 1rem;
+    background-color: #000000;
+    color: #ffffff;
+
+    h6 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+    .favorite-type--chart-description {
+      margin-bottom: 0.5rem;
+
+      div {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 0.5rem;
+
+        &.darkred {
+          background-color: darkred;
+        }
+
+        &.darkgoldenrod {
+          background-color: darkgoldenrod;
+        }
+
+        &.darkmagenta {
+          background-color: darkmagenta;
+        }
+      }
+    }
+  }
+  
+  .user-profile__rate-stats {
+    margin-top: 2rem;
+    h4 {
+      font-size: 1.2rem;
+    }
+    p {
+      font-size: 2.4rem;
+      color: $secondary-color;
+      margin: 0;
     }
   }
 }

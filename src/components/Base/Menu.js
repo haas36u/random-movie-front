@@ -32,11 +32,11 @@ export default class Menu extends Component {
                     <p>Myriam</p>
                     <p className="text-capitalize">haasmyriam@ytahoo.com</p>
                 </div>
-                <a href="#"> <i class="material-icons md-xl">live_tv</i> Séries</a>
-                <Link to="movies"><i class="material-icons md-xl">local_movies</i>Films</Link>
-                <div class="line"></div>
+                <a href="#"> <i className="material-icons md-xl">live_tv</i> Séries</a>
+                <Link to="movies"><i className="material-icons md-xl">local_movies</i>Films</Link>
+                <div className="line"></div>
                 <p>Profil</p>
-                <Link to="profile"><i class="material-icons md-xl">dashboard</i> Dashboard</Link>
+                <Link to="profile"><i className="material-icons md-xl">dashboard</i> Dashboard</Link>
                 <a href="#"><i className="fas fa-th-list"></i>Progression</a>
                 <a href="#"><i className="fas fa-heart"></i>Favoris, déjà vus, à voir</a>
                 <a href="#"><i className="fas fa-comments"></i>Notes et critiques</a>
