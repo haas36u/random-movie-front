@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import MovieActions from '../../components/Movie/MovieActions';
 
 export default class MovieCard extends Component {

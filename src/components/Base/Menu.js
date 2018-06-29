@@ -27,16 +27,16 @@ export default class Menu extends Component {
     return (
         <span>
             <div id="sidenav">
-                <div className="sidenav_header" style={bgTriangle}>
+                <div className="sidenav_header background-trianglify" style={bgTriangle}>
                     <Avatar src={avatar} role="presentation" />
                     <p>Myriam</p>
                     <p className="text-capitalize">haasmyriam@ytahoo.com</p>
                 </div>
-                <a href="#"><i className="fas fa-tv"></i> Séries</a>
-                <Link to="movies"><i className="fas fa-film"></i>Films</Link>
-                <div class="line"></div>
+                <a href="#"> <i className="material-icons md-xl">live_tv</i> Séries</a>
+                <Link to="/movies"><i className="material-icons md-xl">local_movies</i>Films</Link>
+                <div className="line"></div>
                 <p>Profil</p>
-                <a href="#"><i className="fas fa-th-large"></i>Dashboard</a>
+                <Link to="/profile"><i className="material-icons md-xl">dashboard</i> Dashboard</Link>
                 <a href="#"><i className="fas fa-th-list"></i>Progression</a>
                 <a href="#"><i className="fas fa-heart"></i>Favoris, déjà vus, à voir</a>
                 <a href="#"><i className="fas fa-comments"></i>Notes et critiques</a>
