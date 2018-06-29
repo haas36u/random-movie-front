@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { NavigationDrawer, Avatar } from 'react-md';
+import { Avatar } from 'react-md';
 import { Link } from 'react-router-dom';
 var Trianglify = require('trianglify');
 var pattern = Trianglify({width: 200, height: 200})
