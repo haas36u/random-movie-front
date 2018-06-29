@@ -313,7 +313,22 @@ footer {
   }
 }
 
+.logo {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  width: 60px;
+  height: auto;
+  animation: bounce 4s ease infinite alternate;
+}
 
+@keyframes bounce{
+  0%   {transform: translateY(0);}
+  50%  {transform: translateY(0);}
+  60%  {transform: translateY(-15px);}
+  70% {transform: translateY(0);}
+  100% {transform: translateY(0);}
+}
 /**OVERRIDE **/
 .md-avatar {
   width: 60px;

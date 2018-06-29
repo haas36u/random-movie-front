@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { Button } from 'react-md';
 
 import Homepage from '../containers/Homepage';
 import MovieIndex from '../containers/Movie/MovieIndex';
@@ -18,6 +19,8 @@ const closeNav = () => {
     document.getElementById("sidenav").style.width = "0";
 }
 
+let logo = require('../images/logo.png');
+
 const AppRouter = () => (
   <BrowserRouter>
     <div className="wrapper">
@@ -34,6 +37,7 @@ const AppRouter = () => (
                 <Route path="/legal-mentions" component={LegalMentions} exact={true} />
                 <Route component={NotFoundPage} />
             </Switch>
+            <img src={logo} alt="Logo Random Movie" title="Film aléatoire" onClick="" className="logo"/>
         </div>
         <Footer />
     </div>
