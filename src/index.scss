@@ -217,8 +217,23 @@ header {
 
     .header_profile {
       position: absolute;
-      right: 2rem;
+      right: 3rem;
       top: 0.5rem;
+      margin: 0;
+      display: flex;
+      align-items: center;
+
+      li {
+        display: inline-block;
+        vertical-align: top;
+        margin-left: 1rem;
+
+        .md-avatar {
+          cursor: pointer;
+          width: 55px;
+          height: 55px;
+        }
+      }
     }
   }
 }

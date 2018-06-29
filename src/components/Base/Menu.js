@@ -49,8 +49,7 @@ export default class Menu extends Component {
                     </Link>
                 </li>
                 <li>
-
-                    <span onClick={openNav}>open</span>
+                    <Avatar src={avatar} role="presentation" onClick={openNav}/>
                 </li>
             </ul>
         </span>
