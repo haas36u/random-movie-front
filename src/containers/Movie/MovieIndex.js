@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Cell,SelectField } from 'react-md';
+import { Grid, Cell,SelectField, Slider } from 'react-md';
 
 import MovieCard from '../../components/Movie/MovieCard';
 
@@ -46,14 +46,7 @@ export default class MovieShow extends Component {
                         <div className="line"></div>
                         <form action="">
                             <SelectField id="select-movie" placeholder="Genres" menuItems={OBJECT_ITEMS} position={SelectField.Positions.BELOW} />
-                            <Grid className="p-0 mt-1">
-                                <Cell size={6} className="m-0">
-                                    <input type="date" />
-                                </Cell>
-                                <Cell size={6} className="m-0">
-                                    <input type="date" />
-                                </Cell>
-                            </Grid>
+                            <Slider id="" label="Date de sortie" min={1900} max={2018} step={1} valuePrecision={1} discrete/>
                             <div className="search">
                                 <input type="submit" value="Chercher" className="btn" />
                             </div>

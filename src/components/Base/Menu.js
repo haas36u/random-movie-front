@@ -8,9 +8,26 @@ export default class Menu extends Component {
 
 
   render() {
+
+    let isLoggedIn = false;
+    let userMenu;
+    let avatar = require('../../images/avatar_default.jpg');
+
     const openNav = () => {
         document.getElementById("sidenav").style.width = "340px";
     }   
+
+    if(isLoggedIn) {
+        userMenu = <li>
+        <Avatar src={avatar} role="presentation" onClick={openNav}/>
+        </li>
+    }else{
+        userMenu =  <li>
+        <Link to="/login">
+            <span>Connexion</span>
+        </Link>
+    </li>
+    }
 
     let pattern = Trianglify({
         x_colors: 'Blues'
@@ -21,8 +38,6 @@ export default class Menu extends Component {
     let bgTriangle = {
         backgroundImage: 'url(' + triangle + ')'
     }
-
-    let avatar = require('../../images/avatar_default.jpg');
 
     return (
         <span>
@@ -43,14 +58,8 @@ export default class Menu extends Component {
                 <Link to="">Se déconnecter</Link>
             </div>
             <ul className="header_profile">
-                <li>
-                    <Link to="/login">
-                        <span>Connexion</span>
-                    </Link>
-                </li>
-                <li>
-                    <Avatar src={avatar} role="presentation" onClick={openNav}/>
-                </li>
+               {userMenu}
+               
             </ul>
         </span>
     );
