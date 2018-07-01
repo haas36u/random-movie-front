@@ -61,8 +61,7 @@ export default class MovieShow extends Component {
                                             <span>Aucune note pour ce film</span>
                                         </div>
                                     </Cell>
-                                    <Cell size={6} className="mt-0">
-                                        <a href="{{ path('movie_random') }}" className="btn"> <i className="fas fa-random"></i>Film aléatoire</a>
+                                    <Cell size={6} className="mt-0 text-right">
                                         <MovieActions />
                                     </Cell>
                                     <Cell size={12}>
@@ -73,7 +72,7 @@ export default class MovieShow extends Component {
                                                 <div className="text-bold">Votre note</div>
                                                 <div id="movie-rating" data-movie_id="1" data-rate="1"></div>
                                             </Cell>
-                                            <Cell size={6}>
+                                            <Cell size={6} className="text-right">
                                                 <a data-movie_id="1" className="btn" href="">
                                                     <i className="fas fa-edit"></i>Ajouter un commentaire
                                                 </a>

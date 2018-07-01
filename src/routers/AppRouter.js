@@ -1,6 +1,5 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import { Button } from 'react-md';
 
 import Homepage from '../containers/Homepage';
 import MovieIndex from '../containers/Movie/MovieIndex';
