@@ -1,16 +1,21 @@
 import React, { Component } from 'react';
-import { Avatar } from 'react-md';
 import axios from 'axios';
+import CommentMovieItem from '../../components/Comment/CommentMovieItem';
 
 export default class CommentsIndex extends Component {
 
     componentDidMount() {
-
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}`)
         .then((response) => {
-            let movie = response.data;
+            this.setState({movie : response.data});
+        })
+        .catch(error => {
+            console.log(error)
+        });
 
-            this.setState({movie : movie});
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/comments`)
+        .then((response) => {
+            this.setState({comments : response.data});
         })
         .catch(error => {
             console.log(error)
@@ -19,48 +24,19 @@ export default class CommentsIndex extends Component {
     
     render() {
 
-        if(!this.state) return <div>Loading...</div>
-
-        let avatar = require('../../images/avatar_default.jpg');
+        if(!this.state || !this.state.movie || !this.state.comments) return <div>Loading...</div>
 
         const goToMovie = () => {
             window.location = '/movies/' + this.props.match.params.id;
         }
 
-        const comments = [
-            {
-                "content": "C'était un super film, que se soit les images, la bande son etc",
-                "createdAt": "20/01/2017",
-                "user": {
-                "username": "Vincent"
-                }
-            },
-            {
-                "content": "C'était un super film, que se soit les images, la bande son etc",
-                "createdAt": "21/02/2017",
-                "user": {
-                "username": "Yann"
-                }
-            }
-        ]
+        let numberComments = this.state.comments.length;
 
-        const commentsList = comments.map(function(item){
+        const commentsList = this.state.comments.map(function(item){
             return(
-                <li className="collection-item avatar">
-                    <Avatar src={avatar} role="presentation" />
-                    <div className="collection-item-content">
-                        <p className="m-0 text-bold">Par {item.user.username}, le {item.createdAt}</p>
-                    
-                        <p>{item.content}</p>
-                        <span className="right cursor">
-                            Signaler le commentaire
-                        </span>
-                    </div>
-                </li>
+                <CommentMovieItem comment={item}/>
             );
         });
-
-        let numberComments = comments.length;
     
         return (
             <div className="container comments_page">
