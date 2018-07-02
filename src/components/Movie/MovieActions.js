@@ -22,9 +22,9 @@ export default class MovieActions extends Component {
     
         return (
             <span className="movie-actions-container">
-                <Button icon onClick={addToFavorite} active={true} data-movie_id={this.props.movieId} tooltipLabel="Ajouter à vos favoris"><i className="fas fa-heart"></i></Button>
-                <Button icon onClick={addToWatched}  active={true} data-movie_id={this.props.movieId} tooltipLabel="Ajouter aux films déjà vus"><i className="fas fa-eye"></i></Button>
-                <Button icon onClick={addToWishList} active={true} data-movie_id={this.props.movieId} tooltipLabel="Ajouter à votre liste de film à voir"><i className="fas fa-plus-square"></i></Button>
+                <Button icon onClick={addToFavorite} active={true} tooltipLabel="Ajouter à vos favoris"><i className="fas fa-heart"></i></Button>
+                <Button icon onClick={addToWatched}  active={true} tooltipLabel="Ajouter aux films déjà vus"><i className="fas fa-eye"></i></Button>
+                <Button icon onClick={addToWishList} active={true} tooltipLabel="Ajouter à votre liste de film à voir"><i class="material-icons">playlist_add</i></Button>
             </span>
         );
     }
