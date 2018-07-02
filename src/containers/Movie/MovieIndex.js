@@ -1,15 +1,62 @@
 import React, { Component } from 'react';
-import { Grid, Cell,SelectField, Slider } from 'react-md';
+import { Grid, Cell, SelectField, Slider } from 'react-md';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import * as queryString from 'query-string';
 
 import MovieCard from '../../components/Movie/MovieCard';
 
 export default class MovieShow extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            url: 'populars'
+        }
+    }
 
     componentDidMount() {
+        let locationSearch = queryString.parse(window.location.search);
+        this.state.url = 'recents' in locationSearch ? 'recents' : 'populars';
 
         axios.get(`${process.env.REACT_APP_API_URL}/movies/populars`)
+        .then((response) => {
+            let movies = response.data;
+
+            const moviesList = movies.map(function(item){
+                return(
+                    <MovieCard movie={item} />
+                );
+            });
+
+            this.setState({moviesList : moviesList});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
+    renderPopulars = () => {
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/populars`)
+        .then((response) => {
+            let movies = response.data;
+
+            const moviesList = movies.map(function(item){
+                return(
+                    <MovieCard movie={item} />
+                );
+            });
+
+            this.setState({moviesList : moviesList});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
+    renderRecents = () => {
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/recents`)
         .then((response) => {
             let movies = response.data;
 
@@ -48,8 +95,8 @@ export default class MovieShow extends Component {
                         <h2>Films</h2>
 
                         <ul>
-                            <li><a href="">Les plus populaires</a></li>
-                            <li><a href="">Derniers ajouts</a></li>
+                            <li onClick={this.renderPopulars}>Les plus populaires</li>
+                            <li onClick={this.renderRecents}>Derniers ajouts</li>
                         </ul>
                         <div className="line"></div>
                         <form action="">
