@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Avatar } from 'react-md';
 import axios from 'axios';
+import CommentMovieItem from '../../components/Comment/CommentMovieItem';
 
 export default class CommentsIndex extends Component {
 
@@ -26,29 +26,17 @@ export default class CommentsIndex extends Component {
 
         if(!this.state || !this.state.movie || !this.state.comments) return <div>Loading...</div>
 
-        let avatar = require('../../images/avatar_default.jpg');
-
         const goToMovie = () => {
             window.location = '/movies/' + this.props.match.params.id;
         }
 
+        let numberComments = this.state.comments.length;
+
         const commentsList = this.state.comments.map(function(item){
             return(
-                <li className="collection-item avatar">
-                    <Avatar src={avatar} role="presentation" />
-                    <div className="collection-item-content">
-                        <p className="m-0 text-bold">Par {item.user.username}, le {item.createdAt}</p>
-                    
-                        <p>{item.content}</p>
-                        <span className="right cursor">
-                            Signaler le commentaire
-                        </span>
-                    </div>
-                </li>
+                <CommentMovieItem comment={item}/>
             );
         });
-
-        let numberComments = this.state.comments.length;
     
         return (
             <div className="container comments_page">
