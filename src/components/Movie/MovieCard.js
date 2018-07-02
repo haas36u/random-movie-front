@@ -15,7 +15,7 @@ export default class MovieCard extends Component {
         }
 
         let releasedAt = new Date(this.props.movie.releasedAt);
-    console.log(this.props.movie)
+
         return (
             <div className="movie_vignette">
                 <div style={bg}></div>
