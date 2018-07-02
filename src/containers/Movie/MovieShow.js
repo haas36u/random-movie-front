@@ -62,6 +62,10 @@ export default class MovieShow extends Component {
         
         let runtime;
         if(movie.runtime) runtime = <p><span className="text-bold">Durée : </span> {movie.runtime}</p>;
+
+        const goToComments = () => {
+            window.location = '/comments/' + movie.id;
+        }
     
         return (
             <div id="movieShow">
@@ -116,7 +120,7 @@ export default class MovieShow extends Component {
                 <div id="comments-container">
                     <div className="container">
                         <h5>Commentaires</h5>
-                        <a href="comments/deadpool" className="right">Voir tous les commentaires</a>
+                        <span onClick={goToComments} className="right">Voir tous les commentaires</span>
                         <Grid className="pl-0">
                             <Cell size={6} className="ml-0">
                                 <Grid className="pl-0">
