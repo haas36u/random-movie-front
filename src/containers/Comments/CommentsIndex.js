@@ -1,10 +1,25 @@
 import React, { Component } from 'react';
 import { Avatar } from 'react-md';
+import axios from 'axios';
 
 export default class CommentsIndex extends Component {
 
+    componentDidMount() {
+
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}`)
+        .then((response) => {
+            let movie = response.data;
+
+            this.setState({movie : movie});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
     
     render() {
+
+        if(!this.state) return <div>Loading...</div>
 
         let avatar = require('../../images/avatar_default.jpg');
 
@@ -44,13 +59,15 @@ export default class CommentsIndex extends Component {
                 </li>
             );
         });
+
+        let numberComments = comments.length;
     
         return (
             <div className="container comments_page">
                 <div className="btn cursor" onClick={goToMovie}>Retour au film</div>
-                <h2 className="center">Deadpool</h2>
+                <h2 className="center">{this.state.movie.title}</h2>
     
-                <h4>2 commentaires utilisateurs</h4>
+                <h4>{numberComments} commentaires utilisateurs</h4>
                 <ul>
                    {commentsList}
                 </ul>
