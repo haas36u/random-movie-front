@@ -77,17 +77,6 @@ export default class Profile extends Component {
                                     </Cell>
                                 </Grid>
                             </Cell>
-                            <Cell size={6} className="m-0">
-                                <Grid className="p-0">
-                                    <Cell size={2} className="m-0">
-                                        <i className="material-icons md-xl">live_tv</i>
-                                    </Cell>
-                                    <Cell size={10} className="m-0">
-                                        <p className="mt-0 mb-0">12 heures, 10 minutes et 15 secondes</p>
-                                        <p className="mt-0">120 séries</p>
-                                    </Cell>
-                                </Grid>
-                            </Cell>
                         </Grid>
                     </div>
                 </div>

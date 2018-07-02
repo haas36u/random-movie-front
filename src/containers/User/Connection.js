@@ -2,7 +2,16 @@ import React, {Component} from "react";
 import { Link } from 'react-router-dom';
 import { TextField } from 'react-md';
 
-export default class Connection extends Component{
+
+import { login } from '../../actions/auth';
+import { connect } from 'react-redux';
+
+class Connection extends Component{
+
+    login = () => {
+        this.props.login({username: 'junior', password: 'root'});
+     };
+
     render() {
     
         return (
@@ -13,7 +22,7 @@ export default class Connection extends Component{
                     <TextField id="password" label="Mot de passe" lineDirection="center" className="md-cell--bottom" type="password"/>
                     <a id="password-forgotten">Mot de passe oublié ?</a>
                     <div className="mt-3 login-btn">
-                        <div className="btn">Connexion</div>
+                        <div className="btn" onClick={this.login}>Connexion</div>
                         <Link to="/registration">Créer un compte</Link>
                     </div>
                 </div>
@@ -21,3 +30,9 @@ export default class Connection extends Component{
         )
     }
  }
+
+const mapDispatchToProps = (dispatch) => ({
+    login: ({username, password}) => dispatch(login({username, password}))
+});
+
+export default connect(undefined, mapDispatchToProps)(Connection);

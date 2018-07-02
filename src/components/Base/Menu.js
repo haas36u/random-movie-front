@@ -47,7 +47,7 @@ export default class Menu extends Component {
                     <p>Myriam</p>
                     <p className="text-capitalize">haasmyriam@ytahoo.com</p>
                 </div>
-                <a href="#"> <i className="material-icons md-xl">live_tv</i> Séries</a>
+                <a href="#"> <i className="far fa-newspaper"></i> Fils d'actualités</a>
                 <Link to="/movies"><i className="material-icons md-xl">local_movies</i>Films</Link>
                 <div className="line"></div>
                 <p>Profil</p>
