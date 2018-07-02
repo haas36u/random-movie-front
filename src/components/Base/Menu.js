@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Avatar } from 'react-md';
 import { Link } from 'react-router-dom';
+import { logout, isLogin } from '../../actions/auth';
 var Trianglify = require('trianglify');
 var pattern = Trianglify({width: 200, height: 200})
 
@@ -8,8 +9,7 @@ export default class Menu extends Component {
 
 
   render() {
-
-    let isLoggedIn = false;
+    let isLoggedIn = isLogin();
     let userMenu;
     let avatar = require('../../images/avatar_default.jpg');
 
@@ -55,7 +55,7 @@ export default class Menu extends Component {
                 <a href="#"><i className="fas fa-th-list"></i>Progression</a>
                 <a href="#"><i className="fas fa-heart"></i>Favoris, déjà vus, à voir</a>
                 <a href="#"><i className="fas fa-comments"></i>Notes et critiques</a>
-                <Link to="">Se déconnecter</Link>
+                <p className="cursor" onClick={logout}><i class="fas fa-sign-out-alt"></i>Se déconnecter</p>
             </div>
             <ul className="header_profile">
                {userMenu}
