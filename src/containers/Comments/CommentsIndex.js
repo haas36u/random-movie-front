@@ -5,12 +5,17 @@ import axios from 'axios';
 export default class CommentsIndex extends Component {
 
     componentDidMount() {
-
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}`)
         .then((response) => {
-            let movie = response.data;
+            this.setState({movie : response.data});
+        })
+        .catch(error => {
+            console.log(error)
+        });
 
-            this.setState({movie : movie});
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/comments`)
+        .then((response) => {
+            this.setState({comments : response.data});
         })
         .catch(error => {
             console.log(error)
@@ -19,7 +24,7 @@ export default class CommentsIndex extends Component {
     
     render() {
 
-        if(!this.state) return <div>Loading...</div>
+        if(!this.state || !this.state.movie || !this.state.comments) return <div>Loading...</div>
 
         let avatar = require('../../images/avatar_default.jpg');
 
@@ -27,24 +32,7 @@ export default class CommentsIndex extends Component {
             window.location = '/movies/' + this.props.match.params.id;
         }
 
-        const comments = [
-            {
-                "content": "C'était un super film, que se soit les images, la bande son etc",
-                "createdAt": "20/01/2017",
-                "user": {
-                "username": "Vincent"
-                }
-            },
-            {
-                "content": "C'était un super film, que se soit les images, la bande son etc",
-                "createdAt": "21/02/2017",
-                "user": {
-                "username": "Yann"
-                }
-            }
-        ]
-
-        const commentsList = comments.map(function(item){
+        const commentsList = this.state.comments.map(function(item){
             return(
                 <li className="collection-item avatar">
                     <Avatar src={avatar} role="presentation" />
@@ -60,7 +48,7 @@ export default class CommentsIndex extends Component {
             );
         });
 
-        let numberComments = comments.length;
+        let numberComments = this.state.comments.length;
     
         return (
             <div className="container comments_page">

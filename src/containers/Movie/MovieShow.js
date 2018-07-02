@@ -59,7 +59,7 @@ export default class MovieShow extends Component {
         if(movie.runtime) runtime = <p><span className="text-bold">Durée : </span> {movie.runtime}</p>;
 
         const goToComments = () => {
-            window.location = '/comments/' + movie.id;
+            window.location = '/movies/' + movie.id + '/comments/';
         }
     
         return (
