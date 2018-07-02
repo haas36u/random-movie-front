@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Grid, Cell, Button, DialogContainer, TextField } from 'react-md';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { isLogin } from '../../actions/auth';
 
 import ActorCard from '../../components/Actor/ActorCard';
 import MovieCard from '../../components/Movie/MovieCard';
@@ -75,12 +77,41 @@ export default class MovieShow extends Component {
         const sendComment = () => {
             axios.post(`${process.env.REACT_APP_API_URL}/comments`, {content: this.state.comment, createdAt: Date.now(), movie: 'api/movies/' + movie.id, user: 'api/users/3'})
             .then(() => {
-                console.log('user rate')
                 this.setState({commentModalVisible: false});
             })
             .catch(error => {
                 console.log(error)
             });
+        }
+
+        const userRatingActions = () => {
+            if(isLogin()) {
+                return (
+                    <Grid className="p-0">
+                        <Cell size={6} className="ml-0">
+                            <div className="text-bold">Votre note</div>
+                            <div id="movie-rating" data-movie_id="1" data-rate="1"></div>
+                        </Cell>
+                        <Cell size={6} className="text-right">
+                             <span className="btn" onClick={showCommentModal}>
+                                  <i className="fas fa-edit"></i>Ajouter un commentaire
+                              </span>
+                        </Cell>
+                    </Grid>
+                )
+            }
+        }
+
+        const commentsAccess = () => {
+            if(isLogin()){
+                return (
+                    <span onClick={goToComments} className="right cursor text-gold">Voir tous les commentaires</span>
+                )
+            }else{
+                return (
+                    <Link to="/login" className="right cursor">Se connecter pour voir les commentaires</Link>
+                )
+            }
         }
     
         return (
@@ -108,17 +139,7 @@ export default class MovieShow extends Component {
                                     <Cell size={12}>
                                         <h5>Synopsis et détails</h5>
                                         <p>{movie.overview}</p>
-                                        <Grid className="p-0">
-                                            <Cell size={6} className="ml-0">
-                                                <div className="text-bold">Votre note</div>
-                                                <div id="movie-rating" data-movie_id="1" data-rate="1"></div>
-                                            </Cell>
-                                            <Cell size={6} className="text-right">
-                                                <span className="btn" onClick={showCommentModal}>
-                                                    <i className="fas fa-edit"></i>Ajouter un commentaire
-                                                </span>
-                                            </Cell>
-                                        </Grid>
+                                        {userRatingActions()}
                                     </Cell>
                                 </Grid>
                             </Cell>
@@ -143,7 +164,7 @@ export default class MovieShow extends Component {
                 <div id="comments-container">
                     <div className="container">
                         <h5>Commentaires</h5>
-                        <span onClick={goToComments} className="right cursor">Voir tous les commentaires</span>
+                        {commentsAccess()}
                         <Grid className="pl-0">
                             <Cell size={6} className="ml-0">
                                 <Grid className="pl-0">
@@ -161,13 +182,13 @@ export default class MovieShow extends Component {
                                         <p>Un super contenu qu'on va réduire à 150 caractères</p>
                                     </Cell>
                                     <Cell size={12} className="ml-0">
-                                        <span onClick={goToComments} className="cursor">Lire la suite</span>
+                                        <span onClick={goToComments} className="cursor text-gold">Lire la suite</span>
                                     </Cell>
                                 </Grid>
                             </Cell>
                             <Cell size={6} className="ml-0">
                                 <Grid className="pl-0">
-                                    <Cell size={3}>
+                                    <Cell size={2}>
                                     <div className="avatar_comments_container" style={avatarComments}></div>
                                     </Cell>
                                     <Cell size={9}>
@@ -181,7 +202,7 @@ export default class MovieShow extends Component {
                                         <p>Un super contenu qu'on va réduire à 150 caractères</p>
                                     </Cell>
                                     <Cell size={12} className="ml-0">
-                                        <span onClick={goToComments} className="cursor">Lire la suite</span>
+                                        <span onClick={goToComments} className="cursor text-gold">Lire la suite</span>
                                     </Cell>
                                 </Grid>
                             </Cell>
