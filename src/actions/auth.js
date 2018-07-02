@@ -11,8 +11,13 @@ export const login = ({username, password}) => {
       });
   };
 };
+export const isLogin = () => {
+  let token = localStorage.getItem('token');
+  return !!token;
+};
 const loginSuccess = (token) => {
   localStorage.setItem('token', `Bearer ${token}`);
+  window.location = '/movies';
   
   return {
     type: "LOGIN_SUCCESS",

@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 class Connection extends Component{
 
     login = () => {
-        console.log(this.state)
         this.props.login({username: this.state.username, password: this.state.password});
     };
 
