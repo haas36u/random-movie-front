@@ -13,6 +13,8 @@ export default class MovieCard extends Component {
         const goToMovieShow = () => {
             window.location = '/movies/' + this.props.movie.id;
         }
+
+        let releasedAt = new Date(this.props.movie.releasedAt);
     
         return (
             <div className="movie_vignette">
@@ -23,7 +25,7 @@ export default class MovieCard extends Component {
                     </div>
                 </div>
                 <div className="movie_title">
-                    <p>{this.props.movie.title} - {this.props.movie.releasedAt}</p>
+                    <p>{this.props.movie.title} - {new Intl.DateTimeFormat('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit'}).format(releasedAt)}</p>
                 </div>
             </div>
         );
