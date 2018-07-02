@@ -34,6 +34,7 @@ body {
 .container {
   margin: 1rem 0;
   max-width: 1200px;
+  width: 100%;
   margin: 0 auto;   
 }
 
@@ -221,7 +222,7 @@ header {
 }
 
 /** FOOTER **/
-footer {
+div.wrapper>footer {
   background-color: $primary-color;
   padding: 1.5rem 0;
 
@@ -254,6 +255,12 @@ footer {
 .text-capitalize {
   text-transform: capitalize;
 }
+.cursor {
+  cursor: pointer;
+}
+.text-gold {
+  color: $secondary-color;
+}
 .btn {
   background-color: $secondary-color;
   padding: 0.3rem 1.3rem;
@@ -264,7 +271,8 @@ footer {
   border: none;
   display: inline-block;
   vertical-align: top;
-  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2)
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2);
+  cursor: pointer;
 }
 
 .p-0 {
@@ -401,6 +409,15 @@ footer {
       margin-right: 0.5rem;
     }
   }
+  .md-dialog {
+    width: 80%;
+    max-width: 800px;
+
+    .send-comment {
+      margin-top: 2rem;
+      text-align: center;
+    }
+  }
 
   #actors-container {
     padding: 4rem 0;
@@ -486,6 +503,10 @@ footer {
     h2 {
       font-size: 3em;
       color: #ffffff;
+    }
+
+    li {
+      cursor: pointer;
     }
     
     form {
@@ -970,4 +991,47 @@ footer {
   background-position: top;
   background-repeat: no-repeat;
   z-index: -1;
+}
+
+/** COMMENTS **/
+.comments_page {
+  margin-top: 2rem;
+
+  .btn {
+    cursor: pointer;
+  }
+
+  h2 {
+    font-size: 3em;
+    text-align: center;
+    margin-top: 2rem;
+    a {
+      color: #000000;
+      text-transform: uppercase;
+    }
+  }
+  h4 {
+    font-size: 1.5em;
+  }
+
+  .collection-item {
+    border: 1px solid #d4d4d4;
+    border-radius: 3px;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    display: flex;
+
+    .collection-item-content {
+      margin-left: 1rem;
+      flex-grow: 1;
+
+      a {
+        color: #000000;
+      }
+
+      .cursor {
+        display: none;
+      }
+    }
+  }
 }

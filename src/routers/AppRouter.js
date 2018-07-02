@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Homepage from '../containers/Homepage';
 import MovieIndex from '../containers/Movie/MovieIndex';
 import MovieShow from '../containers/Movie/MovieShow';
+import CommentsIndex from '../containers/Comments/CommentsIndex';
 import Registration from '../containers/User/Registration';
 import Connection from '../containers/User/Connection';
 import Profile from '../containers/User/Profile';
@@ -18,6 +19,10 @@ const closeNav = () => {
     document.getElementById("sidenav").style.width = "0";
 }
 
+const randomAction = () => {
+
+}
+
 let logo = require('../images/logo.png');
 
 const AppRouter = () => (
@@ -28,7 +33,8 @@ const AppRouter = () => (
             <Switch>
                 <Route path="/" component={Homepage} exact={true} />
                 <Route path="/movies" component={MovieIndex} exact={true}/>
-                <Route path="/movies/id" component={MovieShow} exact={true}/>
+                <Route path="/movies/:id/comments" component={CommentsIndex}/>
+                <Route path="/movies/:id" component={MovieShow}/>
                 <Route path="/registration" component={Registration} exact={true} />
                 <Route path="/login" component={Connection} exact={true} />
                 <Route path="/profile" component={Profile} exact={true} />
@@ -36,7 +42,7 @@ const AppRouter = () => (
                 <Route path="/legal-mentions" component={LegalMentions} exact={true} />
                 <Route component={NotFoundPage} />
             </Switch>
-            <img src={logo} alt="Logo Random Movie" title="Film aléatoire" onClick="" className="logo"/>
+            <img src={logo} alt="Logo Random Movie" title="Film aléatoire" onClick={randomAction} className="logo"/>
         </div>
         <Footer />
     </div>
