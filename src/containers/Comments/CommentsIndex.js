@@ -11,29 +11,49 @@ export default class CommentsIndex extends Component {
         const goToMovie = () => {
             window.location = '/movies/' + this.props.match.params.id;
         }
+
+        const comments = [
+            {
+                "content": "C'était un super film, que se soit les images, la bande son etc",
+                "createdAt": "20/01/2017",
+                "user": {
+                "username": "Vincent"
+                }
+            },
+            {
+                "content": "C'était un super film, que se soit les images, la bande son etc",
+                "createdAt": "21/02/2017",
+                "user": {
+                "username": "Yann"
+                }
+            }
+        ]
+
+        const commentsList = comments.map(function(item){
+            return(
+                <li className="collection-item avatar">
+                    <Avatar src={avatar} role="presentation" />
+                    <div className="collection-item-content">
+                        <p className="m-0 text-bold">Par {item.user.username}, le {item.createdAt}</p>
+                    
+                        <p>{item.content}</p>
+                        <span className="right cursor">
+                            Signaler le commentaire
+                        </span>
+                    </div>
+                </li>
+            );
+        });
     
         return (
-            <div class="container">
-                <div class="comments_page">
-                    <div class="btn" onClick={goToMovie}>Retour au film</div>
-                    <h2 class="center">
-                        <a href="">Deadpool</a>
-                    </h2>
-        
-                    <h4>2 commentaires utilisateurs</h4>
-                        <ul class="collection">
-                            <li class="collection-item avatar">
-                                <Avatar src={avatar} role="presentation" />
-                                <div class="col l9">
-                                    <p class="m-0 text-bold">Par Vincent, le 12/12/2017</p>
-                                </div>
-                                <p>C'était un super film, que se soit les images, la bande son etc</p>
-                                <a href="" class="right black-text">
-                                    Signaler le commentaire
-                                </a>
-                            </li>
-                        </ul>
-                </div>
+            <div className="container comments_page">
+                <div className="btn cursor" onClick={goToMovie}>Retour au film</div>
+                <h2 className="center">Deadpool</h2>
+    
+                <h4>2 commentaires utilisateurs</h4>
+                <ul>
+                   {commentsList}
+                </ul>
             </div>
         );
     }
