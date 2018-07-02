@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Cell } from 'react-md';
 import axios from 'axios';
+import { isLogin } from '../../actions/auth';
 
 import ActorCard from '../../components/Actor/ActorCard';
 import MovieCard from '../../components/Movie/MovieCard';
@@ -61,6 +62,34 @@ export default class MovieShow extends Component {
         const goToComments = () => {
             window.location = '/comments/' + movie.id;
         }
+
+        const movieActions = () => {
+            if(isLogin()) {
+                return (
+                    <Cell size={6} className="mt-0 text-right">
+                        <MovieActions movieId={movie.id}/>
+                    </Cell>
+                )
+            }
+        }
+
+        const userRatingActions = () => {
+            if(isLogin()) {
+                return (
+                    <Grid className="p-0">
+                        <Cell size={6} className="ml-0">
+                            <div className="text-bold">Votre note</div>
+                            <div id="movie-rating" data-movie_id="1" data-rate="1"></div>
+                        </Cell>
+                        <Cell size={6} className="text-right">
+                            <a data-movie_id="1" className="btn" href="">
+                                <i className="fas fa-edit"></i>Ajouter un commentaire
+                            </a>
+                        </Cell>
+                    </Grid>
+                )
+            }
+        }
     
         return (
             <div id="movieShow">
@@ -81,23 +110,11 @@ export default class MovieShow extends Component {
                                             <span>Aucune note pour ce film</span>
                                         </div>
                                     </Cell>
-                                    <Cell size={6} className="mt-0 text-right">
-                                        <MovieActions movieId={movie.id}/>
-                                    </Cell>
+                                    {movieActions()}
                                     <Cell size={12}>
                                         <h5>Synopsis et détails</h5>
                                         <p>{movie.overview}</p>
-                                        <Grid className="p-0">
-                                            <Cell size={6} className="ml-0">
-                                                <div className="text-bold">Votre note</div>
-                                                <div id="movie-rating" data-movie_id="1" data-rate="1"></div>
-                                            </Cell>
-                                            <Cell size={6} className="text-right">
-                                                <a data-movie_id="1" className="btn" href="">
-                                                    <i className="fas fa-edit"></i>Ajouter un commentaire
-                                                </a>
-                                            </Cell>
-                                        </Grid>
+                                        {userRatingActions()}
                                     </Cell>
                                 </Grid>
                             </Cell>
