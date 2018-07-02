@@ -34,7 +34,7 @@ export default class MovieShow extends Component {
 
         var actorList = [
             {"name": "Ryan Reynolds", "role" : "Deadpool", "img" : "http://fr.web.img6.acsta.net/c_215_290/pictures/16/02/09/12/32/028964.jpg"}, 
-            {"name": "Josh Brolin", "role" : "Cable", "img" : "https://vignette.wikia.nocookie.net/6a24792d-ddfa-4ca5-82ab-78cb58c25ff8/scale-to-width-down/800"}
+            {"name": "Josh Brolin", "role" : "Cable", "img" : "http://fr.web.img6.acsta.net/c_215_290/pictures/16/02/09/12/32/028964.jpg"}
         ]
 
         var actorsList = actorList.map(function(item) {
@@ -45,12 +45,7 @@ export default class MovieShow extends Component {
             );
         });
 
-        var movieSuggestionList = [
-            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg'},
-            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg')},
-            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg')}
-        ]
-
+        var movieSuggestionList =  [{"id":320288,"title":"X-Men: Dark Phoenix","overview":"Jean Grey va perdre le contr\u00f4le de ses pouvoirs et devenir une menace pour ses amis et le reste de l'univers.","cover":"https:\/\/image.tmdb.org\/t\/p\/w500\/6qmsupE0opYPIaBGe7T5D2FBzLs.jpg","releasedAt":"2019-02-05T00:00:00+01:00","runtime":null,"popularity":28,"genres":["\/api\/genres\/28","\/api\/genres\/878"],"comments":[]},{"id":353081,"title":"Mission : Impossible - Fallout","overview":"Les meilleures intentions finissent souvent par se retourner contre vous\u2026  Dans MISSION : IMPOSSIBLE \u2013 FALLOUT, Ethan Hunt accompagn\u00e9 de son \u00e9quipe de l\u2019IMF \u2013 Impossible Mission Force et de quelques fid\u00e8les alli\u00e9es sont lanc\u00e9s dans une course contre la montre, suite au terrible \u00e9chec d\u2019une mission.","cover":"https:\/\/image.tmdb.org\/t\/p\/w500\/zaHa4PcdAofo5AtC3QB2fszpKVY.jpg","releasedAt":"2018-07-26T00:00:00+02:00","runtime":null,"popularity":44,"genres":["\/api\/genres\/12","\/api\/genres\/28","\/api\/genres\/53"],"comments":[]},{"id":487670,"title":"The Death of Superman","overview":"","cover":"https:\/\/image.tmdb.org\/t\/p\/w500\/y0uxSHaSFmt6XaBJgjkeLqe7aM.jpg","releasedAt":"2018-07-24T00:00:00+02:00","runtime":null,"popularity":22,"genres":["\/api\/genres\/16","\/api\/genres\/18","\/api\/genres\/28","\/api\/genres\/878"]}]
         var suggestionList = movieSuggestionList.map(function(item){
             return(
                 <MovieCard movie={item} />
@@ -120,7 +115,7 @@ export default class MovieShow extends Component {
                 <div id="comments-container">
                     <div className="container">
                         <h5>Commentaires</h5>
-                        <span onClick={goToComments} className="right">Voir tous les commentaires</span>
+                        <span onClick={goToComments} className="right cursor">Voir tous les commentaires</span>
                         <Grid className="pl-0">
                             <Cell size={6} className="ml-0">
                                 <Grid className="pl-0">
@@ -138,7 +133,7 @@ export default class MovieShow extends Component {
                                         <p>Un super contenu qu'on va réduire à 150 caractères</p>
                                     </Cell>
                                     <Cell size={12} className="ml-0">
-                                        <a href="">Lire la suite</a>
+                                        <span onClick={goToComments} className="cursor">Lire la suite</span>
                                     </Cell>
                                 </Grid>
                             </Cell>
@@ -158,7 +153,7 @@ export default class MovieShow extends Component {
                                         <p>Un super contenu qu'on va réduire à 150 caractères</p>
                                     </Cell>
                                     <Cell size={12} className="ml-0">
-                                        <a href="">Lire la suite</a>
+                                        <span onClick={goToComments} className="cursor">Lire la suite</span>
                                     </Cell>
                                 </Grid>
                             </Cell>
@@ -169,7 +164,7 @@ export default class MovieShow extends Component {
                 <div className="container pb-4 pt-4" id="movies-suggestion-container">
                     <h5 className="pb-1">Nos recommendations</h5>
                     <div className="movies-suggestion--movies">
-                       {/*suggestionList*/}
+                       {suggestionList}
                     </div>
                 </div>
             </div>
