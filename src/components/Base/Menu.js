@@ -55,7 +55,7 @@ export default class Menu extends Component {
                 <a href="#"><i className="fas fa-th-list"></i>Progression</a>
                 <a href="#"><i className="fas fa-heart"></i>Favoris, déjà vus, à voir</a>
                 <a href="#"><i className="fas fa-comments"></i>Notes et critiques</a>
-                <p onClick={logout}>Se déconnecter</p>
+                <p className="cursor" onClick={logout}><i class="fas fa-sign-out-alt"></i>Se déconnecter</p>
             </div>
             <ul className="header_profile">
                {userMenu}

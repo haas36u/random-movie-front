@@ -1,5 +1,23 @@
 import axios from 'axios';
 
+export const register = ({username, email, password}) => {
+  return (dispatch) => {
+    axios.post(`${process.env.REACT_APP_API_URL}/register`, {username, email, password})
+      .then((response) => {
+        window.location = '/login';
+      })
+      .catch(error => {
+        dispatch(registrationFailed(error));
+      });
+  };
+};
+const registrationFailed = (error) => {
+  return {
+    type: "REGISTRATION_ERROR",
+    error
+  }
+};
+
 export const login = ({username, password}) => {
   return (dispatch) => {
     axios.post(`${process.env.REACT_APP_API_URL}/login_check`, {username, password})
@@ -33,4 +51,5 @@ const loginFailed = (error) => {
 
 export const logout = () => {
   localStorage.removeItem('token');
+  window.location.reload();
 }
