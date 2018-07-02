@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Grid, Cell } from 'react-md';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { isLogin } from '../../actions/auth';
 
@@ -63,16 +64,6 @@ export default class MovieShow extends Component {
             window.location = '/comments/' + movie.id;
         }
 
-        const movieActions = () => {
-            if(isLogin()) {
-                return (
-                    <Cell size={6} className="mt-0 text-right">
-                        <MovieActions movieId={movie.id}/>
-                    </Cell>
-                )
-            }
-        }
-
         const userRatingActions = () => {
             if(isLogin()) {
                 return (
@@ -87,6 +78,18 @@ export default class MovieShow extends Component {
                             </a>
                         </Cell>
                     </Grid>
+                )
+            }
+        }
+
+        const commentsAccess = () => {
+            if(isLogin()){
+                return (
+                    <span onClick={goToComments} className="right cursor text-gold">Voir tous les commentaires</span>
+                )
+            }else{
+                return (
+                    <Link to="/login" className="right cursor">Se connecter pour voir les commentaires</Link>
                 )
             }
         }
@@ -110,7 +113,9 @@ export default class MovieShow extends Component {
                                             <span>Aucune note pour ce film</span>
                                         </div>
                                     </Cell>
-                                    {movieActions()}
+                                    <Cell size={6} className="mt-0 text-right">
+                                        <MovieActions movieId={movie.id}/>
+                                    </Cell>
                                     <Cell size={12}>
                                         <h5>Synopsis et détails</h5>
                                         <p>{movie.overview}</p>
@@ -132,7 +137,7 @@ export default class MovieShow extends Component {
                 <div id="comments-container">
                     <div className="container">
                         <h5>Commentaires</h5>
-                        <span onClick={goToComments} className="right cursor">Voir tous les commentaires</span>
+                        {commentsAccess()}
                         <Grid className="pl-0">
                             <Cell size={6} className="ml-0">
                                 <Grid className="pl-0">
@@ -150,13 +155,13 @@ export default class MovieShow extends Component {
                                         <p>Un super contenu qu'on va réduire à 150 caractères</p>
                                     </Cell>
                                     <Cell size={12} className="ml-0">
-                                        <span onClick={goToComments} className="cursor">Lire la suite</span>
+                                        <span onClick={goToComments} className="cursor text-gold">Lire la suite</span>
                                     </Cell>
                                 </Grid>
                             </Cell>
                             <Cell size={6} className="ml-0">
                                 <Grid className="pl-0">
-                                    <Cell size={3}>
+                                    <Cell size={2}>
                                     <div className="avatar_comments_container" style={avatarComments}></div>
                                     </Cell>
                                     <Cell size={9}>
@@ -170,7 +175,7 @@ export default class MovieShow extends Component {
                                         <p>Un super contenu qu'on va réduire à 150 caractères</p>
                                     </Cell>
                                     <Cell size={12} className="ml-0">
-                                        <span onClick={goToComments} className="cursor">Lire la suite</span>
+                                        <span onClick={goToComments} className="cursor text-gold">Lire la suite</span>
                                     </Cell>
                                 </Grid>
                             </Cell>
