@@ -7,11 +7,11 @@ export default class MovieCard extends Component {
     render() {
 
         let bg = {
-            backgroundImage: 'url(' + this.props.movie.movie_url + ')'
+            backgroundImage: 'url(' + this.props.movie.cover + ')'
         }
 
         const goToMovieShow = () => {
-            window.location = '/movies/' + this.props.movie.url;
+            window.location = '/movies/' + this.props.movie.id;
         }
     
         return (
@@ -19,11 +19,11 @@ export default class MovieCard extends Component {
                 <div style={bg}></div>
                 <div className="actions_buttons" onClick={goToMovieShow}>
                     <div className="right">
-                        <MovieActions />
+                        <MovieActions movieId={this.props.movie.id}/>
                     </div>
                 </div>
                 <div className="movie_title">
-                    <p>Star wars - 22 / 01 / 2018</p>
+                    <p>{this.props.movie.title} - {this.props.movie.releasedAt}</p>
                 </div>
             </div>
         );

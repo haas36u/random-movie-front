@@ -1,9 +1,31 @@
 import React, { Component } from 'react';
 import { Grid, Cell,SelectField, Slider } from 'react-md';
+import axios from 'axios';
 
 import MovieCard from '../../components/Movie/MovieCard';
 
 export default class MovieShow extends Component {
+
+
+    componentDidMount() {
+
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/populars`)
+        .then((response) => {
+            const self = this;
+            let movies = response.data;
+
+            const moviesList = movies.map(function(item){
+                return(
+                    <MovieCard movie={item} />
+                );
+            });
+
+            this.setState({moviesList : moviesList});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
 
     render() {
 
@@ -18,20 +40,7 @@ export default class MovieShow extends Component {
             value: 'C',
           }];
 
-        var movies = [
-            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg', "url" : "id"},
-            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg'), "url" : "deadpool"},
-            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg')},
-            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg'},
-            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg')},
-            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg')}
-        ]
-
-        var moviesList = movies.map(function(item){
-            return(
-                <MovieCard movie={item} />
-            );
-        });
+        if(!this.state || !this.state.moviesList) return <div>Loading...</div>;
     
         return (
             <div id="movieIndex">
@@ -54,7 +63,7 @@ export default class MovieShow extends Component {
                     </Cell>
                     <Cell size={9} offset={3} className="mt-0 mr-0">
                         <div className="movies-list">
-                            {moviesList}
+                            {this.state.moviesList}
                         </div>
                         <div className="pagination">pagination</div>
                     </Cell>
