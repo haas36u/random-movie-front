@@ -1,16 +1,31 @@
 import React, { Component } from 'react';
 import { Grid, Cell } from 'react-md';
+import axios from 'axios';
 
 import ActorCard from '../../components/Actor/ActorCard';
 import MovieCard from '../../components/Movie/MovieCard';
 import MovieActions from '../../components/Movie/MovieActions';
 
-import poster from '../../images/deadpool.jpg';
 import actor from '../../images/ryan_reynolds.jpg';
 
 export default class MovieShow extends Component {
 
+    componentDidMount() {
+
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}`)
+        .then((response) => {
+            let movie = response.data;
+
+            this.setState({movie : movie});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
     render() {
+
+        if(!this.state) return <div>Loading...</div>
 
         var imgUrl = require('../../images/ryan_reynolds.jpg');
         var avatarComments = {  
@@ -41,32 +56,38 @@ export default class MovieShow extends Component {
                 <MovieCard movie={item} />
             );
         });
+
+        let movie  = this.state.movie;
+        let releasedAt = new Date(movie.releasedAt);
+        
+        let runtime;
+        if(movie.runtime) runtime = <p><span className="text-bold">Durée : </span> {movie.runtime}</p>;
     
         return (
             <div id="movieShow">
                 <div id="movie-container">
                     <div className="container">
                         <Grid>
-                            <Cell size={4}><img src={poster} alt="Poster deadpool"/></Cell>
+                            <Cell size={4}><img src={movie.cover} alt={movie.title}/></Cell>
                             <Cell size={8}>
                                 <Grid>
                                     <Cell size={6} id="movie-container_infos">
-                                        <h1>Deadpool</h1>
-                                        <p><span className="text-bold">Date de sortie :</span>22/12/2018</p>
-                                        <p><span className="text-bold">Durée :</span>120 min</p>
-                                        <p><span className="text-bold">Genres :</span> Aventure | Humour</p>
-                                        <p><span className="text-bold">Langue originale :</span> Anglais</p>
+                                        <h1>{movie.title}</h1>
+                                        <p><span className="text-bold">Date de sortie : </span>{new Intl.DateTimeFormat('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit'}).format(releasedAt)}</p>
+                                        {runtime}
+                                        <p><span className="text-bold">Genres : </span> Aventure | Humour</p>
+                                        <p><span className="text-bold">Langue originale : </span> Anglais</p>
                                         <p className="public_rate">Spectateurs</p>
                                         <div>
                                             <span>Aucune note pour ce film</span>
                                         </div>
                                     </Cell>
                                     <Cell size={6} className="mt-0 text-right">
-                                        <MovieActions />
+                                        <MovieActions movieId={movie.id}/>
                                     </Cell>
                                     <Cell size={12}>
                                         <h5>Synopsis et détails</h5>
-                                        <p>Le super descriptif du film</p>
+                                        <p>{movie.overview}</p>
                                         <Grid className="p-0">
                                             <Cell size={6} className="ml-0">
                                                 <div className="text-bold">Votre note</div>
@@ -144,7 +165,7 @@ export default class MovieShow extends Component {
                 <div className="container pb-4 pt-4" id="movies-suggestion-container">
                     <h5 className="pb-1">Nos recommendations</h5>
                     <div className="movies-suggestion--movies">
-                       {suggestionList}
+                       {/*suggestionList*/}
                     </div>
                 </div>
             </div>

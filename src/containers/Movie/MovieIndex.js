@@ -11,7 +11,6 @@ export default class MovieShow extends Component {
 
         axios.get(`${process.env.REACT_APP_API_URL}/movies/populars`)
         .then((response) => {
-            const self = this;
             let movies = response.data;
 
             const moviesList = movies.map(function(item){
