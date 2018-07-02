@@ -9,7 +9,7 @@ export default class Menu extends Component {
 
   render() {
 
-    let isLoggedIn = true;
+    let isLoggedIn = false;
     let userMenu;
     let avatar = require('../../images/avatar_default.jpg');
 

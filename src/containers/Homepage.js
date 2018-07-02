@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 import background from '../images/dark_vador_homepage.jpg';
 import popular from '../images/deadpool.jpg';
@@ -7,7 +8,32 @@ import popular1 from '../images/starwars.jpg';
 
 export default class Homepage extends Component {
   
+  componentDidMount() {
+    axios.get(`${process.env.REACT_APP_API_URL}/movies/recents`)
+    .then((response) => {
+        let movies = response.data;
+        let finalMovies = [];
+
+        for (let i = 0; i < 5; i++) {
+          finalMovies.push(movies[i]);
+        }
+
+        const moviesList = finalMovies.map(function(item){
+            return(
+              <img src={item.cover} alt=""/>
+            );
+        });
+
+        this.setState({moviesList : moviesList});
+    })
+    .catch(error => {
+        console.log(error)
+    });
+  }
+
   render() {
+
+    if(!this.state || !this.state.moviesList) return <div>Loading...</div>;
     
     return (
       <div id="homepage">
@@ -26,11 +52,7 @@ export default class Homepage extends Component {
             <p>Nous vous recommandons personnellement des films, en plus de voir ce que vos amis regarde en ce moment !</p>
 
             <div className="images">
-              <img src={popular} alt=""/>
-              <img src={popular1} alt=""/>
-              <img src={popular} alt=""/>
-              <img src={popular1} alt=""/>
-              <img src={popular} alt=""/>
+              {this.state.moviesList}
             </div>
         </div>
       </div>

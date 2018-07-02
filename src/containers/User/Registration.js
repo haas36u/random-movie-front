@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import { TextField } from 'react-md';
 
 export default class Registration extends Component{
+
     render() {
     
         return (
