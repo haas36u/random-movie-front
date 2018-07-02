@@ -1,5 +1,5 @@
 $primary-color: #212121;
-$primary-color-light: #747474;
+$primary-color-light: #8E8E8E;
 $primary-color-dark: #0a0a0a;
 
 $secondary-color: #fbc02d;
@@ -137,12 +137,25 @@ h5 {
 /** HEADER **/
 header {
   background-color: $primary-color;
-  padding: 0 1rem;
+  padding: 0 3rem;
   height: 70px;
   z-index: 1000;
+  display: flex;
+  align-items: center;
 
   .md-text   {
     color: #ffffff;
+  }
+
+  ul {
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+
+    li {
+      margin-right: 2rem;
+      color: #ffffff;
+    }
   }
 
   .search {
@@ -150,6 +163,7 @@ header {
     flex-direction: column;
     justify-content: center;
     height: 100%;
+    width: 300px;
     max-width: 300px;
     margin-left: 2rem;
 
@@ -178,47 +192,30 @@ header {
     }
   }
 
-  nav {
-    text-transform: uppercase;
+  button {
+    background-color: transparent;
+    color: #ffffff;
+    border: none;
+  }
 
-    .nav_right {
-      position: absolute;
-      right: 50%;
-      margin-right: 40px;
-      top: 0;
-      margin-top: 0;
-      line-height: 70px;
-    }
-    
-    .nav_left {
-      position: absolute;
-      left: 50%;
-      margin-left: 40px;
-      top: 0;
-      margin-top: 0;
-      line-height: 70px;
-    }
-    
-    .logo {
-      position: absolute;
-      left: 50%;
-      top: 0.5rem;
-      transform: translateX(-50%);
+  .header_profile {
+    position: absolute;
+    right: 3rem;
+    top: 0;
+    height: 70px;
+    margin: 0;
+    display: flex;
+    align-items: center;
 
-      button:hover {
-        background-color: transparent;
+    li {
+      margin-left: 1rem;
+      margin-right: 0;
+
+      .md-avatar {
+        cursor: pointer;
+        width: 55px;
+        height: 55px;
       }
-
-      img {
-         width: 66px;
-         height: auto;
-       }
-    }
-
-    .header_profile {
-      position: absolute;
-      right: 2rem;
-      top: 0.5rem;
     }
   }
 }
@@ -248,6 +245,9 @@ footer {
 .right {
   float: right;
 }
+.text-right {
+  text-align: right;
+}
 .text-bold {
   font-weight: bold;
 }
@@ -256,12 +256,15 @@ footer {
 }
 .btn {
   background-color: $secondary-color;
-  padding: 0.5rem;
+  padding: 0.3rem 1.3rem;
   font-size: 1.1rem;
   text-transform: uppercase;
   color: #ffffff;
   text-align: center;
   border: none;
+  display: inline-block;
+  vertical-align: top;
+  box-shadow: 0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2)
 }
 
 .p-0 {
@@ -282,14 +285,57 @@ footer {
 .mr-0 {
   margin-right: 0;
 }
+.mr-1 {
+  margin-right: 1rem;
+}
 .mt-3 {
   margin-top: 3rem;
 }
 .mt-1 {
   margin-top: 1rem;
 }
+.mb-2 {
+  margin-bottom: 2rem;
+}
 .pb-1 {
   padding-bottom: 1rem;
+}
+.pt-1 {
+  padding-top: 1rem;
+}
+
+.flex {
+  display: flex;
+}
+
+.movie-actions-container {
+  button.active i {
+    color: red;
+  }
+}
+
+.logo {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  width: 60px;
+  height: auto;
+  animation: bounce 4s ease infinite alternate;
+  cursor: pointer;
+}
+
+@keyframes bounce{
+  0%   {transform: translateY(0);}
+  50%  {transform: translateY(0);}
+  60%  {transform: translateY(-15px);}
+  70% {transform: translateY(0);}
+  100% {transform: translateY(0);}
+}
+/**OVERRIDE **/
+.md-avatar {
+  width: 60px;
+  height: 60px;
+  border: none;
 }
 
 /** ERROR 404 **/ 
@@ -495,25 +541,21 @@ footer {
 }
 .movie_vignette {
   position: relative;
-  border-bottom: solid 1px #2d2d2d;
-  border-right: solid 1px #2d2d2d;
   background-color: #000000;
   color: #ffffff;
   margin: 0;
-  height: 290px;
-  flex-wrap: wrap;
   flex: 1 0 30%;
 
   &>div:first-child {
     width:100%;
-    height: 250px;
+    height: 350px;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
   }
   .actions_buttons {
     width:  100%;
-    height: 250px;
+    height: 350px;
     position: absolute;
     top:0;
     left:0;
@@ -538,7 +580,7 @@ footer {
     position: absolute;
     bottom: 0;
     width: 100%;
-    background-color: #000000;
+    background-color: rgba($color: #000000, $alpha: 0.8);
     color: #ffffff;
     padding: 0.5em;
     
@@ -669,16 +711,12 @@ footer {
   .sidenav_header {
     padding: 1rem 2rem;
     margin-bottom: 1.5rem;
-    
-    .md-avatar {
-      width: 60px;
-      height: 60px;
-      border: none;
-    }
 
     p {
       padding: 0;
       margin: 0.4rem 0;
+      color: #ffffff;
+      font-weight: bold;
     }
   }
 
@@ -709,10 +747,227 @@ footer {
 
   i {
     margin-right: 1rem;
+    vertical-align: middle;
   }
 }
 
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
+}
+
+/** USER PROFILE **/
+#user-profile {
+  width: 100%;
+
+  .user-profile__header {
+    padding-top: 2rem;
+
+
+    .md-avatar {
+      width: 100px;
+      height: 100px;
+    }
+
+    .user-profile__header__info {
+      display: inline-block;
+      vertical-align: top;
+      padding-left: 1em;
+  
+      h3, p {
+        margin: 0;
+      }
+  
+      h3 {
+        font-size: 1.9em;
+      }
+  
+      p {
+        font-size: 1.3em;
+        color: #4a4a4a;
+      }
+    }
+
+    .user-profile__header__tracking {
+      margin-top: 1rem;
+      padding: 1rem 0;
+      background: rgba(0, 0, 0, 0.6);
+      color: #ececec;
+
+      i {
+        font-size: 2.5rem;
+      }
+      
+      p {
+        color: #ececec;
+      }
+    }
+  }
+
+  .md-tabs {
+    margin-top: 0.5rem;
+    text-align: center;
+    text-transform: uppercase;
+
+    .md-tab {
+      max-width: none;
+    }
+    
+    .md-tab-label {
+      font-size: 1.2rem;
+      transition: 0.5s color;
+
+      &:hover {
+        color: $secondary-color;
+      }
+    }
+
+    .md-tab-indicator {
+      background-color: $secondary-color !important;
+    }
+    .md-tab--inactive {
+      color: $primary-color-light ;
+    }
+    .md-tab--active {
+      color: $secondary-color;
+    }
+    a {
+      color: $secondary-color;
+    }
+  }
+
+  .md-tabs-content {
+    margin: 1rem 0;
+  }
+
+  .user-profile__title {
+    margin-top: 2rem;
+
+    i {
+      font-size: 2.2em;
+    }
+    h3 {
+      display: inline-block;
+      vertical-align: top;
+      font-size: 1.2em;
+      line-height: 2em;
+      margin: 0;
+    }
+  }
+
+  .user-profile__favorite-type {
+    padding: 1rem;
+    background-color: #000000;
+    color: #ffffff;
+
+    h6 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+    .favorite-type--chart-description {
+      margin-bottom: 0.5rem;
+
+      div {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 0.5rem;
+
+        &.darkred {
+          background-color: darkred;
+        }
+
+        &.darkgoldenrod {
+          background-color: darkgoldenrod;
+        }
+
+        &.darkmagenta {
+          background-color: darkmagenta;
+        }
+      }
+    }
+  }
+  
+  .user-profile__rate-stats {
+    margin-top: 2rem;
+    h4 {
+      font-size: 1.2rem;
+    }
+    p {
+      font-size: 2.4rem;
+      color: $secondary-color;
+      margin: 0;
+    }
+  }
+
+  /** PROFILE FAVORITE **/
+  #favorite {
+    .btn {
+      background-color: $primary-color-light;
+      cursor: pointer;
+      transition: 0.5s background-color;
+      margin-left: 1rem;
+
+      &:hover {
+        background-color: lighten(#909090, 6%);
+      }
+    
+      &.active {
+        background-color: $secondary-color;
+    
+        &:hover {
+          background-color: lighten($secondary-color, 6%);
+        }
+      }
+    }
+    .watched_movies_container, .wished_movies_container {
+      display: none;
+    }
+  }
+}
+
+.user-profile__movie-card {
+  line-height: 0;
+
+  i {
+    color: #ffffff;
+  }
+  .favorite_action_container {
+    background-color: $primary-color;
+    color: #ffffff;
+    
+    i:hover {
+      cursor: pointer;
+    }
+  }
+
+  a, img {
+    width: 100%;
+    height: auto;
+  }
+
+  .favorite_description_container {
+    text-align: center;
+
+    p:last-child {
+      font-weight: bold;
+    }
+  }
+}
+
+@media screen and (min-width: 1025px){
+  #user-profile .md-tab {
+    max-width: none;
+  }
+}
+.background-trianglify {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  background-position: top;
+  background-repeat: no-repeat;
+  z-index: -1;
 }

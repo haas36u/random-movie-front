@@ -6,6 +6,7 @@ import MovieIndex from '../containers/Movie/MovieIndex';
 import MovieShow from '../containers/Movie/MovieShow';
 import Registration from '../containers/User/Registration';
 import Connection from '../containers/User/Connection';
+import Profile from '../containers/User/Profile';
 import Cgu from '../containers/static/Cgu';
 import LegalMentions from '../containers/static/LegalMentions';
 
@@ -16,6 +17,8 @@ import Footer from '../components/Base/Footer';
 const closeNav = () => {
     document.getElementById("sidenav").style.width = "0";
 }
+
+let logo = require('../images/logo.png');
 
 const AppRouter = () => (
   <BrowserRouter>
@@ -28,10 +31,12 @@ const AppRouter = () => (
                 <Route path="/movies/id" component={MovieShow} exact={true}/>
                 <Route path="/registration" component={Registration} exact={true} />
                 <Route path="/login" component={Connection} exact={true} />
+                <Route path="/profile" component={Profile} exact={true} />
                 <Route path="/cgu" component={Cgu} exact={true} />
                 <Route path="/legal-mentions" component={LegalMentions} exact={true} />
                 <Route component={NotFoundPage} />
             </Switch>
+            <img src={logo} alt="Logo Random Movie" title="Film aléatoire" onClick="" className="logo"/>
         </div>
         <Footer />
     </div>
