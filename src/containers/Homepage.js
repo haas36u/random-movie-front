@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 
 import background from '../images/dark_vador_homepage.jpg';
-import popular from '../images/deadpool.jpg';
-import popular1 from '../images/starwars.jpg';
 
 export default class Homepage extends Component {
   
