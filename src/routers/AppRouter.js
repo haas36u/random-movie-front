@@ -33,8 +33,8 @@ const AppRouter = () => (
             <Switch>
                 <Route path="/" component={Homepage} exact={true} />
                 <Route path="/movies" component={MovieIndex} exact={true}/>
+                <Route path="/movies/:id/comments" component={CommentsIndex}/>
                 <Route path="/movies/:id" component={MovieShow}/>
-                <Route path="/comments/:id" component={CommentsIndex}/>
                 <Route path="/registration" component={Registration} exact={true} />
                 <Route path="/login" component={Connection} exact={true} />
                 <Route path="/profile" component={Profile} exact={true} />
