@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Cell } from 'react-md';
+import { Grid, Cell, Button, DialogContainer, TextField } from 'react-md';
 import axios from 'axios';
 
 import ActorCard from '../../components/Actor/ActorCard';
@@ -11,7 +11,6 @@ import actor from '../../images/ryan_reynolds.jpg';
 export default class MovieShow extends Component {
 
     componentDidMount() {
-
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}`)
         .then((response) => {
             let movie = response.data;
@@ -21,6 +20,10 @@ export default class MovieShow extends Component {
         .catch(error => {
             console.log(error)
         });
+    }
+
+    handleChangeComment = (value) => {
+        this.setState({comment: value});
     }
 
     render() {
@@ -61,6 +64,24 @@ export default class MovieShow extends Component {
         const goToComments = () => {
             window.location = '/movies/' + movie.id + '/comments/';
         }
+
+        const hideCommentModal = () => {
+            this.setState({commentModalVisible : false});
+        }
+        const showCommentModal = () => {
+            this.setState({commentModalVisible : true});
+        }
+
+        const sendComment = () => {
+            axios.post(`${process.env.REACT_APP_API_URL}/comments`, {content: this.state.comment, createdAt: Date.now(), movie: 'api/movies/' + movie.id, user: 'api/users/3'})
+            .then(() => {
+                console.log('user rate')
+                this.setState({commentModalVisible: false});
+            })
+            .catch(error => {
+                console.log(error)
+            });
+        }
     
         return (
             <div id="movieShow">
@@ -93,9 +114,9 @@ export default class MovieShow extends Component {
                                                 <div id="movie-rating" data-movie_id="1" data-rate="1"></div>
                                             </Cell>
                                             <Cell size={6} className="text-right">
-                                                <a data-movie_id="1" className="btn" href="">
+                                                <span className="btn" onClick={showCommentModal}>
                                                     <i className="fas fa-edit"></i>Ajouter un commentaire
-                                                </a>
+                                                </span>
                                             </Cell>
                                         </Grid>
                                     </Cell>
@@ -104,6 +125,13 @@ export default class MovieShow extends Component {
                         </Grid>
                     </div>
                 </div>
+
+                <DialogContainer id="add-comment-container" visible={this.state.commentModalVisible} onHide={hideCommentModal} title="Ajouter un commentaire">
+                    <TextField id="comment" rows={4} maxLength={1000} placeholder="Un petit commentaire..." onChange={this.handleChangeComment}/>
+                    <div className="send-comment">
+                        <div className="btn" onClick={sendComment}>Envoyer le commentaire</div>
+                    </div>
+                </DialogContainer>
 
                 <div className="container" id="actors-container">
                     <h4>Acteurs</h4>
