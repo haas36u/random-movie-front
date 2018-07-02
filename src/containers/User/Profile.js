@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
-import MovieActions from '../../components/Movie/MovieActions';
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
 var Trianglify = require('trianglify');
 var pattern = Trianglify({width: 200, height: 200})
@@ -22,8 +21,6 @@ export default class Profile extends Component {
         }
         
         let avatar = require('../../images/avatar_default.jpg');
-
-        let img = require('../../images/deadpool.jpg');
 
         let favoriteMovies = [
             {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg', "url": "id"},
