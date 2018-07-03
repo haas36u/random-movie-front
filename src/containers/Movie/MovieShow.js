@@ -93,6 +93,16 @@ export default class MovieShow extends Component {
                 )
             }
         }
+
+        const commentsSecondAccess = () => {
+            if(isLogin()){
+                return (
+                    <Cell size={12} className="ml-0">
+                        <span onClick={goToComments} className="cursor text-gold">Lire la suite</span>
+                    </Cell>
+                )
+            }
+        }
     
         return (
             <div id="movieShow">
@@ -154,9 +164,7 @@ export default class MovieShow extends Component {
                                     <Cell size={12} className="ml-0">
                                         <p>Un super contenu qu'on va réduire à 150 caractères</p>
                                     </Cell>
-                                    <Cell size={12} className="ml-0">
-                                        <span onClick={goToComments} className="cursor text-gold">Lire la suite</span>
-                                    </Cell>
+                                    {commentsSecondAccess()}
                                 </Grid>
                             </Cell>
                             <Cell size={6} className="ml-0">
@@ -174,9 +182,7 @@ export default class MovieShow extends Component {
                                     <Cell size={12} className="ml-0">
                                         <p>Un super contenu qu'on va réduire à 150 caractères</p>
                                     </Cell>
-                                    <Cell size={12} className="ml-0">
-                                        <span onClick={goToComments} className="cursor text-gold">Lire la suite</span>
-                                    </Cell>
+                                    {commentsSecondAccess()}
                                 </Grid>
                             </Cell>
                         </Grid>
