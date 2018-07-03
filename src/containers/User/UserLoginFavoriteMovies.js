@@ -46,6 +46,10 @@ export default class UserLoginFavoriteMovies extends Component{
         });
     }
 
+    save = () => {
+        console.log(this.state.favoriteMovies);
+    }
+
     render() {
     
         return (
@@ -55,7 +59,7 @@ export default class UserLoginFavoriteMovies extends Component{
                         <h3>Bonjour USERNAME</h3>
                         <p>Sélectionnez les titres que vous avez aimés</p>
                         <p>Cela nous aidera à trouver des films que vous allez adorer !</p>
-                        <div className="btn">Continuer</div>
+                        <div className="btn" onClick={this.save}>Continuer</div>
                     </Cell>
         
                     <Cell size={8} className="m-0">
