@@ -51,34 +51,11 @@ export default class MovieShow extends Component {
             backgroundImage: 'url(' + imgUrl + ')'
         }
 
-        var actorList = [
-            {"name": "Ryan Reynolds", "role" : "Deadpool", "img" : "http://fr.web.img6.acsta.net/c_215_290/pictures/16/02/09/12/32/028964.jpg"}, 
-            {"name": "Josh Brolin", "role" : "Cable", "img" : "http://fr.web.img6.acsta.net/c_215_290/pictures/16/02/09/12/32/028964.jpg"}
-        ]
-
-        var actorsList = actorList.map(function(item) {
-            return (
-                <Cell size={2}>
-                    <ActorCard actor_img={actor} actor={item}/>
-                </Cell>
-            );
-        });
-
-        var suggestionList = this.state.similars.map(function(item){
-            return(
-                <MovieCard movie={item} />
-            );
-        });
-
         let movie  = this.state.movie;
         let releasedAt = new Date(movie.releasedAt);
         
         let runtime;
         if(movie.runtime) runtime = <p><span className="text-bold">Durée : </span> {movie.runtime}</p>;
-
-        const goToComments = () => {
-            window.location = '/movies/' + movie.id + '/comments/';
-        }
 
         const hideCommentModal = () => {
             this.setState({commentModalVisible : false});
@@ -115,6 +92,18 @@ export default class MovieShow extends Component {
             }
         }
 
+        const actorsList = this.state.casting.map(function(item) {
+            return (
+                <Cell size={2}>
+                    <ActorCard character={item}/>
+                </Cell>
+            );
+        });
+
+        const goToComments = () => {
+            window.location = '/movies/' + movie.id + '/comments/';
+        }
+
         const commentsAccess = () => {
             if(isLogin()){
                 return (
@@ -136,6 +125,12 @@ export default class MovieShow extends Component {
                 )
             }
         }
+
+        const suggestionList = this.state.similars.map(function(item){
+            return(
+                <MovieCard movie={item} />
+            );
+        });
     
         return (
             <div id="movieShow">
