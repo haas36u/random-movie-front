@@ -15,9 +15,23 @@ export default class MovieShow extends Component {
     componentDidMount() {
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}`)
         .then((response) => {
-            let movie = response.data;
+            this.setState({movie :  response.data});
+        })
+        .catch(error => {
+            console.log(error)
+        });
 
-            this.setState({movie : movie});
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/casting`)
+        .then((response) => {
+            this.setState({casting :  response.data});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/similars`)
+        .then((response) => {
+            this.setState({similars :  response.data});
         })
         .catch(error => {
             console.log(error)
@@ -30,7 +44,7 @@ export default class MovieShow extends Component {
 
     render() {
 
-        if(!this.state) return <div>Loading...</div>
+        if(!this.state || !this.state.casting || !this.state.similars) return <div>Loading...</div>
 
         var imgUrl = require('../../images/ryan_reynolds.jpg');
         var avatarComments = {  
@@ -50,8 +64,7 @@ export default class MovieShow extends Component {
             );
         });
 
-        var movieSuggestionList =  [{"id":320288,"title":"X-Men: Dark Phoenix","overview":"Jean Grey va perdre le contr\u00f4le de ses pouvoirs et devenir une menace pour ses amis et le reste de l'univers.","cover":"https:\/\/image.tmdb.org\/t\/p\/w500\/6qmsupE0opYPIaBGe7T5D2FBzLs.jpg","releasedAt":"2019-02-05T00:00:00+01:00","runtime":null,"popularity":28,"genres":["\/api\/genres\/28","\/api\/genres\/878"],"comments":[]},{"id":353081,"title":"Mission : Impossible - Fallout","overview":"Les meilleures intentions finissent souvent par se retourner contre vous\u2026  Dans MISSION : IMPOSSIBLE \u2013 FALLOUT, Ethan Hunt accompagn\u00e9 de son \u00e9quipe de l\u2019IMF \u2013 Impossible Mission Force et de quelques fid\u00e8les alli\u00e9es sont lanc\u00e9s dans une course contre la montre, suite au terrible \u00e9chec d\u2019une mission.","cover":"https:\/\/image.tmdb.org\/t\/p\/w500\/zaHa4PcdAofo5AtC3QB2fszpKVY.jpg","releasedAt":"2018-07-26T00:00:00+02:00","runtime":null,"popularity":44,"genres":["\/api\/genres\/12","\/api\/genres\/28","\/api\/genres\/53"],"comments":[]},{"id":487670,"title":"The Death of Superman","overview":"","cover":"https:\/\/image.tmdb.org\/t\/p\/w500\/y0uxSHaSFmt6XaBJgjkeLqe7aM.jpg","releasedAt":"2018-07-24T00:00:00+02:00","runtime":null,"popularity":22,"genres":["\/api\/genres\/16","\/api\/genres\/18","\/api\/genres\/28","\/api\/genres\/878"]}]
-        var suggestionList = movieSuggestionList.map(function(item){
+        var suggestionList = this.state.similars.map(function(item){
             return(
                 <MovieCard movie={item} />
             );
