@@ -73,7 +73,7 @@ export default class MovieShow extends Component {
         }
 
         const sendComment = () => {
-            axios.post(`${process.env.REACT_APP_API_URL}/comments`, {content: this.state.comment, createdAt: Date.now(), movie: 'api/movies/' + movie.id, user: 'api/users/3'})
+            axios.post(`${process.env.REACT_APP_API_URL}/comments`, {content: this.state.comment, movie: 'api/movies/' + movie.id, user: 'api/users/3'})
             .then(() => {
                 console.log('user rate')
                 this.setState({commentModalVisible: false});

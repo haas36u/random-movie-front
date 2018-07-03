@@ -1,4 +1,5 @@
 import axios from 'axios';
+import decode from 'jwt-decode';
 
 export const register = ({username, email, password}) => {
   return (dispatch) => {
@@ -35,6 +36,7 @@ export const isLogin = () => {
 };
 const loginSuccess = (token) => {
   localStorage.setItem('token', `Bearer ${token}`);
+  localStorage.setItem('currentUser', JSON.stringify(decode(token)));
   window.location = '/movies';
   
   return {
@@ -51,5 +53,6 @@ const loginFailed = (error) => {
 
 export const logout = () => {
   localStorage.removeItem('token');
+  localStorage.removeItem('currentUser');
   window.location.reload();
 }
