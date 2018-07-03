@@ -107,7 +107,21 @@ export default class MovieShow extends Component {
                         <div className="movies-list">
                             {this.state.moviesList}
                         </div>
-                        <div className="pagination">pagination</div>
+                        <div className="pagination-container">
+                        <ul class="pagination-list">
+                            <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                            <li class="active"><a href="#!">1</a></li>
+                            <li class="waves-effect"><a href="#!">2</a></li>
+                            <li class="waves-effect"><a href="#!">3</a></li>
+                            <li class="waves-effect"><a href="#!">4</a></li>
+                            <li class="waves-effect"><a href="#!">5</a></li>
+                            <li class="waves-effect"><a href="#!">6</a></li>
+                            <li class="waves-effect"><a href="#!">7</a></li>
+                            <li class="waves-effect"><a href="#!">8</a></li>
+                            <li class="waves-effect"><a href="#!">9</a></li>
+                            <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                        </ul>
+                        </div>
                     </Cell>
                 </Grid>
             </div>
