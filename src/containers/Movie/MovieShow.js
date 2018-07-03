@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Cell, DialogContainer, TextField } from 'react-md';
+import { Grid, Cell, DialogContainer, TextField, Chip } from 'react-md';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { isLogin } from '../../actions/auth';
@@ -47,7 +47,7 @@ export default class MovieShow extends Component {
 
     render() {
 
-        if(!this.state || !this.state.casting || !this.state.similars) return <div>Loading...</div>
+        if(!this.state || !this.state.movie || !this.state.casting || !this.state.similars) return <div>Loading...</div>
 
         var imgUrl = require('../../images/ryan_reynolds.jpg');
         var avatarComments = {  
@@ -57,6 +57,13 @@ export default class MovieShow extends Component {
         let releasedAt = new Date(this.state.movie.releasedAt);
         let runtime;
         if(this.state.movie.runtime) runtime = <p><span className="text-bold">Durée : </span> {this.state.movie.runtime}</p>;
+
+        const movieType = this.state.movie.genres.map(function(item) {
+            return (
+                <Chip label={item.name} />
+            );
+        });
+
 
         const hideCommentModal = () => {
             this.setState({commentModalVisible : false});
@@ -145,8 +152,7 @@ export default class MovieShow extends Component {
                                         <h1>{this.state.movie.title}</h1>
                                         <p><span className="text-bold">Date de sortie : </span>{new Intl.DateTimeFormat('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit'}).format(releasedAt)}</p>
                                         {runtime}
-                                        <p><span className="text-bold">Genres : </span> Aventure | Humour</p>
-                                        <p><span className="text-bold">Langue originale : </span> Anglais</p>
+                                        <p><span className="text-bold">Genres : </span> {movieType}</p>
                                         <p className="public_rate">Spectateurs</p>
                                         <div>
                                             <span>Aucune note pour ce film</span>

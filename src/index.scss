@@ -384,6 +384,10 @@ div.wrapper>footer {
   
     #movie-container_infos {
       margin-top: 0;
+
+      span.text-bold {
+        margin-right: 0.5rem;
+      }
   
       h1 {
         font-size: 1.5rem;
@@ -391,12 +395,18 @@ div.wrapper>footer {
       }
       p {
         margin: 0.2rem 0;
+        display: flex;
+        align-items: center;
       }
       .public_rate {
         text-transform: uppercase;
         margin-bottom: 0;
         margin-top: 1rem;
         font-size: 0.9rem;
+      }
+
+      .md-chip {
+        margin-right: 0.5rem;
       }
     }
   
