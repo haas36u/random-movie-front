@@ -731,6 +731,10 @@ div.wrapper>footer {
     p:nth-child(3) {
       color: $primary-color;
     }
+
+    .btn {
+      margin-top: 1rem;
+    }
   }
   .movies_gallery, .movies_genres_gallery {
     position: relative;
@@ -748,6 +752,10 @@ div.wrapper>footer {
     }
     img {
       width: 100%;
+
+      &.active{
+        filter: opacity(35%);
+      }
     }
 
     &.active {
