@@ -3,21 +3,12 @@ import { Link } from 'react-router-dom';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
 var Trianglify = require('trianglify');
-var pattern = Trianglify({width: 200, height: 200})
 
 export default class Profile extends Component {
 
-    
     render() {
-                
-        let pattern = Trianglify({
-            x_colors: 'Blues'
-        });
-
-        let triangle = pattern.png();
-
         let bgTriangle = {
-            backgroundImage: 'url(' + triangle + ')'
+            backgroundImage: 'url(' + Trianglify({ x_colors: 'Blues'}).png() + ')'
         }
         
         let avatar = require('../../images/avatar_default.jpg');
@@ -52,6 +43,8 @@ export default class Profile extends Component {
             );
         });
 
+        let tabIndex = this.props.location.query && this.props.location.query.tab ? this.props.location.query.tab : 0;
+
         return (
         <div id="user-profile">
             <div className="user-profile__header background-trianglify" style={bgTriangle}>
@@ -82,8 +75,8 @@ export default class Profile extends Component {
                 </div>
             </div>
             
-            <TabsContainer>
-                <Tabs className="container" tabId="">
+            <TabsContainer defaultTabIndex={tabIndex}>
+                <Tabs className="container" tabId="profile-tab">
                     <Tab label="Résumé">
                         <Grid className="container">
                             <Cell id="resume" size={12}>
