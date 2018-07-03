@@ -60,7 +60,7 @@ export default class MovieShow extends Component {
 
         const movieType = this.state.movie.genres.map(function(item) {
             return (
-                <Chip label={item.name} />
+                <Chip label={item.name} key={item.id}/>
             );
         });
 
@@ -103,7 +103,7 @@ export default class MovieShow extends Component {
         const actorsList = this.state.casting.map(function(item) {
             return (
                 <Cell size={2}>
-                    <ActorCard character={item}/>
+                    <ActorCard key={item.id} character={item}/>
                 </Cell>
             );
         });
@@ -136,7 +136,7 @@ export default class MovieShow extends Component {
 
         const suggestionList = this.state.similars.map(function(item){
             return(
-                <MovieCard movie={item} />
+                <MovieCard key={item.id} movie={item} />
             );
         });
     
