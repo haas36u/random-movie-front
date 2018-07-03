@@ -23,22 +23,22 @@ export default class Profile extends Component {
         let avatar = require('../../images/avatar_default.jpg');
 
         let favoriteMovies = [
-            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg', "url": "id"},
-            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg'), "url": "id"},
-            {"title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg'), "url": "id"}
+            {"id" : 1, "title" : "Star wars", "released" : "22/01/2018", "movie_url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg', "url": "id"},
+            {"id" : 2, "title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg'), "url": "id"},
+            {"id" : 3, "title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg'), "url": "id"}
         ]
 
         const favoriteMoviesList = favoriteMovies.map(function(item){
             return(
-                <Cell size={3} className="user-profile__movie-card">
-                    <ProfileMovieCard movie={item} />
+                <Cell size={3} key={item.id} className="user-profile__movie-card">
+                    <ProfileMovieCard movie={item}/>
                 </Cell>
             );
         });
 
         const wishedMoviesList = favoriteMovies.map(function(item){
             return(
-                <Cell size={3} className="user-profile__movie-card">
+                <Cell size={3} key={item.id} className="user-profile__movie-card">
                     <ProfileMovieCard movie={item} />
                 </Cell>
             );
@@ -46,7 +46,7 @@ export default class Profile extends Component {
 
         const watchedMoviesList = favoriteMovies.map(function(item){
             return(
-                <Cell size={3} className="user-profile__movie-card">
+                <Cell size={3} key={item.id} className="user-profile__movie-card">
                     <ProfileMovieCard movie={item} />
                 </Cell>
             );

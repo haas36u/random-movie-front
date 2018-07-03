@@ -27,7 +27,7 @@ export default class MovieShow extends Component {
 
             const moviesList = movies.map(function(item){
                 return(
-                    <MovieCard movie={item} />
+                    <MovieCard key={item.id} movie={item} />
                 );
             });
 
