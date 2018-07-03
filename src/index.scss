@@ -570,27 +570,23 @@ div.wrapper>footer {
     flex-wrap: wrap;
   }
 
-  .pagination-list li {
+  .pagination li {
     display: inline-block;
     vertical-align: top;
     border-radius: 2px;
     text-align: center;
     padding: 0.2rem 0.1rem;
+    color: $primary-color-light;
+    font-size: 1.2rem;
+    padding: 0 10px;
 
     &.active {
       background-color: $secondary-color;
-
-      a {
-        color: #ffffff;
-      }
+      color: #ffffff;
     }
 
-    a {
-      color: $primary-color-light;
-      display: inline-block;
-      vertical-align: top;
-      font-size: 1.2rem;
-      padding: 0 10px;
+    &:hover {
+      cursor: pointer;
     }
   }
 }
