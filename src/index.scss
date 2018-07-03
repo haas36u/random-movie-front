@@ -317,8 +317,12 @@ div.wrapper>footer {
 }
 
 .movie-actions-container {
-  button.active i {
-    color: red;
+  button i {
+    transition: 0.4s color;
+
+    &.active {
+      color: red;
+    }
   }
 }
 
