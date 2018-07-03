@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import axios from 'axios';
 
 import Homepage from '../containers/Homepage';
 import MovieIndex from '../containers/Movie/MovieIndex';
@@ -20,7 +21,13 @@ const closeNav = () => {
 }
 
 const randomAction = () => {
-
+    axios.get(`${process.env.REACT_APP_API_URL}/movies/random`)
+    .then((response) => {
+        window.location = '/movies/' + response.data.id;
+    })
+    .catch(error => {
+        console.log(error)
+    });
 }
 
 let logo = require('../images/logo.png');
