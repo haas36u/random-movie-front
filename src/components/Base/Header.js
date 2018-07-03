@@ -6,12 +6,13 @@ import Menu from './Menu';
 
 export default class Footer extends Component{
 
-    handleChangeMovieTitle = (value) => {
-        this.setState({movieTitle: value});
+    constructor(params){
+        super(params);
+        this.state = {};
     }
 
-    searchMovie = () => {
-        console.log(this.state.movieTitle)
+    handleChangeMovieTitle = (value) => {
+        this.setState({movieTitle: value});
     }
 
     render() {
@@ -21,9 +22,9 @@ export default class Footer extends Component{
                     <li>Fil d'actualités</li>
                     <li><Link to="/movies">Les films</Link></li>
                 </ul>
-                <div className="flex">
+                <div className="flex searchContainer">
                     <TextField id="search" placeholder="Rechercher" className="search" type="search" onChange={this.handleChangeMovieTitle}/>
-                    <button onClick={this.searchMovie}><i className="fas fa-search"></i></button>
+                    <Link to={{ pathname: '/movies', query: { movieTitle: this.state.movieTitle } }} ><i className="fas fa-search"></i></Link>
                 </div>
                 <nav>
                     <Menu />

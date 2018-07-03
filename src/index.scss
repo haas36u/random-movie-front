@@ -193,6 +193,10 @@ header {
     }
   }
 
+  .searchContainer .fas {
+    margin-left: 0.5rem;
+  }
+
   button {
     background-color: transparent;
     color: #ffffff;
@@ -314,6 +318,7 @@ div.wrapper>footer {
 
 .flex {
   display: flex;
+  align-items: center;
 }
 
 .movie-actions-container {
@@ -799,6 +804,7 @@ div.wrapper>footer {
   i {
     margin-right: 1rem;
     vertical-align: middle;
+    font-size: 1.4rem;
   }
 }
 
