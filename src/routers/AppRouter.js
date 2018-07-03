@@ -7,6 +7,7 @@ import MovieIndex from '../containers/Movie/MovieIndex';
 import MovieShow from '../containers/Movie/MovieShow';
 import CommentsIndex from '../containers/Comments/CommentsIndex';
 import Registration from '../containers/User/Registration';
+import UserLoginFavoriteMovies from '../containers/User/UserLoginFavoriteMovies';
 import Connection from '../containers/User/Connection';
 import Profile from '../containers/User/Profile';
 import Cgu from '../containers/static/Cgu';
@@ -43,6 +44,7 @@ const AppRouter = () => (
                 <Route path="/movies/:id/comments" component={CommentsIndex}/>
                 <Route path="/movies/:id" component={MovieShow}/>
                 <Route path="/registration" component={Registration} exact={true} />
+                <Route path="/registration/select-movies" component={UserLoginFavoriteMovies} exact={true} />
                 <Route path="/login" component={Connection} exact={true} />
                 <Route path="/profile" component={Profile} exact={true} />
                 <Route path="/cgu" component={Cgu} exact={true} />
