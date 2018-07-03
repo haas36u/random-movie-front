@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Cell, Button, DialogContainer, TextField } from 'react-md';
+import { Grid, Cell, DialogContainer, TextField } from 'react-md';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { isLogin } from '../../actions/auth';
@@ -8,9 +8,12 @@ import ActorCard from '../../components/Actor/ActorCard';
 import MovieCard from '../../components/Movie/MovieCard';
 import MovieActions from '../../components/Movie/MovieActions';
 
-import actor from '../../images/ryan_reynolds.jpg';
-
 export default class MovieShow extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
 
     componentDidMount() {
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}`)
@@ -51,11 +54,9 @@ export default class MovieShow extends Component {
             backgroundImage: 'url(' + imgUrl + ')'
         }
 
-        let movie  = this.state.movie;
-        let releasedAt = new Date(movie.releasedAt);
-        
+        let releasedAt = new Date(this.state.movie.releasedAt);
         let runtime;
-        if(movie.runtime) runtime = <p><span className="text-bold">Durée : </span> {movie.runtime}</p>;
+        if(this.state.movie.runtime) runtime = <p><span className="text-bold">Durée : </span> {this.state.movie.runtime}</p>;
 
         const hideCommentModal = () => {
             this.setState({commentModalVisible : false});
@@ -65,7 +66,7 @@ export default class MovieShow extends Component {
         }
 
         const sendComment = () => {
-            axios.post(`${process.env.REACT_APP_API_URL}/comments`, {content: this.state.comment, createdAt: Date.now(), movie: 'api/movies/' + movie.id, user: 'api/users/3'})
+            axios.post(`${process.env.REACT_APP_API_URL}/comments`, {content: this.state.comment, createdAt: Date.now(), movie: 'api/movies/' + this.state.movie.id, user: 'api/users/3'})
             .then(() => {
                 this.setState({commentModalVisible: false});
             })
@@ -101,7 +102,7 @@ export default class MovieShow extends Component {
         });
 
         const goToComments = () => {
-            window.location = '/movies/' + movie.id + '/comments/';
+            window.location = '/movies/' + this.state.movie.id + '/comments/';
         }
 
         const commentsAccess = () => {
@@ -137,11 +138,11 @@ export default class MovieShow extends Component {
                 <div id="movie-container">
                     <div className="container">
                         <Grid>
-                            <Cell size={4}><img src={movie.cover} alt={movie.title}/></Cell>
+                            <Cell size={4}><img src={this.state.movie.cover} alt={this.state.movie.title}/></Cell>
                             <Cell size={8}>
                                 <Grid>
                                     <Cell size={6} id="movie-container_infos">
-                                        <h1>{movie.title}</h1>
+                                        <h1>{this.state.movie.title}</h1>
                                         <p><span className="text-bold">Date de sortie : </span>{new Intl.DateTimeFormat('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit'}).format(releasedAt)}</p>
                                         {runtime}
                                         <p><span className="text-bold">Genres : </span> Aventure | Humour</p>
@@ -152,11 +153,11 @@ export default class MovieShow extends Component {
                                         </div>
                                     </Cell>
                                     <Cell size={6} className="mt-0 text-right">
-                                        <MovieActions movieId={movie.id}/>
+                                        <MovieActions movieId={this.state.movie.id}/>
                                     </Cell>
                                     <Cell size={12}>
                                         <h5>Synopsis et détails</h5>
-                                        <p>{movie.overview}</p>
+                                        <p>{this.state.movie.overview}</p>
                                         {userRatingActions()}
                                     </Cell>
                                 </Grid>

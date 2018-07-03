@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Grid, Cell, SelectField, Slider } from 'react-md';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import * as queryString from 'query-string';
 
@@ -10,15 +9,12 @@ export default class MovieShow extends Component {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            url: 'populars'
-        }
+        this.state = {};
     }
 
     componentDidMount() {
         let locationSearch = queryString.parse(window.location.search);
-        this.state.url = 'recents' in locationSearch ? 'recents' : 'populars';
+        this.setState({url : 'recents' in locationSearch ? 'recents' : 'populars'});
 
         axios.get(`${process.env.REACT_APP_API_URL}/movies/populars`)
         .then((response) => {
