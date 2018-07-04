@@ -209,8 +209,8 @@ export default class Profile extends Component {
                             </Cell>
                         </Grid>
                     </Tab>
-                    <Tab label="Progression">
-                        <div id="progression" className="container">
+                    <Tab label="Tableaux">
+                        <div id="tableaux" className="container">
                             Fonctionnalité bientôt disponible
                         </div>
                     </Tab>
