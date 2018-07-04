@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
+import CommentMovieItem from '../../components/Comment/CommentMovieItem';
 var Trianglify = require('trianglify');
 
 export default class Profile extends Component {
@@ -14,10 +15,42 @@ export default class Profile extends Component {
         let avatar = require('../../images/avatar_default.jpg');
 
         let favoriteMovies = [
-            {"id" : 1, "title" : "Star wars", "released" : "22/01/2018", "movie_url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg', "url": "id"},
-            {"id" : 2, "title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg'), "url": "id"},
-            {"id" : 3, "title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg'), "url": "id"}
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" }
         ]
+
+        let comments = [
+            {
+              "content": "string",
+              "createdAt": "2018-07-04T14:01:21.573Z",
+              "user": {
+                "username": "Toto"
+              },
+              "movie" : { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" }
+            },
+            {
+                "content": "Super film",
+                "createdAt": "2018-07-04T14:01:21.573Z",
+                "user": {
+                  "username": "Victor"
+                },
+                "movie" :  { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Taxi 4" }
+              }
+        ]
+
+        const commentsList = comments.map(function(item){
+            return (
+                <Grid key={item.id}>
+                    <Cell size={2} className="user-profile__movie-card">
+                        <ProfileMovieCard movie={item.movie}/>
+                    </Cell>
+                    <Cell size={10}>
+                        <CommentMovieItem comment={item}/>
+                    </Cell>
+                </Grid>
+            );
+        });
 
         const favoriteMoviesList = favoriteMovies.map(function(item){
             return(
@@ -173,7 +206,9 @@ export default class Profile extends Component {
                     </Tab>
                     <Tab label="Notes & critiques">
                         <div id="rate" className="container">
-                            Fonctionnalité bientôt disponible
+                            <ul>
+                                {commentsList}
+                            </ul>
                         </div>
                     </Tab>
                 </Tabs>
