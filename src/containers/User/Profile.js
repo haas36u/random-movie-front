@@ -2,31 +2,70 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
+import CommentMovieItem from '../../components/Comment/CommentMovieItem';
 var Trianglify = require('trianglify');
-var pattern = Trianglify({width: 200, height: 200})
 
 export default class Profile extends Component {
 
-    
     render() {
-                
-        let pattern = Trianglify({
-            x_colors: 'Blues'
-        });
-
-        let triangle = pattern.png();
-
         let bgTriangle = {
-            backgroundImage: 'url(' + triangle + ')'
+            backgroundImage: 'url(' + Trianglify({ x_colors: 'Blues'}).png() + ')'
         }
         
         let avatar = require('../../images/avatar_default.jpg');
 
         let favoriteMovies = [
-            {"id" : 1, "title" : "Star wars", "released" : "22/01/2018", "movie_url" : 'https://images-na.ssl-images-amazon.com/images/I/71c-O3GaxLL._SY450_.jpg', "url": "id"},
-            {"id" : 2, "title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg'), "url": "id"},
-            {"id" : 3, "title" : "Star wars", "released" : "22/01/2018", "movie_url" : require('../../images/deadpool.jpg'), "url": "id"}
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" }
         ]
+
+        let wishedMovies = [
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" }
+        ]
+
+        let watchedMovies = [
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" }
+        ]
+
+        let comments = [
+            {
+                "id" : 1,
+              "content": "string",
+              "createdAt": "2018-07-04T14:01:21.573Z",
+              "user": {
+                "username": "Toto"
+              },
+              "movie" : { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" }
+            },
+            {
+                "id": 2,
+                "content": "Super film",
+                "createdAt": "2018-07-04T14:01:21.573Z",
+                "user": {
+                  "username": "Victor"
+                },
+                "movie" :  { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Taxi 4" }
+              }
+        ]
+
+        const commentsList = comments.map(function(item){
+            return (
+                <Grid key={item.id}>
+                    <Cell size={2} className="user-profile__movie-card">
+                        <ProfileMovieCard movie={item.movie}/>
+                    </Cell>
+                    <Cell size={10}>
+                        <CommentMovieItem comment={item}/>
+                    </Cell>
+                </Grid>
+            );
+        });
 
         const favoriteMoviesList = favoriteMovies.map(function(item){
             return(
@@ -36,7 +75,7 @@ export default class Profile extends Component {
             );
         });
 
-        const wishedMoviesList = favoriteMovies.map(function(item){
+        const wishedMoviesList = wishedMovies.map(function(item){
             return(
                 <Cell size={3} key={item.id} className="user-profile__movie-card">
                     <ProfileMovieCard movie={item} />
@@ -44,13 +83,28 @@ export default class Profile extends Component {
             );
         });
 
-        const watchedMoviesList = favoriteMovies.map(function(item){
+        const watchedMoviesList = watchedMovies.map(function(item){
             return(
                 <Cell size={3} key={item.id} className="user-profile__movie-card">
                     <ProfileMovieCard movie={item} />
                 </Cell>
             );
         });
+
+        const showHideMoviesList = (e, id) => {
+            let btnClass = e.target.classList;
+            let moviesList = document.getElementById(id);
+
+            if(moviesList.offsetHeight > 0){
+                moviesList.style.display = 'none';
+                btnClass.remove('active');
+            }else{
+                moviesList.style.display = 'flex';
+                btnClass.add('active');
+            }
+        };
+
+        let tabIndex = this.props.location.query && this.props.location.query.tab ? this.props.location.query.tab : 0;
 
         return (
         <div id="user-profile">
@@ -82,8 +136,8 @@ export default class Profile extends Component {
                 </div>
             </div>
             
-            <TabsContainer>
-                <Tabs className="container" tabId="">
+            <TabsContainer defaultTabIndex={tabIndex}>
+                <Tabs className="container" tabId="profile-tab">
                     <Tab label="Résumé">
                         <Grid className="container">
                             <Cell id="resume" size={12}>
@@ -155,32 +209,34 @@ export default class Profile extends Component {
                             </Cell>
                         </Grid>
                     </Tab>
-                    <Tab label="Progression">
-                        <div id="progression" className="container">
+                    <Tab label="Tableaux">
+                        <div id="tableaux" className="container">
                             Fonctionnalité bientôt disponible
                         </div>
                     </Tab>
                     <Tab label="Favoris, déjà vus, à voir">
                         <div id="favorite" className="container pt-1">
                             <div className="text-right mb-2">
-                                <div className="btn active" onClick="Materialize.toast('Vous n\'avez pas ajouté vos films préférés!', 4000)">Favoris</div>
-                                <div className="btn" onClick="Materialize.toast('Vous n\'avez pas ajouté les films que vous avez vu!', 4000)">Déjà vus</div>
-                                <div className="btn" onClick="Materialize.toast('Vous n\'avez pas ajouter de film à voir!', 4000)">à voir</div>
+                                <div className="btn active" onClick={(e) => showHideMoviesList(e, 'favorite_movies_container')}>Favoris</div>
+                                <div className="btn active" onClick={(e) => showHideMoviesList(e, 'watched_movies_container')}>Déjà vus</div>
+                                <div className="btn active" onClick={(e) => showHideMoviesList(e, 'wished_movies_container')}>à voir</div>
                             </div>
-                            <Grid className="favorite_movies_container p-0">
+                            <Grid id="favorite_movies_container" className="p-0">
                                 {favoriteMoviesList}
                             </Grid>
-                            <Grid className="watched_movies_container">
+                            <Grid id="watched_movies_container">
                                 {watchedMoviesList}
                             </Grid>
-                            <Grid className="wished_movies_container">
+                            <Grid id="wished_movies_container">
                                 {wishedMoviesList}
                             </Grid>
                         </div>
                     </Tab>
                     <Tab label="Notes & critiques">
                         <div id="rate" className="container">
-                            Fonctionnalité bientôt disponible
+                            <ul>
+                                {commentsList}
+                            </ul>
                         </div>
                     </Tab>
                 </Tabs>
