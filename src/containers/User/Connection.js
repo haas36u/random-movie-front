@@ -25,7 +25,6 @@ class Connection extends Component{
                     <h5>Se connecter</h5>
                     <TextField id="username" label="Nom d'utilisateur" lineDirection="center" className="md-cell--bottom" onChange={this.handleChangeUsername}/>
                     <TextField id="password" label="Mot de passe" lineDirection="center" className="md-cell--bottom" type="password" onChange={this.handleChangePasssword}/>
-                    <a id="password-forgotten">Mot de passe oublié ?</a>
                     <div className="mt-3 login-btn">
                         <div className="btn" onClick={this.login}>Connexion</div>
                         <Link to="/registration">Créer un compte</Link>

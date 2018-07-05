@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import { Grid, Cell, DialogContainer } from 'react-md';
 import axios from 'axios';
 
-export default class UserLoginFavoriteMovies extends Component{
+export default class RegistrationFavoriteMovies extends Component{
 
     constructor(props) {
         super(props);
@@ -57,7 +57,7 @@ export default class UserLoginFavoriteMovies extends Component{
     }
 
     continueRegistrationFlow = () => {
-        window.location.href = '/profile';
+        window.location.href = '/registration/select-movies-types';
     }
 
     save = () => {
@@ -84,7 +84,7 @@ export default class UserLoginFavoriteMovies extends Component{
         if(!this.state) return <div>Loading...</div>;
     
         return (
-            <div className="container mt-4 registration__select-movie">
+            <div className="container mt-4 registration__selectMovies">
                 <Grid>
                     <Cell size={4} className="description">
                         <h3>Bonjour USERNAME</h3>
