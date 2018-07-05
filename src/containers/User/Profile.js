@@ -1,11 +1,43 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
 import CommentMovieItem from '../../components/Comment/CommentMovieItem';
 var Trianglify = require('trianglify');
 
 export default class Profile extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            commentsList : []
+        };
+    }
+
+    componentDidMount() {
+        /*TODO userID*/
+        axios.get(`${process.env.REACT_APP_API_URL}/users/3/comments`)
+        .then((response) => {
+            const commentsList = response.data.map(function(item){
+                return (
+                    <Grid key={item.id}>
+                        <Cell size={2} className="user-profile__movie-card">
+                            <ProfileMovieCard movie={item.movie}/>
+                        </Cell>
+                        <Cell size={10}>
+                            <CommentMovieItem comment={item}/>
+                        </Cell>
+                    </Grid>
+                );
+            });
+
+            this.setState({commentsList: commentsList});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
 
     render() {
         let bgTriangle = {
@@ -32,40 +64,6 @@ export default class Profile extends Component {
             { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
             { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" }
         ]
-
-        let comments = [
-            {
-                "id" : 1,
-              "content": "string",
-              "createdAt": "2018-07-04T14:01:21.573Z",
-              "user": {
-                "username": "Toto"
-              },
-              "movie" : { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" }
-            },
-            {
-                "id": 2,
-                "content": "Super film",
-                "createdAt": "2018-07-04T14:01:21.573Z",
-                "user": {
-                  "username": "Victor"
-                },
-                "movie" :  { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Taxi 4" }
-              }
-        ]
-
-        const commentsList = comments.map(function(item){
-            return (
-                <Grid key={item.id}>
-                    <Cell size={2} className="user-profile__movie-card">
-                        <ProfileMovieCard movie={item.movie}/>
-                    </Cell>
-                    <Cell size={10}>
-                        <CommentMovieItem comment={item}/>
-                    </Cell>
-                </Grid>
-            );
-        });
 
         const favoriteMoviesList = favoriteMovies.map(function(item){
             return(
@@ -235,7 +233,7 @@ export default class Profile extends Component {
                     <Tab label="Notes & critiques">
                         <div id="rate" className="container">
                             <ul>
-                                {commentsList}
+                                {this.state.commentsList}
                             </ul>
                         </div>
                     </Tab>
