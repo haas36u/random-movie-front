@@ -5,7 +5,7 @@ import Pagination from "react-js-pagination";
 
 import MovieCard from '../../components/Movie/MovieCard';
 
-export default class MovieShow extends Component {
+export default class MovieIndex extends Component {
 
     constructor(props) {
         super(props);
