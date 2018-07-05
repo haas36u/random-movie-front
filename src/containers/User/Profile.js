@@ -107,8 +107,8 @@ export default class Profile extends Component {
 
         let tabIndex = this.props.location.query && this.props.location.query.tab ? this.props.location.query.tab : 0;
 
-        const stats = [1, 1, 4, 12, 4];
-        const data = {
+        const statsRating = [1, 1, 4, 12, 4];
+        const ratingBarChart = {
             labels: ['1', '2', '3', '4', '5'],
             datasets: [
               {
@@ -116,37 +116,56 @@ export default class Profile extends Component {
                 backgroundColor: 'rgba(251, 192, 45, 0.8)',
                 borderWidth: 1,
                 hoverBackgroundColor: 'rgba(251, 192, 45, 0.9)',
-                data: stats
+                data: statsRating
               }
             ]
         };
 
+        const stats = [
+            {name: 'Aventure', nb_movies: 300},
+            {name: 'Action', nb_movies: 50},
+            {name: 'Comédie', nb_movies: 100}
+        ]
+        const statsLabels = stats.map(function(stat){
+            return stat.name;
+        });
+
+
+        let nbWatchedMovies = 0;
+        let statsData = [];
+        for(let i = 0; i < stats.length; i++) {
+            statsData.push(stats[i].nb_movies);
+            nbWatchedMovies += stats[i].nb_movies;
+        }
+        console.log(nbWatchedMovies)
+
         const favortieMoviesType = {
-            labels: [
-                'Red',
-                'Green',
-                'Yellow'
-            ],
+            labels: statsLabels,
             datasets: [{
-                data: [300, 50, 100],
+                data: statsData,
                 backgroundColor: [
                 '#FF6384',
                 '#36A2EB',
                 '#FFCE56'
                 ],
-                hoverBackgroundColor: [
-                '#FF6384',
-                '#36A2EB',
-                '#FFCE56'
-                ]
+                borderWidth : 0
             }],
             options : {
                 legend: {
-                    display: false
+                    display: false,
+                    fontColor: '#ffffff'
                 }
             }
         };
-        
+
+        const favortieMoviesTypeLegend = stats.map(function(stat){
+            return (
+                <Cell size={6} className="favorite-type--chart-description">
+                    <div className="darkred"></div>
+                    {stat.name} ({((stat.nb_movies / nbWatchedMovies) * 100).toFixed(2)}%)
+                </Cell>
+            )
+        });
 
         return (
         <div id="user-profile">
@@ -192,18 +211,9 @@ export default class Profile extends Component {
                                         <h6>Genres favoris</h6>
                                         <Grid>
                                             <Cell size={6} className="mt-1">
-                                                <div className="favorite-type--chart-description">
-                                                    <div className="darkred"></div>
-                                                    Aventure (18,2%)
-                                                </div>
-                                                <div className="favorite-type--chart-description">
-                                                    <div className="darkgoldenrod"></div>
-                                                    Fantastique (14,8%)
-                                                </div>
-                                                <div className="favorite-type--chart-description">
-                                                    <div className="darkmagenta"></div>
-                                                    Comédie (10,7%)
-                                                </div>
+                                                <Grid>
+                                                    {favortieMoviesTypeLegend}
+                                                </Grid>
                                             </Cell>
                                             <Cell size={6}>
                                                 <div className="pie-chart-container">
@@ -224,7 +234,7 @@ export default class Profile extends Component {
                                     </Cell>
                                     <Cell size={6}>
                                         <h4>Répartition des notes</h4>
-                                        <Bar data={data} />
+                                        <Bar data={ratingBarChart} />
                                     </Cell>
                                 </Grid>
                             </Cell>
