@@ -100,7 +100,7 @@ export default class MovieShow extends Component {
         }
 
         const sendComment = () => {
-            axios.post(`${process.env.REACT_APP_API_URL}/comments`, {content: this.state.comment, createdAt: Date.now(), movie: 'api/movies/' + this.state.movie.id, user: 'api/users/3'})
+            axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/comments`, headers: {"Authorization" : localStorage.getItem('token')}, data: {content: this.state.comment, movie: 'api/movies/' + this.state.movie.id}})
             .then(() => {
                 this.setState({commentModalVisible: false});
             })
@@ -110,9 +110,7 @@ export default class MovieShow extends Component {
         }
 
         const sendNotation = (mark) => {
-            if(this.state.userAlreadyRate) return;
-            
-            axios.post(`${process.env.REACT_APP_API_URL}/notations`, {mark: 4, movie: 'api/movies/' + this.props.match.params.id, user: 'api/users/1'})
+            axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/notations`, headers: {"Authorization" : localStorage.getItem('token')}, data: {mark: mark, movie: 'api/movies/' + this.props.match.params.idtoken}})
             .then((response) => {
                 this.setState({userAlreadyRate : true});
             })
