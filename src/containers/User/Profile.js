@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
 import CommentMovieItem from '../../components/Comment/CommentMovieItem';
+import {Bar, Pie} from 'react-chartjs-2';
 var Trianglify = require('trianglify');
 
 export default class Profile extends Component {
@@ -106,6 +107,47 @@ export default class Profile extends Component {
 
         let tabIndex = this.props.location.query && this.props.location.query.tab ? this.props.location.query.tab : 0;
 
+        const stats = [1, 1, 4, 12, 4];
+        const data = {
+            labels: ['1', '2', '3', '4', '5'],
+            datasets: [
+              {
+                label: 'Nombre de films',
+                backgroundColor: 'rgba(251, 192, 45, 0.8)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(251, 192, 45, 0.9)',
+                data: stats
+              }
+            ]
+        };
+
+        const favortieMoviesType = {
+            labels: [
+                'Red',
+                'Green',
+                'Yellow'
+            ],
+            datasets: [{
+                data: [300, 50, 100],
+                backgroundColor: [
+                '#FF6384',
+                '#36A2EB',
+                '#FFCE56'
+                ],
+                hoverBackgroundColor: [
+                '#FF6384',
+                '#36A2EB',
+                '#FFCE56'
+                ]
+            }],
+            options : {
+                legend: {
+                    display: false
+                }
+            }
+        };
+        
+
         return (
         <div id="user-profile">
             <div className="user-profile__header background-trianglify" style={bgTriangle}>
@@ -146,8 +188,8 @@ export default class Profile extends Component {
                                     <h3>Statistiques</h3>
                                 </div>
                                 <Grid className="user-profile__favorite-type">
-                                    <Cell size={6}>
-                                        <h6>Genres favoris (films)</h6>
+                                    <Cell size={12}>
+                                        <h6>Genres favoris</h6>
                                         <Grid>
                                             <Cell size={6} className="mt-1">
                                                 <div className="favorite-type--chart-description">
@@ -165,29 +207,7 @@ export default class Profile extends Component {
                                             </Cell>
                                             <Cell size={6}>
                                                 <div className="pie-chart-container">
-                                                </div>
-                                            </Cell>
-                                        </Grid>
-                                    </Cell>
-                                    <Cell size={6}>
-                                        <h6>Genres favoris (séries)</h6>
-                                        <Grid>
-                                            <Cell size={6} className="mt-1">
-                                                <div className="favorite-type--chart-description">
-                                                    <div className="darkred"></div>
-                                                    Aventure (18,2%)
-                                                </div>
-                                                <div className="favorite-type--chart-description">
-                                                    <div className="darkgoldenrod"></div>
-                                                    Fantastique (14,8%)
-                                                </div>
-                                                <div className="favorite-type--chart-description">
-                                                    <div className="darkmagenta"></div>
-                                                    Comédie (10,7%)
-                                                </div>
-                                            </Cell>
-                                            <Cell size={6}>
-                                                <div className="pie-chart-container">
+                                                    <Pie data={favortieMoviesType} />
                                                 </div>
                                             </Cell>
                                         </Grid>
@@ -204,6 +224,7 @@ export default class Profile extends Component {
                                     </Cell>
                                     <Cell size={6}>
                                         <h4>Répartition des notes</h4>
+                                        <Bar data={data} />
                                     </Cell>
                                 </Grid>
                             </Cell>
