@@ -4,7 +4,7 @@ export const register = ({username, email, password}) => {
   return (dispatch) => {
     axios.post(`${process.env.REACT_APP_API_URL}/register`, {username, email, password})
       .then((response) => {
-        window.location = '/login';
+        window.location = '/registration/select-movies';
       })
       .catch(error => {
         dispatch(registrationFailed(error));

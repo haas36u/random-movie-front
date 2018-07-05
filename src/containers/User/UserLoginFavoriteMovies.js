@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Grid, Cell } from 'react-md';
+import { Grid, Cell, DialogContainer } from 'react-md';
 import axios from 'axios';
 
 export default class UserLoginFavoriteMovies extends Component{
@@ -7,7 +7,8 @@ export default class UserLoginFavoriteMovies extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            favoriteMovies : []
+            favoriteMovies : [],
+            notMoviesSelectedModalVisible: false
         };
     }
 
@@ -46,11 +47,41 @@ export default class UserLoginFavoriteMovies extends Component{
         });
     }
 
+
+    hideMoviesSelectedModal = () => {
+        this.setState({notMoviesSelectedModalVisible : false});
+    }
+
+    showMoviesSelectedModal = () => {
+        this.setState({notMoviesSelectedModalVisible : true});
+    }
+
+    continueRegistrationFlow = () => {
+        window.location.href = '/profile';
+    }
+
     save = () => {
-        console.log(this.state.favoriteMovies);
+        if(this.state.favoriteMovies.length === 0){
+            this.showMoviesSelectedModal();
+            return;
+        }
+        
+        let moviesList = this.state.favoriteMovies.map(function(movieId){
+           return 'api/movies/' + movieId;
+        });
+
+       axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/movies/favorites`, headers: {"Authorization" : localStorage.getItem('token')}, data: {movies: moviesList}})
+        .then(() => {
+           this.continueRegistrationFlow();
+        })
+        .catch(error => {
+            console.log(error)
+        });
     }
 
     render() {
+
+        if(!this.state) return <div>Loading...</div>;
     
         return (
             <div className="container mt-4 registration__select-movie">
@@ -68,6 +99,13 @@ export default class UserLoginFavoriteMovies extends Component{
                         </Grid>
                     </Cell>
                 </Grid>
+                <DialogContainer id="no-movies-selected" visible={this.state.notMoviesSelectedModalVisible} onHide={this.hideMoviesSelectedModal} title="Etez-vous sur?" focusOnMount={false}>
+                    <p>Vous n'avez pas sélectionnez de film, êtez-vous sûr de vouloir continuer ?</p>
+                    <div className="text-center">
+                        <div className="btn mr-1" onClick={this.hideMoviesSelectedModal}>Non</div>
+                        <div className="btn" onClick={this.continueRegistrationFlow}>Oui</div>
+                    </div>
+                </DialogContainer>
             </div>
         )
     }
