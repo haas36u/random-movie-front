@@ -6,7 +6,7 @@ export default class ProfileMovieCard extends Component {
     render() {
 
         const goToMovieShow = () => {
-            window.location = '/movies/' + this.props.movie.id;
+            window.location.href = '/movies/' + this.props.movie.id;
         }
     
         return (

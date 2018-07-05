@@ -25,7 +25,7 @@ const closeNav = () => {
 const randomAction = () => {
     axios.get(`${process.env.REACT_APP_API_URL}/movies/random`)
     .then((response) => {
-        window.location = '/movies/' + response.data.id;
+        window.location.href = '/movies/' + response.data.id;
     })
     .catch(error => {
         console.log(error)

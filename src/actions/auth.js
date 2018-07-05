@@ -5,7 +5,7 @@ export const register = ({username, email, password}) => {
     axios.post(`${process.env.REACT_APP_API_URL}/register`, {username, email, password})
       .then((response) => {
         dispatch(loginSuccess(response.data.token))
-        window.location = '/registration/select-movies';
+        window.location.href = '/registration/select-movies';
       })
       .catch(error => {
         dispatch(registrationFailed(error));
@@ -36,7 +36,7 @@ export const isLogin = () => {
 };
 const loginSuccess = (token) => {
   localStorage.setItem('token', `Bearer ${token}`);
-  window.location = '/movies';
+  window.location.href = '/movies';
   
   return {
     type: "LOGIN_SUCCESS",
@@ -52,5 +52,5 @@ const loginFailed = (error) => {
 
 export const logout = () => {
   localStorage.removeItem('token');
-  window.location = '/login';
+  window.location.href = '/login';
 }

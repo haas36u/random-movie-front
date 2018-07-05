@@ -27,7 +27,7 @@ export default class CommentsIndex extends Component {
         if(!this.state || !this.state.movie || !this.state.comments) return <div>Loading...</div>
 
         const goToMovie = () => {
-            window.location = '/movies/' + this.props.match.params.id;
+            window.location.href = '/movies/' + this.props.match.params.id;
         }
 
         let numberComments = this.state.comments.length;

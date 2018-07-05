@@ -154,7 +154,7 @@ export default class MovieShow extends Component {
         }
 
         const goToComments = () => {
-            window.location = '/movies/' + this.state.movie.id + '/comments/';
+            window.location.href = '/movies/' + this.state.movie.id + '/comments/';
         }
 
         const commentsAccess = () => {
