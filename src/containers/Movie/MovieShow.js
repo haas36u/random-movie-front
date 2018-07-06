@@ -17,12 +17,13 @@ export default class MovieShow extends Component {
             movie : {},
             casting: [],
             similars : [],
-            userAlreadyRate: true
+            userAlreadyRate: true,
+            commentModalVisible: false
         };
     }
 
-    componentDidMount() {
-        /*MOVIE*/
+    /*MOVIE*/
+    getMovie = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}`)
         .then((response) => {
             let movie = response.data;
@@ -30,9 +31,9 @@ export default class MovieShow extends Component {
 
             if(movie.runtime) movie.runtime = <p><span className="text-bold">Durée : </span> {movie.runtime}</p>;
 
-            movie.genres = movie.genres.map(function(item) {
+            movie.genres = movie.genres.map(function(item, key) {
                 return (
-                    <Chip label={item.name} key={item.id}/>
+                    <Chip label={item.name} key={key}/>
                 );
             });
 
@@ -41,14 +42,16 @@ export default class MovieShow extends Component {
         .catch(error => {
             console.log(error)
         });
+    }
 
-        /*CASTING*/
+    /*CASTING*/
+    getCasting = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/casting`)
         .then((response) => {
             let casting = response.data;
-            casting = casting.map(function(item) {
+            casting = casting.map(function(item, key) {
                 return (
-                    <Cell size={2} key={item.id}>
+                    <Cell size={2} key={key}>
                         <ActorCard character={item}/>
                     </Cell>
                 );
@@ -58,14 +61,16 @@ export default class MovieShow extends Component {
         .catch(error => {
             console.log(error)
         });
+    }
 
-        /*SIMILARS*/
+    /*SIMILARS*/
+    getSimilars = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/similars`)
         .then((response) => {
             let similars = response.data;
-            similars = similars.map(function(item){
+            similars = similars.map(function(item, key){
                 return(
-                    <MovieCard key={item.id} movie={item} />
+                    <MovieCard key={key} movie={item} />
                 );
             });
             this.setState({similars : similars});
@@ -73,10 +78,16 @@ export default class MovieShow extends Component {
         .catch(error => {
             console.log(error)
         });
+    }
+
+    componentDidMount() {
+        this.getMovie();
+        this.getCasting();
+        this.getSimilars();
 
         /*Simulate user already mark*/
         let mark = 1;
-        if(this.state.userAlreadyRate) document.getElementById('rate' + mark).checked = true;
+        if(isAuthenticated() && this.state.userAlreadyRate) document.getElementById('rate' + mark).checked = true;
     }
 
     handleChangeComment = (value) => {

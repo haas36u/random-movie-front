@@ -32,9 +32,9 @@ export default class CommentsIndex extends Component {
 
         let numberComments = this.state.comments.length;
 
-        const commentsList = this.state.comments.map(function(item){
+        const commentsList = this.state.comments.map(function(item, key){
             return(
-                <CommentMovieItem key={item.id} comment={item}/>
+                <CommentMovieItem key={key} comment={item}/>
             );
         });
     
