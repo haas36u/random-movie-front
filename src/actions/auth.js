@@ -51,10 +51,25 @@ const loginFailed = (error) => {
 
 export const isAuthenticated = () => {
   let token = localStorage.getItem('token');
-  return !!token;
+  return !!token && !isTokenExpired(token);
 };
 
+const getTokenExpirationDate = (encodedToken) => {
+  const token = decode(encodedToken);
+  if (!token.exp) { return null; }
 
+  const date = new Date(0);
+  date.setUTCSeconds(token.exp);
+
+  return date;
+}
+
+const isTokenExpired = (token) => {
+  const expirationDate = getTokenExpirationDate(token);
+  console.log(expirationDate)
+  console.log(new Date())
+  return expirationDate < new Date();
+}
 
 export const logout = () => {
   localStorage.removeItem('token');
