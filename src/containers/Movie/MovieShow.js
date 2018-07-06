@@ -110,7 +110,7 @@ export default class MovieShow extends Component {
         }
 
         const sendNotation = (mark) => {
-            axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/notations`, headers: {"Authorization" : localStorage.getItem('token')}, data: {mark: mark, movie: 'api/movies/' + this.props.match.params.idtoken}})
+            axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/notations`, headers: {"Authorization" : localStorage.getItem('token')}, data: {mark: mark, movie: 'api/movies/' + this.state.movie.id}})
             .then((response) => {
                 this.setState({userAlreadyRate : true});
             })
@@ -126,22 +126,21 @@ export default class MovieShow extends Component {
                         <Cell size={6} className="ml-0">
                             <div className="text-bold">Votre note</div>
                             <div id="movieRating">
-                            <form>
-                                <fieldset className="starability-checkmark">
-                                    <input type="radio" id="rate1" name="rating" value="1" onClick={(e) => sendNotation(1)}/>
-                                    <label for="rate1" title="Terrible">1 star</label>
-                                    <input type="radio" id="rate2" name="rating" value="2" onClick={(e) => sendNotation(2)}/>
-                                    <label for="rate2" title="Not good">2 stars</label>
-                                    <input type="radio" id="rate3" name="rating" value="3" onClick={(e) => sendNotation(3)}/>
-                                    <label for="rate3" title="Average">3 stars</label>
-                                    <input type="radio" id="rate4" name="rating" value="4" onClick={(e) => sendNotation(4)}/>
-                                    <label for="rate4" title="Very good">4 stars</label>
-                                    <input type="radio" id="rate5" name="rating" value="5" onClick={(e) => sendNotation(5)}/>
-                                    <label for="rate5" title="Amazing">5 stars</label>
-                                </fieldset>
-                            </form>
+                                <form>
+                                    <fieldset className="starability-checkmark">
+                                        <input type="radio" id="rate1" name="rating" value="1" onClick={(e) => sendNotation(1)}/>
+                                        <label for="rate1" title="Terrible">1 star</label>
+                                        <input type="radio" id="rate2" name="rating" value="2" onClick={(e) => sendNotation(2)}/>
+                                        <label for="rate2" title="Not good">2 stars</label>
+                                        <input type="radio" id="rate3" name="rating" value="3" onClick={(e) => sendNotation(3)}/>
+                                        <label for="rate3" title="Average">3 stars</label>
+                                        <input type="radio" id="rate4" name="rating" value="4" onClick={(e) => sendNotation(4)}/>
+                                        <label for="rate4" title="Very good">4 stars</label>
+                                        <input type="radio" id="rate5" name="rating" value="5" onClick={(e) => sendNotation(5)}/>
+                                        <label for="rate5" title="Amazing">5 stars</label>
+                                    </fieldset>
+                                </form>
                             </div>
-                            <div id="movie-rating" data-movie_id="1" data-rate="1"></div>
                         </Cell>
                         <Cell size={6} className="text-right">
                              <span className="btn" onClick={showCommentModal}>

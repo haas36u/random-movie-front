@@ -47,9 +47,10 @@ export default class Menu extends Component {
                 <div className="line"></div>
                 <p>Profil</p>
                 <Link to="/profile" onClick={closeNav}><i className="material-icons md-xl">dashboard</i> Dashboard</Link>
-                <Link to={{ pathname: '/profile', query: { tab: 1 } }} onClick={closeNav}><i className="fas fa-th-list"></i>Tableaux</Link>
+                <Link to={{ pathname: '/profile', query: { tab: 1 } }} onClick={closeNav}><i className="fas fa-th-list"></i>Collections</Link>
                 <Link to={{ pathname: '/profile', query: { tab: 2 } }} onClick={closeNav}><i className="fas fa-heart"></i>Favoris, déjà vus, à voir</Link>
-                <Link to={{ pathname: '/profile', query: { tab: 3 } }} onClick={closeNav}><i className="fas fa-comments"></i>Notes et critiques</Link>
+                <Link to={{ pathname: '/profile', query: { tab: 3 } }} onClick={closeNav}><i className="fas fa-star-half-alt"></i>Notes</Link>
+                <Link to={{ pathname: '/profile', query: { tab: 4 } }} onClick={closeNav}><i className="fas fa-comments"></i>Critiques</Link>
                 <p className="cursor" onClick={logout}><i className="fas fa-sign-out-alt"></i>Se déconnecter</p>
             </div>
             <ul className="header_profile">
