@@ -1,0 +1,60 @@
+/** REGISTRATION / LOGIN **/
+#registration-login {
+    background-image: url('images/resgistration_login.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100%;
+  
+    h5 {
+      font-size: 1.5rem;
+    }
+  
+    .registration-login_container-box {
+      max-width: 480px;
+      margin: 0 auto;
+      margin-top: 4rem;
+      background-color: #ffffff;
+      padding: 3rem 2rem;
+      text-align: center;
+      font-size: 1.2rem;
+      
+      .md-text--theme-primary{
+        color: $secondary-color;
+      }
+  
+      .md-divider--text-field::after {
+        background-color: $secondary-color;
+      }
+  
+      label, input {
+        left: 0;
+        width: 100%;
+        text-align: left;
+      }
+  
+      #password-forgotten {
+        text-align: right;
+        color: #000000;
+        font-size: 0.8rem;
+        color: $error-color;
+        display: block;
+        margin-top: 1rem;
+  
+        &:hover {
+          cursor: pointer;
+        }
+      }
+  
+      .btn:hover {
+        cursor: pointer;
+      }
+  
+      .login-btn a {
+        color: #000000;
+        font-size: 0.8rem;
+        margin-top: 2rem;
+        display: block;
+      }
+    }
+  }
