@@ -25,9 +25,9 @@ export default class MovieIndex extends Component {
         .then((response) => {
             let movies = response.data;
 
-            const moviesList = movies.map(function(item){
+            const moviesList = movies.map(function(item, key){
                 return(
-                    <MovieCard key={item.id} movie={item} />
+                    <MovieCard key={key} movie={item} />
                 );
             });
 

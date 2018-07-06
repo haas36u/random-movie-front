@@ -4631,6 +4631,10 @@ jsx-ast-utils@^2.0.0:
   dependencies:
     array-includes "^3.0.3"
 
+jwt-decode@auth0/jwt-decode:
+  version "2.2.0"
+  resolved "https://codeload.github.com/auth0/jwt-decode/tar.gz/f904effc98e7555609cc22b994df5e2a4cb25455"
+
 keycode@^2.1.7:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/keycode/-/keycode-2.2.0.tgz#3d0af56dc7b8b8e5cba8d0a97f107204eec22b04"

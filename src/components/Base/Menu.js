@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Avatar } from 'react-md';
 import { Link } from 'react-router-dom';
-import { logout, isLogin } from '../../actions/auth';
+import { logout, isAuthenticated } from '../../actions/auth';
 var Trianglify = require('trianglify');
 
 export default class Menu extends Component {
@@ -18,7 +18,7 @@ export default class Menu extends Component {
         document.getElementById("sidenav").style.width = "0";
     }
 
-    if(isLogin()) {
+    if(isAuthenticated()) {
         userMenu = <li>
         <Avatar src={avatar} role="presentation" onClick={openNav}/>
         </li>
