@@ -5,7 +5,8 @@ export const register = ({username, email, password}) => {
   return (dispatch) => {
     axios.post(`${process.env.REACT_APP_API_URL}/register`, {username, email, password})
       .then((response) => {
-        window.location = '/login';
+        dispatch(loginSuccess(response.data.token))
+        window.location.href = '/registration/select-movies';
       })
       .catch(error => {
         dispatch(registrationFailed(error));
@@ -30,14 +31,11 @@ export const login = ({username, password}) => {
       });
   };
 };
-export const isLogin = () => {
-  let token = localStorage.getItem('token');
-  return !!token;
-};
+
 const loginSuccess = (token) => {
   localStorage.setItem('token', `Bearer ${token}`);
   localStorage.setItem('currentUser', JSON.stringify(decode(token)));
-  window.location = '/movies';
+  window.location.href = '/movies';
   
   return {
     type: "LOGIN_SUCCESS",
@@ -51,8 +49,15 @@ const loginFailed = (error) => {
   }
 };
 
+export const isAuthenticated = () => {
+  let token = localStorage.getItem('token');
+  return !!token;
+};
+
+
+
 export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('currentUser');
-  window.location.reload();
+  window.location.href = '/login';
 }
