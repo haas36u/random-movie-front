@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Cell, DialogContainer, TextField, Chip } from 'react-md';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { isLogin } from '../../actions/auth';
+import { isAuthenticated } from '../../actions/auth';
 import '../../style/tools/starability-checkmark.min.css';
 
 import ActorCard from '../../components/Actor/ActorCard';
@@ -120,7 +120,7 @@ export default class MovieShow extends Component {
         }
 
         const userRatingActions = () => {
-            if(isLogin()) {
+            if(isAuthenticated()) {
                 return (
                     <Grid className="p-0">
                         <Cell size={6} className="ml-0">
@@ -157,7 +157,7 @@ export default class MovieShow extends Component {
         }
 
         const commentsAccess = () => {
-            if(isLogin()){
+            if(isAuthenticated()){
                 return (
                     <span onClick={goToComments} className="right cursor text-gold">Voir tous les commentaires</span>
                 )
@@ -169,7 +169,7 @@ export default class MovieShow extends Component {
         }
 
         const commentsSecondAccess = () => {
-            if(isLogin()){
+            if(isAuthenticated()){
                 return (
                     <Cell size={12} className="ml-0">
                         <span onClick={goToComments} className="cursor text-gold">Lire la suite</span>

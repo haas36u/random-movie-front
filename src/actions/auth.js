@@ -30,7 +30,7 @@ export const login = ({username, password}) => {
       });
   };
 };
-export const isLogin = () => {
+export const isAuthenticated = () => {
   let token = localStorage.getItem('token');
   return !!token;
 };
