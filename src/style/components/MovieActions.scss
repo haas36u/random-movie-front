@@ -1,0 +1,9 @@
+.movie-actions-container {
+    button i {
+      transition: 0.3s color;
+  
+      &.active {
+        color: red;
+      }
+    }
+  }

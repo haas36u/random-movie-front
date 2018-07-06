@@ -11,7 +11,7 @@ export default class MovieCard extends Component {
         }
 
         const goToMovieShow = () => {
-            window.location = '/movies/' + this.props.movie.id;
+            window.location.href = '/movies/' + this.props.movie.id;
         }
 
         let releasedAt = new Date(this.props.movie.releasedAt);

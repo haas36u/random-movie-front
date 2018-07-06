@@ -18,7 +18,7 @@ export default class Homepage extends Component {
 
         const moviesList = finalMovies.map(function(item){
             return(
-              <img src={item.cover} alt=""/>
+              <img src={item.cover} alt="" key={item.id}/>
             );
         });
 

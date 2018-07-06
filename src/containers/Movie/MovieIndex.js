@@ -1,32 +1,33 @@
 import React, { Component } from 'react';
 import { Grid, Cell, SelectField, Slider } from 'react-md';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import * as queryString from 'query-string';
+import Pagination from "react-js-pagination";
 
 import MovieCard from '../../components/Movie/MovieCard';
 
-export default class MovieShow extends Component {
+export default class MovieIndex extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
-            url: 'populars'
-        }
+            url : 'populars'
+        };
     }
 
     componentDidMount() {
-        let locationSearch = queryString.parse(window.location.search);
-        this.state.url = 'recents' in locationSearch ? 'recents' : 'populars';
+        this.changeMoviesList();
+    }
 
-        axios.get(`${process.env.REACT_APP_API_URL}/movies/populars`)
+    changeMoviesList = (url = 'populars', page = 1) => {
+        this.setState(() => ({url: url, activePage: page}));
+
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/${url}`, {params : {page: page}})
         .then((response) => {
             let movies = response.data;
 
             const moviesList = movies.map(function(item){
                 return(
-                    <MovieCard movie={item} />
+                    <MovieCard key={item.id} movie={item} />
                 );
             });
 
@@ -37,40 +38,8 @@ export default class MovieShow extends Component {
         });
     }
 
-    renderPopulars = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/movies/populars`)
-        .then((response) => {
-            let movies = response.data;
-
-            const moviesList = movies.map(function(item){
-                return(
-                    <MovieCard movie={item} />
-                );
-            });
-
-            this.setState({moviesList : moviesList});
-        })
-        .catch(error => {
-            console.log(error)
-        });
-    }
-
-    renderRecents = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/movies/recents`)
-        .then((response) => {
-            let movies = response.data;
-
-            const moviesList = movies.map(function(item){
-                return(
-                    <MovieCard movie={item} />
-                );
-            });
-
-            this.setState({moviesList : moviesList});
-        })
-        .catch(error => {
-            console.log(error)
-        });
+    handlePageChange = (pageNumber) => {
+        this.changeMoviesList(this.state.url, pageNumber);
     }
 
     render() {
@@ -93,10 +62,9 @@ export default class MovieShow extends Component {
                 <Grid className="p-0">
                     <Cell size={3} className="movie_tv_menu">
                         <h2>Films</h2>
-
                         <ul>
-                            <li onClick={this.renderPopulars}>Les plus populaires</li>
-                            <li onClick={this.renderRecents}>Derniers ajouts</li>
+                            <li onClick={(e) => this.changeMoviesList('populars')}>Les plus populaires</li>
+                            <li onClick={(e) => this.changeMoviesList('recents')}>Derniers ajouts</li>
                         </ul>
                         <div className="line"></div>
                         <form action="">
@@ -111,7 +79,14 @@ export default class MovieShow extends Component {
                         <div className="movies-list">
                             {this.state.moviesList}
                         </div>
-                        <div className="pagination">pagination</div>
+                        <div className="pagination-container">
+                            <Pagination
+                                activePage={this.state.activePage}
+                                itemsCountPerPage={8}
+                                totalItemsCount={450}
+                                onChange={this.handlePageChange}
+                                />
+                        </div>
                     </Cell>
                 </Grid>
             </div>
