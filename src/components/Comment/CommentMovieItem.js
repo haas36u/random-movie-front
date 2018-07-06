@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Avatar } from 'react-md';
 
-export default class MovieCard extends Component {
+export default class CommentMovieItem extends Component {
     
     render() {
 

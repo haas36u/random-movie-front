@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
 import CommentMovieItem from '../../components/Comment/CommentMovieItem';
+import NotationsMovieList from '../../components/Notation/NotationsMovieList';
 var Trianglify = require('trianglify');
 
 export default class Profile extends Component {
@@ -11,12 +12,15 @@ export default class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            commentsList : []
+            commentsList : [],
+            notationsList : [],
+            nbComments : 0,
+            nbNotations: 0
         };
     }
 
     componentDidMount() {
-        /*TODO userID*/
+        /*COMMENTS TODO userID*/
         axios.get(`${process.env.REACT_APP_API_URL}/users/3/comments`)
         .then((response) => {
             const commentsList = response.data.map(function(item){
@@ -33,6 +37,25 @@ export default class Profile extends Component {
             });
 
             this.setState({commentsList: commentsList});
+            this.setState({nbComments: response.data.length});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+
+        /*NOTATIONS*/
+        axios.get(`${process.env.REACT_APP_API_URL}/users/3/notations`)
+        .then((response) => {
+            const notationsList = response.data.map(function(item){
+                return (
+                   <div key={item.movie.id}>
+                        <NotationsMovieList notation={item}/>
+                   </div>
+                );
+            });
+
+            this.setState({notationsList: notationsList});
+            this.setState({nbNotations: response.data.length});
         })
         .catch(error => {
             console.log(error)
@@ -48,21 +71,21 @@ export default class Profile extends Component {
 
         let favoriteMovies = [
             { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" }
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 35127, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 35126, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 35286, title: "Jurassic World : Fallen Kingdom" }
         ]
 
         let wishedMovies = [
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" }
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 31286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 51286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3518286, title: "Jurassic World : Fallen Kingdom" }
         ]
 
         let watchedMovies = [
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" }
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3511286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3512286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3512836, title: "Jurassic World : Fallen Kingdom" }
         ]
 
         const favoriteMoviesList = favoriteMovies.map(function(item){
@@ -194,11 +217,11 @@ export default class Profile extends Component {
                                 <Grid className="user-profile__rate-stats">
                                     <Cell size={3}>
                                         <h4>Commentaires totales</h4>
-                                        <p>100</p>
+                                        <p>{this.state.nbComments}</p>
                                     </Cell>
                                     <Cell size={3}>
                                         <h4>Notes totales</h4>
-                                        <p>50</p>
+                                        <p>{this.state.nbNotations}</p>
                                     </Cell>
                                     <Cell size={6}>
                                         <h4>Répartition des notes</h4>
@@ -207,8 +230,8 @@ export default class Profile extends Component {
                             </Cell>
                         </Grid>
                     </Tab>
-                    <Tab label="Tableaux">
-                        <div id="tableaux" className="container">
+                    <Tab label="Collections">
+                        <div id="collections" className="container">
                             Fonctionnalité bientôt disponible
                         </div>
                     </Tab>
@@ -230,7 +253,14 @@ export default class Profile extends Component {
                             </Grid>
                         </div>
                     </Tab>
-                    <Tab label="Notes & critiques">
+                    <Tab label="Notes">
+                        <div id="notations" className="container">
+                            <ul>
+                                {this.state.notationsList}
+                            </ul>
+                        </div>
+                    </Tab>
+                    <Tab label="Critiques">
                         <div id="rate" className="container">
                             <ul>
                                 {this.state.commentsList}
