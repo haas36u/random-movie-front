@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Cell, DialogContainer, TextField, Chip } from 'react-md';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import { isLogin } from '../../actions/auth';
+import { isAuthenticated } from '../../actions/auth';
 import '../../style/tools/starability-checkmark.min.css';
 
 import ActorCard from '../../components/Actor/ActorCard';
@@ -17,12 +17,13 @@ export default class MovieShow extends Component {
             movie : {},
             casting: [],
             similars : [],
-            userAlreadyRate: true
+            userAlreadyRate: true,
+            commentModalVisible: false
         };
     }
 
-    componentDidMount() {
-        /*MOVIE*/
+    /*MOVIE*/
+    getMovie = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}`)
         .then((response) => {
             let movie = response.data;
@@ -30,9 +31,9 @@ export default class MovieShow extends Component {
 
             if(movie.runtime) movie.runtime = <p><span className="text-bold">Durée : </span> {movie.runtime}</p>;
 
-            movie.genres = movie.genres.map(function(item) {
+            movie.genres = movie.genres.map(function(item, key) {
                 return (
-                    <Chip label={item.name} key={item.id}/>
+                    <Chip label={item.name} key={key}/>
                 );
             });
 
@@ -41,14 +42,16 @@ export default class MovieShow extends Component {
         .catch(error => {
             console.log(error)
         });
+    }
 
-        /*CASTING*/
+    /*CASTING*/
+    getCasting = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/casting`)
         .then((response) => {
             let casting = response.data;
-            casting = casting.map(function(item) {
+            casting = casting.map(function(item, key) {
                 return (
-                    <Cell size={2} key={item.id}>
+                    <Cell size={2} key={key}>
                         <ActorCard character={item}/>
                     </Cell>
                 );
@@ -58,14 +61,16 @@ export default class MovieShow extends Component {
         .catch(error => {
             console.log(error)
         });
+    }
 
-        /*SIMILARS*/
+    /*SIMILARS*/
+    getSimilars = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/similars`)
         .then((response) => {
             let similars = response.data;
-            similars = similars.map(function(item){
+            similars = similars.map(function(item, key){
                 return(
-                    <MovieCard key={item.id} movie={item} />
+                    <MovieCard key={key} movie={item} />
                 );
             });
             this.setState({similars : similars});
@@ -73,10 +78,16 @@ export default class MovieShow extends Component {
         .catch(error => {
             console.log(error)
         });
+    }
+
+    componentDidMount() {
+        this.getMovie();
+        this.getCasting();
+        this.getSimilars();
 
         /*Simulate user already mark*/
         let mark = 1;
-        if(this.state.userAlreadyRate) document.getElementById('rate' + mark).checked = true;
+        if(isAuthenticated() && this.state.userAlreadyRate) document.getElementById('rate' + mark).checked = true;
     }
 
     handleChangeComment = (value) => {
@@ -110,7 +121,7 @@ export default class MovieShow extends Component {
         }
 
         const sendNotation = (mark) => {
-            axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/notations`, headers: {"Authorization" : localStorage.getItem('token')}, data: {mark: mark, movie: 'api/movies/' + this.props.match.params.idtoken}})
+            axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/notations`, headers: {"Authorization" : localStorage.getItem('token')}, data: {mark: mark, movie: 'api/movies/' + this.state.movie.id}})
             .then((response) => {
                 this.setState({userAlreadyRate : true});
             })
@@ -120,28 +131,27 @@ export default class MovieShow extends Component {
         }
 
         const userRatingActions = () => {
-            if(isLogin()) {
+            if(isAuthenticated()) {
                 return (
                     <Grid className="p-0">
                         <Cell size={6} className="ml-0">
                             <div className="text-bold">Votre note</div>
                             <div id="movieRating">
-                            <form>
-                                <fieldset className="starability-checkmark">
-                                    <input type="radio" id="rate1" name="rating" value="1" onClick={(e) => sendNotation(1)}/>
-                                    <label for="rate1" title="Terrible">1 star</label>
-                                    <input type="radio" id="rate2" name="rating" value="2" onClick={(e) => sendNotation(2)}/>
-                                    <label for="rate2" title="Not good">2 stars</label>
-                                    <input type="radio" id="rate3" name="rating" value="3" onClick={(e) => sendNotation(3)}/>
-                                    <label for="rate3" title="Average">3 stars</label>
-                                    <input type="radio" id="rate4" name="rating" value="4" onClick={(e) => sendNotation(4)}/>
-                                    <label for="rate4" title="Very good">4 stars</label>
-                                    <input type="radio" id="rate5" name="rating" value="5" onClick={(e) => sendNotation(5)}/>
-                                    <label for="rate5" title="Amazing">5 stars</label>
-                                </fieldset>
-                            </form>
+                                <form>
+                                    <fieldset className="starability-checkmark">
+                                        <input type="radio" id="rate1" name="rating" value="1" onClick={(e) => sendNotation(1)}/>
+                                        <label for="rate1" title="Terrible">1 star</label>
+                                        <input type="radio" id="rate2" name="rating" value="2" onClick={(e) => sendNotation(2)}/>
+                                        <label for="rate2" title="Not good">2 stars</label>
+                                        <input type="radio" id="rate3" name="rating" value="3" onClick={(e) => sendNotation(3)}/>
+                                        <label for="rate3" title="Average">3 stars</label>
+                                        <input type="radio" id="rate4" name="rating" value="4" onClick={(e) => sendNotation(4)}/>
+                                        <label for="rate4" title="Very good">4 stars</label>
+                                        <input type="radio" id="rate5" name="rating" value="5" onClick={(e) => sendNotation(5)}/>
+                                        <label for="rate5" title="Amazing">5 stars</label>
+                                    </fieldset>
+                                </form>
                             </div>
-                            <div id="movie-rating" data-movie_id="1" data-rate="1"></div>
                         </Cell>
                         <Cell size={6} className="text-right">
                              <span className="btn" onClick={showCommentModal}>
@@ -158,7 +168,7 @@ export default class MovieShow extends Component {
         }
 
         const commentsAccess = () => {
-            if(isLogin()){
+            if(isAuthenticated()){
                 return (
                     <span onClick={goToComments} className="right cursor text-gold">Voir tous les commentaires</span>
                 )
@@ -170,7 +180,7 @@ export default class MovieShow extends Component {
         }
 
         const commentsSecondAccess = () => {
-            if(isLogin()){
+            if(isAuthenticated()){
                 return (
                     <Cell size={12} className="ml-0">
                         <span onClick={goToComments} className="cursor text-gold">Lire la suite</span>

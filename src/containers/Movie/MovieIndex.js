@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Cell, SelectField, Slider } from 'react-md';
+import { Grid, Cell, SelectField } from 'react-md';
 import axios from 'axios';
 import Pagination from "react-js-pagination";
 
@@ -10,52 +10,106 @@ export default class MovieIndex extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            url : 'populars'
+            url : 'populars',
+            movieTitle : null,
+            genreId: null,
+            moviesList: [],
+            genres: []
         };
     }
 
     componentDidMount() {
-        this.changeMoviesList();
+        if(this.props.location.query && this.props.location.query.movieTitle){
+            this.setState({movieTitle: this.props.location.query.movieTitle});
+            this.getMoviesByTitle(this.props.location.query.movieTitle);
+        }
+        else this.getMovies(this.state.url, 1);
+
+        this.getMoviesGenre();
     }
 
-    changeMoviesList = (url = 'populars', page = 1) => {
-        this.setState(() => ({url: url, activePage: page}));
+    //TODO send two request instead of one !!!
+    componentWillUpdate(nextProps, nextState){
+       if(nextProps.location.query && nextProps.location.query.movieTitle && this.state.movieTitle !== nextProps.location.query.movieTitle){
+           this.setState(
+               (state) => ({movieTitle: nextProps.location.query.movieTitle}),
+               () => { this.getMoviesByTitle(nextProps.location.query.movieTitle) });
+       }
+    }
 
-        axios.get(`${process.env.REACT_APP_API_URL}/movies/${url}`, {params : {page: page}})
+    getMoviesByTitle = (movieTitle) => {
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/search`, {params : {title: movieTitle}})
         .then((response) => {
-            let movies = response.data;
-
-            const moviesList = movies.map(function(item){
-                return(
-                    <MovieCard key={item.id} movie={item} />
-                );
-            });
-
-            this.setState({moviesList : moviesList});
+            this.changeMoviesList(response.data);
         })
         .catch(error => {
             console.log(error)
         });
     }
 
+    getMoviesGenre = () => {
+        axios.get(`${process.env.REACT_APP_API_URL}/genres`)
+        .then((response) => {
+            const genres = [];
+            for(let i = 0; i < response.data.length; i++) {
+                genres.push({
+                    label: response.data[i].name,
+                    value: response.data[i].id,
+                });
+            }
+
+            this.setState({genres: genres});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
+    getMoviesByGenre = () => {
+        if(!this.state.genreId) return;
+
+        axios.get(`${process.env.REACT_APP_API_URL}/genres/${this.state.genreId}/movies`)
+        .then((response) => {
+            this.changeMoviesList(response.data);
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
+    getMovies = (url = 'populars', page = 1) => {
+        this.setState(() => ({url: url, activePage: page}));
+
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/${url}`, {params : {page: page}})
+        .then((response) => {
+            this.changeMoviesList(response.data);
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
+    changeMoviesList = (movies) => {
+        const moviesList = movies.map(function(item, key){
+            return(
+                <MovieCard key={key} movie={item} />
+            );
+        });
+
+        this.setState({moviesList : moviesList});
+    }
+
     handlePageChange = (pageNumber) => {
-        this.changeMoviesList(this.state.url, pageNumber);
+        this.getMovies(this.state.url, pageNumber);
+    }
+
+    handleGenreChange = (genreId) => {
+        this.setState({genreId: genreId});
     }
 
     render() {
 
-        const OBJECT_ITEMS = [{
-            label: 'Action',
-            value: 'A',
-          }, {
-            label: 'Aventure',
-            value: 'B',
-          }, {
-            label: 'Fantastique',
-            value: 'C',
-          }];
-
-        if(!this.state || !this.state.moviesList) return <div>Loading...</div>;
+        if(!this.state) return <div>Loading...</div>;
     
         return (
             <div id="movieIndex">
@@ -63,15 +117,14 @@ export default class MovieIndex extends Component {
                     <Cell size={3} className="movie_tv_menu">
                         <h2>Films</h2>
                         <ul>
-                            <li onClick={(e) => this.changeMoviesList('populars')}>Les plus populaires</li>
-                            <li onClick={(e) => this.changeMoviesList('recents')}>Derniers ajouts</li>
+                            <li onClick={(e) => this.getMovies('populars')}>Les plus populaires</li>
+                            <li onClick={(e) => this.getMovies('recents')}>Derniers ajouts</li>
                         </ul>
                         <div className="line"></div>
                         <form action="">
-                            <SelectField id="select-movie" placeholder="Genres" menuItems={OBJECT_ITEMS} position={SelectField.Positions.BELOW} />
-                            <Slider id="" label="Date de sortie" min={1900} max={2018} step={1} valuePrecision={1} discrete/>
+                            <SelectField id="select-movie" placeholder="Genres" menuItems={this.state.genres} position={SelectField.Positions.BELOW} onChange={this.handleGenreChange}/>
                             <div className="search">
-                                <input type="submit" value="Chercher" className="btn" />
+                                <div className="btn" onClick={this.getMoviesByGenre}>Chercher</div>
                             </div>
                         </form>
                     </Cell>
