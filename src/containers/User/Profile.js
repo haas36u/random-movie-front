@@ -13,11 +13,132 @@ export default class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            favoriteMoviesList : [],
+            wishedMoviesList : [],
+            watchedMoviesList : [],
             commentsList : [],
             notationsList : [],
             nbComments : 0,
-            nbNotations: 0
+            nbNotations: 0,
+            ratingBarChart: {},
+            favortieMoviesType : {},
+            favortieMoviesTypeLegend: []
         };
+    }
+
+    componentDidMount() {
+        this.getUserComments();
+        this.getUserNotations();
+        this.getUserStats();
+    }
+
+    getUserStats = () => {
+        let favoriteMovies = [
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 35127, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 35126, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 35286, title: "Jurassic World : Fallen Kingdom" }
+        ]
+
+        let wishedMovies = [
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 31286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 51286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3518286, title: "Jurassic World : Fallen Kingdom" }
+        ]
+
+        let watchedMovies = [
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3511286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3512286, title: "Jurassic World : Fallen Kingdom" },
+            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3512836, title: "Jurassic World : Fallen Kingdom" }
+        ]
+
+        const favoriteMoviesList = favoriteMovies.map(function(item, key){
+            return(
+                <Cell size={3} key={key} className="user-profile__movie-card">
+                    <ProfileMovieCard movie={item}/>
+                </Cell>
+            );
+        });
+        this.setState({favoriteMoviesList: favoriteMoviesList});
+
+        const wishedMoviesList = wishedMovies.map(function(item, key){
+            return(
+                <Cell size={3} key={key} className="user-profile__movie-card">
+                    <ProfileMovieCard movie={item} />
+                </Cell>
+            );
+        });
+        this.setState({wishedMoviesList: wishedMoviesList});
+
+        const watchedMoviesList = watchedMovies.map(function(item, key){
+            return(
+                <Cell size={3} key={key} className="user-profile__movie-card">
+                    <ProfileMovieCard movie={item} />
+                </Cell>
+            );
+        });
+        this.setState({watchedMoviesList: watchedMoviesList});
+
+        const statsRating = [1, 1, 4, 12, 4];
+        const ratingBarChart = {
+            labels: ['1', '2', '3', '4', '5'],
+            datasets: [
+              {
+                label: 'Nombre de films',
+                backgroundColor: 'rgba(251, 192, 45, 0.8)',
+                borderWidth: 1,
+                hoverBackgroundColor: 'rgba(251, 192, 45, 0.9)',
+                data: statsRating
+              }
+            ]
+        };
+        this.setState({ratingBarChart: ratingBarChart});
+
+        const stats = [
+            {name: 'Aventure', nb_movies: 300},
+            {name: 'Action', nb_movies: 50},
+            {name: 'Comédie', nb_movies: 100}
+        ]
+        const statsLabels = stats.map(function(stat){
+            return stat.name;
+        });
+
+        let nbWatchedMovies = 0;
+        let statsData = [];
+        for(let i = 0; i < stats.length; i++) {
+            statsData.push(stats[i].nb_movies);
+            nbWatchedMovies += stats[i].nb_movies;
+        }
+
+        const favortieMoviesType = {
+            labels: statsLabels,
+            datasets: [{
+                data: statsData,
+                backgroundColor: [
+                '#FF6384',
+                '#36A2EB',
+                '#FFCE56'
+                ],
+                borderWidth : 0
+            }],
+            options : {
+                legend: {
+                    display: false,
+                    fontColor: '#ffffff'
+                }
+            }
+        };
+        this.setState({favortieMoviesType: favortieMoviesType});
+
+        const favortieMoviesTypeLegend = stats.map(function(stat, key){
+            return (
+                <Cell size={6} key={key} className="favorite-type--chart-description">
+                    <div className="darkred"></div>
+                    {stat.name} ({((stat.nb_movies / nbWatchedMovies) * 100).toFixed(2)}%)
+                </Cell>
+            )
+        });
+        this.setState({favortieMoviesTypeLegend: favortieMoviesTypeLegend});
     }
 
     /*COMMENTS TODO userID*/
@@ -70,135 +191,27 @@ export default class Profile extends Component {
         });
     }
 
-    componentDidMount() {
-        this.getUserComments();
-        this.getUserNotations();
-    }
+    showHideMoviesList = (e, id) => {
+        let btnClass = e.target.classList;
+        let moviesList = document.getElementById(id);
+
+        if(moviesList.offsetHeight > 0){
+            moviesList.style.display = 'none';
+            btnClass.remove('active');
+        }else{
+            moviesList.style.display = 'flex';
+            btnClass.add('active');
+        }
+    };
 
     render() {
+        if(!this.state) return( <div>Loading...</div>);
         let bgTriangle = {
             backgroundImage: 'url(' + Trianglify({ x_colors: 'Blues'}).png() + ')'
         }
         
         let avatar = require('../../images/avatar_default.jpg');
-
-        let favoriteMovies = [
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 35127, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 35126, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 35286, title: "Jurassic World : Fallen Kingdom" }
-        ]
-
-        let wishedMovies = [
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 31286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 51286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3518286, title: "Jurassic World : Fallen Kingdom" }
-        ]
-
-        let watchedMovies = [
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3511286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3512286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3512836, title: "Jurassic World : Fallen Kingdom" }
-        ]
-
-        const favoriteMoviesList = favoriteMovies.map(function(item, key){
-            return(
-                <Cell size={3} key={key} className="user-profile__movie-card">
-                    <ProfileMovieCard movie={item}/>
-                </Cell>
-            );
-        });
-
-        const wishedMoviesList = wishedMovies.map(function(item, key){
-            return(
-                <Cell size={3} key={key} className="user-profile__movie-card">
-                    <ProfileMovieCard movie={item} />
-                </Cell>
-            );
-        });
-
-        const watchedMoviesList = watchedMovies.map(function(item, key){
-            return(
-                <Cell size={3} key={key} className="user-profile__movie-card">
-                    <ProfileMovieCard movie={item} />
-                </Cell>
-            );
-        });
-
-        const showHideMoviesList = (e, id) => {
-            let btnClass = e.target.classList;
-            let moviesList = document.getElementById(id);
-
-            if(moviesList.offsetHeight > 0){
-                moviesList.style.display = 'none';
-                btnClass.remove('active');
-            }else{
-                moviesList.style.display = 'flex';
-                btnClass.add('active');
-            }
-        };
-
         let tabIndex = this.props.location.query && this.props.location.query.tab ? this.props.location.query.tab : 0;
-
-        const statsRating = [1, 1, 4, 12, 4];
-        const ratingBarChart = {
-            labels: ['1', '2', '3', '4', '5'],
-            datasets: [
-              {
-                label: 'Nombre de films',
-                backgroundColor: 'rgba(251, 192, 45, 0.8)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(251, 192, 45, 0.9)',
-                data: statsRating
-              }
-            ]
-        };
-
-        const stats = [
-            {name: 'Aventure', nb_movies: 300},
-            {name: 'Action', nb_movies: 50},
-            {name: 'Comédie', nb_movies: 100}
-        ]
-        const statsLabels = stats.map(function(stat){
-            return stat.name;
-        });
-
-
-        let nbWatchedMovies = 0;
-        let statsData = [];
-        for(let i = 0; i < stats.length; i++) {
-            statsData.push(stats[i].nb_movies);
-            nbWatchedMovies += stats[i].nb_movies;
-        }
-        console.log(nbWatchedMovies)
-
-        const favortieMoviesType = {
-            labels: statsLabels,
-            datasets: [{
-                data: statsData,
-                backgroundColor: [
-                '#FF6384',
-                '#36A2EB',
-                '#FFCE56'
-                ],
-                borderWidth : 0
-            }],
-            options : {
-                legend: {
-                    display: false,
-                    fontColor: '#ffffff'
-                }
-            }
-        };
-
-        const favortieMoviesTypeLegend = stats.map(function(stat){
-            return (
-                <Cell size={6} className="favorite-type--chart-description">
-                    <div className="darkred"></div>
-                    {stat.name} ({((stat.nb_movies / nbWatchedMovies) * 100).toFixed(2)}%)
-                </Cell>
-            )
-        });
 
         return (
         <div id="user-profile">
@@ -245,12 +258,12 @@ export default class Profile extends Component {
                                         <Grid>
                                             <Cell size={6} className="mt-1">
                                                 <Grid>
-                                                    {favortieMoviesTypeLegend}
+                                                    {this.state.favortieMoviesTypeLegend}
                                                 </Grid>
                                             </Cell>
                                             <Cell size={6}>
                                                 <div className="pie-chart-container">
-                                                    <Pie data={favortieMoviesType} />
+                                                    <Pie data={this.state.favortieMoviesType} />
                                                 </div>
                                             </Cell>
                                         </Grid>
@@ -267,7 +280,7 @@ export default class Profile extends Component {
                                     </Cell>
                                     <Cell size={6}>
                                         <h4>Répartition des notes</h4>
-                                        <Bar data={ratingBarChart} />
+                                        <Bar data={this.state.ratingBarChart} />
                                     </Cell>
                                 </Grid>
                             </Cell>
@@ -281,18 +294,18 @@ export default class Profile extends Component {
                     <Tab label="Favoris, déjà vus, à voir">
                         <div id="favorite" className="container pt-1">
                             <div className="text-right mb-2">
-                                <div className="btn active" onClick={(e) => showHideMoviesList(e, 'favorite_movies_container')}>Favoris</div>
-                                <div className="btn active" onClick={(e) => showHideMoviesList(e, 'watched_movies_container')}>Déjà vus</div>
-                                <div className="btn active" onClick={(e) => showHideMoviesList(e, 'wished_movies_container')}>à voir</div>
+                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'favorite_movies_container')}>Favoris</div>
+                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'watched_movies_container')}>Déjà vus</div>
+                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'wished_movies_container')}>à voir</div>
                             </div>
                             <Grid id="favorite_movies_container" className="p-0">
-                                {favoriteMoviesList}
+                                {this.state.favoriteMoviesList}
                             </Grid>
                             <Grid id="watched_movies_container">
-                                {watchedMoviesList}
+                                {this.state.watchedMoviesList}
                             </Grid>
                             <Grid id="wished_movies_container">
-                                {wishedMoviesList}
+                                {this.state.wishedMoviesList}
                             </Grid>
                         </div>
                     </Tab>
