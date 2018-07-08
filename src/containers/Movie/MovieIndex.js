@@ -10,7 +10,8 @@ export default class MovieIndex extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            url : 'populars'
+            url : 'populars',
+            movieTitle : null
         };
     }
 
@@ -25,11 +26,20 @@ export default class MovieIndex extends Component {
     }
 
     componentDidMount() {
-        let movieTitle = this.props.location.query && this.props.location.query.movieTitle ? this.props.location.query.movieTitle : null;
-        if(!movieTitle) this.requestMoviesList(this.state.url, 1);
-        else{
-           this.searchMovie(movieTitle);
+        if(this.props.location.query && this.props.location.query.movieTitle){
+            this.setState({movieTitle: this.props.location.query.movieTitle});
+            this.searchMovie(this.props.location.query.movieTitle);
         }
+        else this.requestMoviesList(this.state.url, 1);
+    }
+
+    //TODO send two request instead of one !!!
+    componentWillUpdate(nextProps, nextState){
+       if(nextProps.location.query && nextProps.location.query.movieTitle && this.state.movieTitle !== nextProps.location.query.movieTitle){
+           this.setState(
+               (state) => ({movieTitle: nextProps.location.query.movieTitle}),
+               () => { this.searchMovie(nextProps.location.query.movieTitle) });
+       }
     }
 
     requestMoviesList = (url = 'populars', page = 1) => {
