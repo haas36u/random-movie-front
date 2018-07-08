@@ -112,7 +112,7 @@ export default class Profile extends Component {
             const statsRating = [];
             let indexUserRating = 0;
             for (let i = 0; i < 5; i++) {
-                if(response.data[indexUserRating].mark == i +1 ){
+                if(parseInt(response.data[indexUserRating].mark) === i +1 ){
                     statsRating.push(response.data[indexUserRating].mark);
                     indexUserRating++;
                 }
@@ -134,70 +134,57 @@ export default class Profile extends Component {
             this.setState({ratingBarChart: ratingBarChart});
         });
 
-        const stats = [
-            {name: 'Aventure', nb_movies: 300},
-            {name: 'Action', nb_movies: 50},
-            {name: 'Comédie', nb_movies: 100},
-            {name: 'Aventure', nb_movies: 300},
-            {name: 'Action', nb_movies: 50},
-            {name: 'Comédie', nb_movies: 100},
-            {name: 'Aventure', nb_movies: 300},
-            {name: 'Action', nb_movies: 50},
-            {name: 'Comédie', nb_movies: 100},
-            {name: 'Aventure', nb_movies: 300},
-            {name: 'Action', nb_movies: 50},
-            {name: 'Comédie', nb_movies: 100},
-            {name: 'Aventure', nb_movies: 300},
-            {name: 'Action', nb_movies: 50},
-            {name: 'Comédie', nb_movies: 100},
-            {name: 'Aventure', nb_movies: 300},
-            {name: 'Action', nb_movies: 50},
-            {name: 'Comédie', nb_movies: 100},
-            {name: 'Comédie', nb_movies: 100}
-        ]
-
-        let nbWatchedMovies = 0;
-        let statsData = [];
-        let statsLabels = [];
-        for (let i = 0; i < stats.length; i++) {
-            if (i > 5) {
-                statsLabels[5] = 'Autres';
-                statsData[5] += stats[i].nb_movies;
-            } else {
-                statsLabels.push(stats[i].name);
-                statsData.push(stats[i].nb_movies);
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/favorites`, headers: {"Authorization" : localStorage.getItem('token')}})
+        .then((response) => {
+            const stats = response.data;
+            if (stats.length === 0) {
+                this.setState({favortieMoviesTypeLegend: <p>Aucune données disponibles : Vous n'avez pas encore aimé, ajouté comme vu un film</p>})
+                return;
             }
-            nbWatchedMovies += stats[i].nb_movies;
-        }
 
-        const favortieMoviesTypeColor = [ '#CD6155', '#A93226', '#641E16', '#943126', '#CB4335', '#D98880']
-        const favortieMoviesType = {
-            labels: statsLabels,
-            datasets: [{
-                data: statsData,
-                backgroundColor: favortieMoviesTypeColor,
-                borderWidth : 0
-            }],
-            options : {
-                legend: {
-                    display: false,
-                    fontColor: '#ffffff'
+            let nbWatchedMovies = 0;
+            let statsData = [];
+            let statsLabels = [];
+            for (let i = 0; i < stats.length; i++) {
+                if (i > 5) {
+                    statsLabels[5] = 'Autres';
+                    statsData[5] += stats[i].nb_movies;
+                } else {
+                    statsLabels.push(stats[i].name);
+                    statsData.push(stats[i].nb_movies);
                 }
+                nbWatchedMovies += stats[i].nb_movies;
             }
-        };
-        this.setState({favortieMoviesType: favortieMoviesType});
 
-        if(stats.length > 6) stats.splice(6, stats.length - 6);
+            const favortieMoviesTypeColor = [ '#CD6155', '#A93226', '#641E16', '#943126', '#CB4335', '#D98880']
+            const favortieMoviesType = {
+                labels: statsLabels,
+                datasets: [{
+                    data: statsData,
+                    backgroundColor: favortieMoviesTypeColor,
+                    borderWidth : 0
+                }],
+                options : {
+                    legend: {
+                        display: false,
+                        fontColor: '#ffffff'
+                    }
+                }
+            };
+            this.setState({favortieMoviesType: favortieMoviesType});
 
-        const favortieMoviesTypeLegend = stats.map(function(stat, key){
-            return (
-                <Cell size={6} key={key} className="favorite-type--chart-description">
-                    <div style={{backgroundColor: favortieMoviesTypeColor[key]}}></div>
-                    {stat.name} ({((stat.nb_movies / nbWatchedMovies) * 100).toFixed(2)}%)
-                </Cell>
-            )
+            if(stats.length > 6) stats.splice(6, stats.length - 6);
+
+            const favortieMoviesTypeLegend = stats.map(function(stat, key){
+                return (
+                    <Cell size={6} key={key} className="favorite-type--chart-description">
+                        <div style={{backgroundColor: favortieMoviesTypeColor[key]}}></div>
+                        {stat.name} ({((stat.nb_movies / nbWatchedMovies) * 100).toFixed(2)}%)
+                    </Cell>
+                )
+            });
+            this.setState({favortieMoviesTypeLegend: favortieMoviesTypeLegend});
         });
-        this.setState({favortieMoviesTypeLegend: favortieMoviesTypeLegend});
     }
 
     showHideMoviesList = (e, className) => {
