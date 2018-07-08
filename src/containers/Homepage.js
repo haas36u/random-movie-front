@@ -5,8 +5,16 @@ import axios from 'axios';
 import background from '../images/dark_vador_homepage.jpg';
 
 export default class Homepage extends Component {
+
+  constructor(props){
+    super(props);
+
+    this.state = {
+      moviesList : []
+    }
+  }
   
-  componentDidMount() {
+  getRecentsMovies = () => {
     axios.get(`${process.env.REACT_APP_API_URL}/movies/recents`)
     .then((response) => {
         let movies = response.data;
@@ -16,9 +24,9 @@ export default class Homepage extends Component {
           finalMovies.push(movies[i]);
         }
 
-        const moviesList = finalMovies.map(function(item){
+        const moviesList = finalMovies.map(function(item, key){
             return(
-              <img src={item.cover} alt="" key={item.id}/>
+              <img src={item.cover} alt="" key={key}/>
             );
         });
 
@@ -29,9 +37,13 @@ export default class Homepage extends Component {
     });
   }
 
+  componentDidMount() {
+    this.getRecentsMovies();
+  }
+
   render() {
 
-    if(!this.state || !this.state.moviesList) return <div>Loading...</div>;
+    if(!this.state) return <div>Loading...</div>;
     
     return (
       <div id="homepage">
@@ -42,7 +54,7 @@ export default class Homepage extends Component {
               <p>Nous nous occupons de tout !</p>
               <Link to="/registration" className="btn mt-2">Rejoins la communauté</Link>
           </div>
-          <img src={background} alt=""/>
+          <img src={background} alt="Random Movie Homepage"/>
         </div>
 
         <div id="homepage_find-idea">

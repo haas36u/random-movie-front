@@ -5,7 +5,7 @@ import Pagination from "react-js-pagination";
 
 import MovieCard from '../../components/Movie/MovieCard';
 
-export default class MovieShow extends Component {
+export default class MovieIndex extends Component {
 
     constructor(props) {
         super(props);
@@ -45,9 +45,9 @@ export default class MovieShow extends Component {
     }
 
     changeMoviesList = (movies) => {
-        const moviesList = movies.map(function(item){
+        const moviesList = movies.map(function(item, key){
             return(
-                <MovieCard key={item.id} movie={item} />
+                <MovieCard key={key} movie={item} />
             );
         });
 

@@ -1,0 +1,61 @@
+/* The side navigation menu */
+#sidenav {
+    height: 100%;
+    width: 0; 
+    position: fixed; 
+    z-index: 1000; 
+    top: 0; 
+    right: 0;
+    background-color: #ffffff; 
+    color: $primary-color;
+    overflow-x: hidden;
+    transition: 0.5s;
+    font-size: 1.2rem;
+  
+    .sidenav_header {
+      padding: 1rem 2rem;
+      margin-bottom: 1.5rem;
+  
+      p {
+        padding: 0;
+        margin: 0.4rem 0;
+        color: #ffffff;
+        font-weight: bold;
+      }
+    }
+  
+    .line{
+      height: 1px;
+      background-color: $primary-color-light;
+    }
+  
+    p {
+      margin-top: 1rem;
+    }
+  
+    p, a {
+      padding: 0.6rem 2rem;
+      color: $primary-color-light;
+    }
+  
+    a {
+      font-size: 1.2rem;
+      color: $primary-color-light;
+      display: block;
+      transition: 0.3s;
+  
+      &:hover {
+        color: $secondary-color;
+      }
+    }
+  
+    i {
+      margin-right: 1rem;
+      vertical-align: middle;
+    }
+  }
+  
+  @media screen and (max-height: 450px) {
+    .sidenav {padding-top: 15px;}
+    .sidenav a {font-size: 18px;}
+  }
