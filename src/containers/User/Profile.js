@@ -107,20 +107,32 @@ export default class Profile extends Component {
         });
         this.setState({watchedMoviesList: watchedMoviesList});
 
-        const statsRating = [1, 1, 4, 12, 4];
-        const ratingBarChart = {
-            labels: ['1', '2', '3', '4', '5'],
-            datasets: [
-              {
-                label: 'Nombre de films',
-                backgroundColor: 'rgba(251, 192, 45, 0.8)',
-                borderWidth: 1,
-                hoverBackgroundColor: 'rgba(251, 192, 45, 0.9)',
-                data: statsRating
-              }
-            ]
-        };
-        this.setState({ratingBarChart: ratingBarChart});
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/marks`, headers: {"Authorization" : localStorage.getItem('token')}})
+        .then((response) => {
+            const statsRating = [];
+            let indexUserRating = 0;
+            for (let i = 0; i < 5; i++) {
+                if(response.data[indexUserRating].mark == i +1 ){
+                    statsRating.push(response.data[indexUserRating].mark);
+                    indexUserRating++;
+                }
+                else statsRating.push(0);
+            }
+
+            const ratingBarChart = {
+                labels: ['1', '2', '3', '4', '5'],
+                datasets: [
+                    {
+                        label: 'Nombre de films',
+                        backgroundColor: 'rgba(251, 192, 45, 0.8)',
+                        borderWidth: 1,
+                        hoverBackgroundColor: 'rgba(251, 192, 45, 0.9)',
+                        data: statsRating
+                    }
+                ]
+            };
+            this.setState({ratingBarChart: ratingBarChart});
+        });
 
         const stats = [
             {name: 'Aventure', nb_movies: 300},
