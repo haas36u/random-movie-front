@@ -18,59 +18,52 @@ export default class Profile extends Component {
         };
     }
 
-    /*COMMENTS TODO userID*/
-    getUserComments = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/users/3/comments`)
+    componentDidMount() {
+        this.getUser();
+    }
+
+    /*User*/
+    getUser = () => {
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
-            let commentsList = response.data.map(function(item, key){
+            let user = {
+                id: response.data.id,
+                username: response.data.username
+            }
+
+            let notationsList = response.data.notations.map(function(item, key){
+                return (
+                    <div key={key}>
+                        <NotationsMovieList notation={item} user={user}/>
+                    </div>
+                );
+            });
+
+            let commentsList = response.data.comments.map(function(item, key){
                 return (
                     <Grid key={key}>
                         <Cell size={2} className="user-profile__movie-card">
                             <ProfileMovieCard movie={item.movie}/>
                         </Cell>
                         <Cell size={10}>
-                            <CommentMovieItem comment={item}/>
+                            <CommentMovieItem comment={item} user={user}/>
                         </Cell>
                     </Grid>
                 );
             });
 
+            if(response.data.notations.length === 0) notationsList = <p>Vous n'avez noté aucun film</p>;
+            if(response.data.comments.length === 0) commentsList = <p>Vous n'avez pas encore commenté de film</p>;
 
-            if(response.data.length === 0) commentsList = <p>Vous n'avez pas encore commenté de film</p>;
-
-            this.setState({commentsList: commentsList});
-            this.setState({nbComments: response.data.length});
-        })
-        .catch(error => {
-            console.log(error)
-        });
-    }
-
-    /*NOTATIONS*/
-    getUserNotations = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/users/3/notations`)
-        .then((response) => {
-            let notationsList = response.data.map(function(item, key){
-                return (
-                <div key={key}>
-                        <NotationsMovieList notation={item}/>
-                </div>
-                );
-            });
-
-            if(response.data.length === 0) notationsList = <p>Vous n'avez noté aucun film</p>;
-
+            this.setState({user: user});
             this.setState({notationsList: notationsList});
-            this.setState({nbNotations: response.data.length});
+            this.setState({nbNotations: response.data.notations.length});
+            this.setState({commentsList: commentsList});
+            this.setState({nbComments: response.data.comments.length});
         })
         .catch(error => {
             console.log(error)
         });
-    }
-
-    componentDidMount() {
-        this.getUserComments();
-        this.getUserNotations();
     }
 
     render() {
