@@ -4,7 +4,6 @@ import './style/main.scss';
 import AppRouter from './routers/AppRouter';
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
-require('dotenv').config();
 const store = configureStore()
 
 const jsx = (
