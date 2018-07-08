@@ -125,6 +125,22 @@ export default class Profile extends Component {
         const stats = [
             {name: 'Aventure', nb_movies: 300},
             {name: 'Action', nb_movies: 50},
+            {name: 'Comédie', nb_movies: 100},
+            {name: 'Aventure', nb_movies: 300},
+            {name: 'Action', nb_movies: 50},
+            {name: 'Comédie', nb_movies: 100},
+            {name: 'Aventure', nb_movies: 300},
+            {name: 'Action', nb_movies: 50},
+            {name: 'Comédie', nb_movies: 100},
+            {name: 'Aventure', nb_movies: 300},
+            {name: 'Action', nb_movies: 50},
+            {name: 'Comédie', nb_movies: 100},
+            {name: 'Aventure', nb_movies: 300},
+            {name: 'Action', nb_movies: 50},
+            {name: 'Comédie', nb_movies: 100},
+            {name: 'Aventure', nb_movies: 300},
+            {name: 'Action', nb_movies: 50},
+            {name: 'Comédie', nb_movies: 100},
             {name: 'Comédie', nb_movies: 100}
         ]
         const statsLabels = stats.map(function(stat){
@@ -138,22 +154,22 @@ export default class Profile extends Component {
             nbWatchedMovies += stats[i].nb_movies;
         }
 
+        const favortieMoviesTypeColor = [ '#C0392B', '#E74C3C', '#AF7AC5', '#8E44AD', '#2980B9', '#3498DB', '#1ABC9C', '#16A085', '#27AE60', '#2ECC71', '#F1C40F', '#F39C12', '#E67E22', '#D35400',    '#B7950B', '#117A65', '#633974', '#1F618D', '#76448A' ]
         const favortieMoviesType = {
             labels: statsLabels,
             datasets: [{
                 data: statsData,
-                backgroundColor: [
-                '#FF6384',
-                '#36A2EB',
-                '#FFCE56'
-                ],
+                backgroundColor: favortieMoviesTypeColor,
                 borderWidth : 0
             }],
             options : {
                 legend: {
                     display: false,
                     fontColor: '#ffffff'
-                }
+                },
+                 tooltips: {
+                    enabled: false
+                 }
             }
         };
         this.setState({favortieMoviesType: favortieMoviesType});
@@ -161,7 +177,7 @@ export default class Profile extends Component {
         const favortieMoviesTypeLegend = stats.map(function(stat, key){
             return (
                 <Cell size={6} key={key} className="favorite-type--chart-description">
-                    <div className="darkred"></div>
+                    <div style={{backgroundColor: favortieMoviesTypeColor[key]}}></div>
                     {stat.name} ({((stat.nb_movies / nbWatchedMovies) * 100).toFixed(2)}%)
                 </Cell>
             )
@@ -192,6 +208,8 @@ export default class Profile extends Component {
         
         let avatar = require('../../images/avatar_default.jpg');
         let tabIndex = this.props.location.query && this.props.location.query.tab ? this.props.location.query.tab : 0;
+
+        const legend = {display: false};
 
         return (
         <div id="user-profile">
@@ -243,7 +261,7 @@ export default class Profile extends Component {
                                             </Cell>
                                             <Cell size={6}>
                                                 <div className="pie-chart-container">
-                                                    <Pie data={this.state.favortieMoviesType} />
+                                                    <Pie data={this.state.favortieMoviesType} legend={legend}/>
                                                 </div>
                                             </Cell>
                                         </Grid>
