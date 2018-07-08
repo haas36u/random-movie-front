@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { isAuthenticated } from '../../actions/auth';
 import '../../style/tools/starability-checkmark.min.css';
+import moment from 'moment';
 
 import ActorCard from '../../components/Actor/ActorCard';
 import MovieCard from '../../components/Movie/MovieCard';
@@ -199,7 +200,7 @@ export default class MovieShow extends Component {
                                 <Grid>
                                     <Cell size={7} id="movie-container_infos">
                                         <h1>{this.state.movie.title}</h1>
-                                        <p><span className="text-bold">Date de sortie : </span>{new Intl.DateTimeFormat('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit'}).format(this.state.movie.releasedAt)}</p>
+                                        <p><span className="text-bold">Date de sortie : </span>{moment(this.state.movie.releasedAt).format("L")}</p>
                                         {this.state.movie.runtime}
                                         <p><span className="text-bold">Genres : </span> {this.state.movie.genres}</p>
                                         <p className="public_rate">Spectateurs</p>

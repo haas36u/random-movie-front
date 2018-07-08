@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
 import {Bar, Pie} from 'react-chartjs-2';
+import moment from 'moment';
 
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
 import CommentMovieItem from '../../components/Comment/CommentMovieItem';
@@ -13,6 +14,7 @@ export default class Profile extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            user : {},
             favoriteMoviesList : [],
             wishedMoviesList : [],
             watchedMoviesList : [],
@@ -27,52 +29,78 @@ export default class Profile extends Component {
     }
 
     componentDidMount() {
-        this.getUserComments();
-        this.getUserNotations();
-        this.getUserStats();
+        this.getUser();
     }
 
-    getUserStats = () => {
-        let favoriteMovies = [
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 351286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 35127, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 35126, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 35286, title: "Jurassic World : Fallen Kingdom" }
-        ]
+     /*User*/
+     getUser = () => {
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me`, headers: {"Authorization" : localStorage.getItem('token')}})
+        .then((response) => {
+            const fullUser = response.data;
+            let user = {
+                id: fullUser.id,
+                username: fullUser.username
+            }
 
-        let wishedMovies = [
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 31286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 51286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3518286, title: "Jurassic World : Fallen Kingdom" }
-        ]
+            let notationsList = fullUser.notations.map(function(item, key){
+                return (
+                    <div key={key}>
+                        <NotationsMovieList notation={item} user={user}/>
+                    </div>
+                );
+            });
 
-        let watchedMovies = [
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3511286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3512286, title: "Jurassic World : Fallen Kingdom" },
-            { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3512836, title: "Jurassic World : Fallen Kingdom" }
-        ]
+            let commentsList = fullUser.comments.map(function(item, key){
+                return (
+                    <Grid key={key}>
+                        <Cell size={2} className="user-profile__movie-card">
+                            <ProfileMovieCard movie={item.movie}/>
+                        </Cell>
+                        <Cell size={10}>
+                            <CommentMovieItem comment={item} user={user}/>
+                        </Cell>
+                    </Grid>
+                );
+            });
 
-        const favoriteMoviesList = favoriteMovies.map(function(item, key){
+            if(fullUser.notations.length === 0) notationsList = <p>Vous n'avez noté aucun film</p>;
+            if(fullUser.comments.length === 0) commentsList = <p>Vous n'avez pas encore commenté de film</p>;
+
+            this.setState({user: user});
+            this.setState({notationsList: notationsList});
+            this.setState({nbNotations: fullUser.notations.length});
+            this.setState({commentsList: commentsList});
+            this.setState({nbComments: fullUser.comments.length});
+
+            this.getUserStats(fullUser);
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
+    getUserStats = (user) => {
+        const favoriteMoviesList = user.moviesLiked.map(function(item, key){
             return(
-                <Cell size={3} key={key} className="user-profile__movie-card">
+                <Cell size={3} key={key} className="user-profile__movie-card favorite_movies_container">
                     <ProfileMovieCard movie={item}/>
                 </Cell>
             );
         });
         this.setState({favoriteMoviesList: favoriteMoviesList});
 
-        const wishedMoviesList = wishedMovies.map(function(item, key){
+        const wishedMoviesList = user.moviesWished.map(function(item, key){
             return(
-                <Cell size={3} key={key} className="user-profile__movie-card">
+                <Cell size={3} key={key} className="user-profile__movie-card wished_movies_container">
                     <ProfileMovieCard movie={item} />
                 </Cell>
             );
         });
         this.setState({wishedMoviesList: wishedMoviesList});
 
-        const watchedMoviesList = watchedMovies.map(function(item, key){
+        const watchedMoviesList = user.moviesWatched.map(function(item, key){
             return(
-                <Cell size={3} key={key} className="user-profile__movie-card">
+                <Cell size={3} key={key} className="user-profile__movie-card watched_movies_container">
                     <ProfileMovieCard movie={item} />
                 </Cell>
             );
@@ -141,66 +169,18 @@ export default class Profile extends Component {
         this.setState({favortieMoviesTypeLegend: favortieMoviesTypeLegend});
     }
 
-    /*COMMENTS TODO userID*/
-    getUserComments = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/users/3/comments`)
-        .then((response) => {
-            let commentsList = response.data.map(function(item, key){
-                return (
-                    <Grid key={key}>
-                        <Cell size={2} className="user-profile__movie-card">
-                            <ProfileMovieCard movie={item.movie}/>
-                        </Cell>
-                        <Cell size={10}>
-                            <CommentMovieItem comment={item}/>
-                        </Cell>
-                    </Grid>
-                );
-            });
-
-
-            if(response.data.length === 0) commentsList = <p>Vous n'avez pas encore commenté de film</p>;
-
-            this.setState({commentsList: commentsList});
-            this.setState({nbComments: response.data.length});
-        })
-        .catch(error => {
-            console.log(error)
-        });
-    }
-
-    /*NOTATIONS*/
-    getUserNotations = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/users/3/notations`)
-        .then((response) => {
-            let notationsList = response.data.map(function(item, key){
-                return (
-                <div key={key}>
-                        <NotationsMovieList notation={item}/>
-                </div>
-                );
-            });
-
-            if(response.data.length === 0) notationsList = <p>Vous n'avez noté aucun film</p>;
-
-            this.setState({notationsList: notationsList});
-            this.setState({nbNotations: response.data.length});
-        })
-        .catch(error => {
-            console.log(error)
-        });
-    }
-
-    showHideMoviesList = (e, id) => {
+    showHideMoviesList = (e, className) => {
         let btnClass = e.target.classList;
-        let moviesList = document.getElementById(id);
+        let moviesList = document.getElementsByClassName(className);
 
-        if(moviesList.offsetHeight > 0){
-            moviesList.style.display = 'none';
-            btnClass.remove('active');
-        }else{
-            moviesList.style.display = 'flex';
-            btnClass.add('active');
+        for (let i = 0; i < moviesList.length; i++) {
+            if (moviesList[i].offsetHeight > 0) {
+                moviesList[i].style.display = 'none';
+                btnClass.remove('active');
+            } else {
+                moviesList[i].style.display = 'flex';
+                btnClass.add('active');
+            }
         }
     };
 
@@ -220,8 +200,8 @@ export default class Profile extends Component {
                     <a href="" className="btn right">Modifier</a>
                     <Avatar src={avatar} role="presentation" />
                     <div className="user-profile__header__info">
-                        <h3>User name</h3>
-                        <p>Membre depuis 01/01/2018</p>
+                        <h3>{this.state.user.username}</h3>
+                        <p>Membre depuis le {moment(this.state.user.createdAt).format("L")}</p>
                     </div>
                 </div>
                 <div className="user-profile__header__tracking">
@@ -298,13 +278,9 @@ export default class Profile extends Component {
                                 <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'watched_movies_container')}>Déjà vus</div>
                                 <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'wished_movies_container')}>à voir</div>
                             </div>
-                            <Grid id="favorite_movies_container" className="p-0">
+                            <Grid className="p-0">
                                 {this.state.favoriteMoviesList}
-                            </Grid>
-                            <Grid id="watched_movies_container">
                                 {this.state.watchedMoviesList}
-                            </Grid>
-                            <Grid id="wished_movies_container">
                                 {this.state.wishedMoviesList}
                             </Grid>
                         </div>
