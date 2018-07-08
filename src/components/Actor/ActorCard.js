@@ -6,7 +6,7 @@ export default class ActorCard extends Component {
     render() {
 
         const actorLink = () => {
-            window.location.href = '/actors/' + this.props.character.id;
+            window.location.href = '/actors/' + this.props.character.actor.id;
         }
     
         return (

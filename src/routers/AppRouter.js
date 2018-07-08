@@ -6,6 +6,7 @@ import { isAuthenticated } from '../actions/auth';
 import Homepage from '../containers/Homepage';
 import MovieIndex from '../containers/Movie/MovieIndex';
 import MovieShow from '../containers/Movie/MovieShow';
+import ActorShow from '../containers/Actor/ActorShow';
 import CommentsIndex from '../containers/Comments/CommentsIndex';
 import Registration from '../containers/User/Registration';
 import RegistrationFavoriteMovies from '../containers/User/RegistrationFavoriteMovies';
@@ -54,8 +55,9 @@ const AppRouter = () => (
             <Switch>
                 <Route path="/" component={Homepage} exact={true} />
                 <Route path="/movies" component={MovieIndex} exact={true}/>
-                <PrivateRoute path="/movies/:id/comments" component={CommentsIndex}/>
                 <Route path="/movies/:id" component={MovieShow}/>
+                <PrivateRoute path="/movies/:id/comments" component={CommentsIndex}/>
+                <Route path="/actors/:id" component={ActorShow}/>
                 <Route path="/registration" component={Registration} exact={true} />
                 <PrivateRoute path="/registration/select-movies" component={RegistrationFavoriteMovies} exact={true} />
                 <PrivateRoute path="/registration/select-movies-types" component={RegistrationFavoriteMoviesTypes} exact={true} />
