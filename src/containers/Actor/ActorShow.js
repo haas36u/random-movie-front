@@ -35,7 +35,18 @@ export default class ActorShow extends Component {
                 also_know_as: actor.also_know_as,
                 castings: [
                     {
-                        id: 1,
+                        "id": 1,
+                        "role": "Trevor Anderson",
+                        movie: {
+                            "id": 11,
+                            "title": "La Guerre des étoiles",
+                            "cover": "https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg",
+                            "releasedAt": "1977-05-25T00:00:00+01:00"
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "role": "Sean Anderson",
                         movie: {
                             "id": 11,
                             "title": "La Guerre des étoiles",
@@ -57,7 +68,16 @@ export default class ActorShow extends Component {
                 });
             }
 
+            let castings = actor.castings.map(function(item, key) {
+                return (
+                    <Cell size={3} key={key} className="user-profile__movie-card">
+                    <ProfileMovieCard movie={item.movie}/>
+                </Cell>
+                );
+            });
+
             this.setState({actor: actor});
+            this.setState({castings: castings});
         })
         .catch(error => {
             console.log(error)
@@ -92,6 +112,7 @@ export default class ActorShow extends Component {
                 <div className="container pb-4 pt-4" id="movies-suggestion-container">
                     <h5 className="pb-1">Ses films</h5>
                     <div className="movies-suggestion--movies">
+                        {this.state.castings}
                     </div>
                 </div>
             </div>
