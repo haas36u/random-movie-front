@@ -10,36 +10,62 @@ export default class MovieIndex extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            url : 'populars'
+            url : 'populars',
+            movieTitle : null
         };
     }
 
-    componentDidMount() {
-        this.changeMoviesList();
-    }
-
-    changeMoviesList = (url = 'populars', page = 1) => {
-        this.setState(() => ({url: url, activePage: page}));
-
-        axios.get(`${process.env.REACT_APP_API_URL}/movies/${url}`, {params : {page: page}})
+    searchMovie = (movieTitle) => {
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/search`, {params : {title: movieTitle}})
         .then((response) => {
-            let movies = response.data;
-
-            const moviesList = movies.map(function(item, key){
-                return(
-                    <MovieCard key={key} movie={item} />
-                );
-            });
-
-            this.setState({moviesList : moviesList});
+            this.changeMoviesList(response.data);
         })
         .catch(error => {
             console.log(error)
         });
     }
 
+    componentDidMount() {
+        if(this.props.location.query && this.props.location.query.movieTitle){
+            this.setState({movieTitle: this.props.location.query.movieTitle});
+            this.searchMovie(this.props.location.query.movieTitle);
+        }
+        else this.requestMoviesList(this.state.url, 1);
+    }
+
+    //TODO send two request instead of one !!!
+    componentWillUpdate(nextProps, nextState){
+       if(nextProps.location.query && nextProps.location.query.movieTitle && this.state.movieTitle !== nextProps.location.query.movieTitle){
+           this.setState(
+               (state) => ({movieTitle: nextProps.location.query.movieTitle}),
+               () => { this.searchMovie(nextProps.location.query.movieTitle) });
+       }
+    }
+
+    requestMoviesList = (url = 'populars', page = 1) => {
+        this.setState(() => ({url: url, activePage: page}));
+
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/${url}`, {params : {page: page}})
+        .then((response) => {
+            this.changeMoviesList(response.data);
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
+    changeMoviesList = (movies) => {
+        const moviesList = movies.map(function(item, key){
+            return(
+                <MovieCard key={key} movie={item} />
+            );
+        });
+
+        this.setState({moviesList : moviesList});
+    }
+
     handlePageChange = (pageNumber) => {
-        this.changeMoviesList(this.state.url, pageNumber);
+        this.requestMoviesList(this.state.url, pageNumber);
     }
 
     render() {
@@ -63,8 +89,8 @@ export default class MovieIndex extends Component {
                     <Cell size={3} className="movie_tv_menu">
                         <h2>Films</h2>
                         <ul>
-                            <li onClick={(e) => this.changeMoviesList('populars')}>Les plus populaires</li>
-                            <li onClick={(e) => this.changeMoviesList('recents')}>Derniers ajouts</li>
+                            <li onClick={(e) => this.requestMoviesList('populars')}>Les plus populaires</li>
+                            <li onClick={(e) => this.requestMoviesList('recents')}>Derniers ajouts</li>
                         </ul>
                         <div className="line"></div>
                         <form action="">
