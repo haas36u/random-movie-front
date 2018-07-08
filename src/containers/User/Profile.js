@@ -143,18 +143,22 @@ export default class Profile extends Component {
             {name: 'Comédie', nb_movies: 100},
             {name: 'Comédie', nb_movies: 100}
         ]
-        const statsLabels = stats.map(function(stat){
-            return stat.name;
-        });
 
         let nbWatchedMovies = 0;
         let statsData = [];
-        for(let i = 0; i < stats.length; i++) {
-            statsData.push(stats[i].nb_movies);
+        let statsLabels = [];
+        for (let i = 0; i < stats.length; i++) {
+            if (i > 5) {
+                statsLabels[5] = 'Autres';
+                statsData[5] += stats[i].nb_movies;
+            } else {
+                statsLabels.push(stats[i].name);
+                statsData.push(stats[i].nb_movies);
+            }
             nbWatchedMovies += stats[i].nb_movies;
         }
 
-        const favortieMoviesTypeColor = [ '#C0392B', '#E74C3C', '#AF7AC5', '#8E44AD', '#2980B9', '#3498DB', '#1ABC9C', '#16A085', '#27AE60', '#2ECC71', '#F1C40F', '#F39C12', '#E67E22', '#D35400',    '#B7950B', '#117A65', '#633974', '#1F618D', '#76448A' ]
+        const favortieMoviesTypeColor = [ '#CD6155', '#A93226', '#641E16', '#943126', '#CB4335', '#D98880']
         const favortieMoviesType = {
             labels: statsLabels,
             datasets: [{
@@ -166,13 +170,12 @@ export default class Profile extends Component {
                 legend: {
                     display: false,
                     fontColor: '#ffffff'
-                },
-                 tooltips: {
-                    enabled: false
-                 }
+                }
             }
         };
         this.setState({favortieMoviesType: favortieMoviesType});
+
+        if(stats.length > 6) stats.splice(6, stats.length - 6);
 
         const favortieMoviesTypeLegend = stats.map(function(stat, key){
             return (
