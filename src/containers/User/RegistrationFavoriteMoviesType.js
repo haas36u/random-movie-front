@@ -27,14 +27,14 @@ export default class RegistrationFavoriteMoviesTypes extends Component{
         }
     }
 
-    componentDidMount() {
+    getGenres = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/genres`)
         .then((response) => {
             let self = this;
 
-            const types = response.data.map(function(item){
+            const types = response.data.map(function(item, key){
                 return(
-                    <Cell size={3} className="p-1 movies_genres_gallery" key={item.id}>
+                    <Cell size={3} className="p-1 movies_genres_gallery" key={key}>
                         <i className="material-icons">check_circle</i>
                         <p className="likeGenre" onClick={(e) => self.selectType(item.id, e)}>{ item.name }</p>
                     </Cell>
@@ -48,6 +48,9 @@ export default class RegistrationFavoriteMoviesTypes extends Component{
         });
     }
 
+    componentDidMount() {
+       this.getGenres();
+    }
 
     hideModal = () => {
         this.setState({noTypesSelectedModalVisible : false});

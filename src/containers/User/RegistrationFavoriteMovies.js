@@ -26,14 +26,14 @@ export default class RegistrationFavoriteMovies extends Component{
         }
     }
 
-    componentDidMount() {
+    getPopularsMovies = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/movies/populars`)
         .then((response) => {
             let self = this;
 
-            const moviesList = response.data.map(function(item){
+            const moviesList = response.data.map(function(item, key){
                 return(
-                    <Cell className="p-1 movies_gallery" key={item.id}>
+                    <Cell className="p-1 movies_gallery" key={key}>
                         <i className="material-icons">check_circle</i>
                         <img src={item.cover} alt={item.cover} onClick={(e) => self.selectMovie(item.id, e)}/>
                     </Cell>
@@ -45,6 +45,10 @@ export default class RegistrationFavoriteMovies extends Component{
         .catch(error => {
             console.log(error)
         });
+    }
+
+    componentDidMount() {
+        this.getPopularsMovies();
     }
 
 

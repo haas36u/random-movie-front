@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
@@ -19,13 +18,13 @@ export default class Profile extends Component {
         };
     }
 
-    componentDidMount() {
-        /*COMMENTS TODO userID*/
+    /*COMMENTS TODO userID*/
+    getUserComments = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/users/3/comments`)
         .then((response) => {
-            const commentsList = response.data.map(function(item){
+            let commentsList = response.data.map(function(item, key){
                 return (
-                    <Grid key={item.id}>
+                    <Grid key={key}>
                         <Cell size={2} className="user-profile__movie-card">
                             <ProfileMovieCard movie={item.movie}/>
                         </Cell>
@@ -36,23 +35,30 @@ export default class Profile extends Component {
                 );
             });
 
+
+            if(response.data.length === 0) commentsList = <p>Vous n'avez pas encore commenté de film</p>;
+
             this.setState({commentsList: commentsList});
             this.setState({nbComments: response.data.length});
         })
         .catch(error => {
             console.log(error)
         });
+    }
 
-        /*NOTATIONS*/
+    /*NOTATIONS*/
+    getUserNotations = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/users/3/notations`)
         .then((response) => {
-            const notationsList = response.data.map(function(item){
+            let notationsList = response.data.map(function(item, key){
                 return (
-                   <div key={item.movie.id}>
+                <div key={key}>
                         <NotationsMovieList notation={item}/>
-                   </div>
+                </div>
                 );
             });
+
+            if(response.data.length === 0) notationsList = <p>Vous n'avez noté aucun film</p>;
 
             this.setState({notationsList: notationsList});
             this.setState({nbNotations: response.data.length});
@@ -60,6 +66,11 @@ export default class Profile extends Component {
         .catch(error => {
             console.log(error)
         });
+    }
+
+    componentDidMount() {
+        this.getUserComments();
+        this.getUserNotations();
     }
 
     render() {
@@ -88,25 +99,25 @@ export default class Profile extends Component {
             { cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id : 3512836, title: "Jurassic World : Fallen Kingdom" }
         ]
 
-        const favoriteMoviesList = favoriteMovies.map(function(item){
+        const favoriteMoviesList = favoriteMovies.map(function(item, key){
             return(
-                <Cell size={3} key={item.id} className="user-profile__movie-card">
+                <Cell size={3} key={key} className="user-profile__movie-card">
                     <ProfileMovieCard movie={item}/>
                 </Cell>
             );
         });
 
-        const wishedMoviesList = wishedMovies.map(function(item){
+        const wishedMoviesList = wishedMovies.map(function(item, key){
             return(
-                <Cell size={3} key={item.id} className="user-profile__movie-card">
+                <Cell size={3} key={key} className="user-profile__movie-card">
                     <ProfileMovieCard movie={item} />
                 </Cell>
             );
         });
 
-        const watchedMoviesList = watchedMovies.map(function(item){
+        const watchedMoviesList = watchedMovies.map(function(item, key){
             return(
-                <Cell size={3} key={item.id} className="user-profile__movie-card">
+                <Cell size={3} key={key} className="user-profile__movie-card">
                     <ProfileMovieCard movie={item} />
                 </Cell>
             );

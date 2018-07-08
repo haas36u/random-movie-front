@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'react-md';
-import { isLogin } from '../../actions/auth';
+import { isAuthenticated } from '../../actions/auth';
 import axios from 'axios';
 
 export default class MovieActions extends Component {
@@ -25,7 +25,7 @@ export default class MovieActions extends Component {
     render() {
 
         const movieActions = () => {
-            if(isLogin()) {
+            if(isAuthenticated()) {
                 return (
                     <span className="movie-actions-container">
                         <Button icon onClick={(e) => this.movieSaveAction(e, 'like')} tooltipLabel="Ajouter à vos favoris"><i className="fas fa-heart" id={'js-like-' + this.props.movieId}></i></Button>

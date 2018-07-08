@@ -1,6 +1,7 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import axios from 'axios';
+import { isAuthenticated } from '../actions/auth';
 
 import Homepage from '../containers/Homepage';
 import MovieIndex from '../containers/Movie/MovieIndex';
@@ -34,6 +35,17 @@ const randomAction = () => {
 
 let logo = require('../images/logo.png');
 
+const PrivateRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={(props) => (
+      isAuthenticated() === true
+        ? <Component {...props} />
+        : <Redirect to={{
+            pathname: '/login',
+            state: { from: props.location }
+          }} />
+    )} />
+)  
+
 const AppRouter = () => (
   <BrowserRouter>
     <div className="wrapper">
@@ -42,13 +54,13 @@ const AppRouter = () => (
             <Switch>
                 <Route path="/" component={Homepage} exact={true} />
                 <Route path="/movies" component={MovieIndex} exact={true}/>
-                <Route path="/movies/:id/comments" component={CommentsIndex}/>
+                <PrivateRoute path="/movies/:id/comments" component={CommentsIndex}/>
                 <Route path="/movies/:id" component={MovieShow}/>
                 <Route path="/registration" component={Registration} exact={true} />
-                <Route path="/registration/select-movies" component={RegistrationFavoriteMovies} exact={true} />
-                <Route path="/registration/select-movies-types" component={RegistrationFavoriteMoviesTypes} exact={true} />
+                <PrivateRoute path="/registration/select-movies" component={RegistrationFavoriteMovies} exact={true} />
+                <PrivateRoute path="/registration/select-movies-types" component={RegistrationFavoriteMoviesTypes} exact={true} />
                 <Route path="/login" component={Connection} exact={true} />
-                <Route path="/profile" component={Profile} exact={true} />
+                <PrivateRoute path="/profile" component={Profile} exact={true} />
                 <Route path="/cgu" component={Cgu} exact={true} />
                 <Route path="/legal-mentions" component={LegalMentions} exact={true} />
                 <Route component={NotFoundPage} />
