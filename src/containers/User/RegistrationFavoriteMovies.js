@@ -85,13 +85,15 @@ export default class RegistrationFavoriteMovies extends Component{
 
     render() {
 
+        let myPseudo = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).username : null;
+
         if(!this.state) return <div>Loading...</div>;
     
         return (
             <div className="container mt-4 registration__selectMovies">
                 <Grid>
                     <Cell size={4} className="description">
-                        <h3>Bonjour USERNAME</h3>
+                        <h3>Bonjour {myPseudo}</h3>
                         <p>Sélectionnez les titres que vous avez aimés</p>
                         <p>Cela nous aidera à trouver des films que vous allez adorer !</p>
                         <div className="btn" onClick={this.save}>Continuer</div>
