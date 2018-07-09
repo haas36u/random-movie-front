@@ -87,7 +87,6 @@ export default class Profile extends Component {
                 </Cell>
             );
         });
-        this.setState({favoriteMoviesList: favoriteMoviesList});
 
         const wishedMoviesList = user.moviesWished.map(function(item, key){
             return(
@@ -96,7 +95,6 @@ export default class Profile extends Component {
                 </Cell>
             );
         });
-        this.setState({wishedMoviesList: wishedMoviesList});
 
         const watchedMoviesList = user.moviesWatched.map(function(item, key){
             return(
@@ -105,35 +103,16 @@ export default class Profile extends Component {
                 </Cell>
             );
         });
+
+        this.setState({favoriteMoviesList: favoriteMoviesList});
+        this.setState({wishedMoviesList: wishedMoviesList});
         this.setState({watchedMoviesList: watchedMoviesList});
 
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/marks`, headers: {"Authorization" : localStorage.getItem('token')}})
-        .then((response) => {
-            const statsRating = [];
-            let indexUserRating = 0;
-            for (let i = 0; i < 5; i++) {
-                if(parseInt(response.data[indexUserRating].mark) === i +1 ){
-                    statsRating.push(response.data[indexUserRating].mark);
-                    indexUserRating++;
-                }
-                else statsRating.push(0);
-            }
+        this.getFavoriteMoviesPieChart();
+        this.getNotationsBarChart();
+    }
 
-            const ratingBarChart = {
-                labels: ['1', '2', '3', '4', '5'],
-                datasets: [
-                    {
-                        label: 'Nombre de films',
-                        backgroundColor: 'rgba(251, 192, 45, 0.8)',
-                        borderWidth: 1,
-                        hoverBackgroundColor: 'rgba(251, 192, 45, 0.9)',
-                        data: statsRating
-                    }
-                ]
-            };
-            this.setState({ratingBarChart: ratingBarChart});
-        });
-
+    getFavoriteMoviesPieChart = () => {
         axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/favorites`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const stats = response.data;
@@ -148,12 +127,12 @@ export default class Profile extends Component {
             for (let i = 0; i < stats.length; i++) {
                 if (i > 5) {
                     statsLabels[5] = 'Autres';
-                    statsData[5] += stats[i].nb_movies;
+                    statsData[5] += parseInt(stats[i].nb_movies);
                 } else {
                     statsLabels.push(stats[i].name);
                     statsData.push(stats[i].nb_movies);
                 }
-                nbWatchedMovies += stats[i].nb_movies;
+                nbWatchedMovies += parseInt(stats[i].nb_movies);
             }
 
             const favortieMoviesTypeColor = [ '#CD6155', '#A93226', '#641E16', '#943126', '#CB4335', '#D98880']
@@ -184,6 +163,35 @@ export default class Profile extends Component {
                 )
             });
             this.setState({favortieMoviesTypeLegend: favortieMoviesTypeLegend});
+        });
+    }
+
+    getNotationsBarChart = () => {
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/marks`, headers: {"Authorization" : localStorage.getItem('token')}})
+        .then((response) => {
+            const statsRating = [];
+            let indexUserRating = 0;
+            for (let i = 0; i < 5; i++) {
+                if(parseInt(response.data[indexUserRating].mark) === i +1 ){
+                    statsRating.push(response.data[indexUserRating].mark);
+                    indexUserRating++;
+                }
+                else statsRating.push(0);
+            }
+
+            const ratingBarChart = {
+                labels: ['1', '2', '3', '4', '5'],
+                datasets: [
+                    {
+                        label: 'Nombre de films',
+                        backgroundColor: 'rgba(251, 192, 45, 0.8)',
+                        borderWidth: 1,
+                        hoverBackgroundColor: 'rgba(251, 192, 45, 0.9)',
+                        data: statsRating
+                    }
+                ]
+            };
+            this.setState({ratingBarChart: ratingBarChart});
         });
     }
 
