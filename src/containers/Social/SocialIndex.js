@@ -1,7 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Avatar } from 'react-md';
 
 export default class SocialIndex extends Component {
+
+    constructor(props){
+        super(props);
+        this.state = {};
+    }
 
     componentDidMount() {
 
@@ -9,12 +15,89 @@ export default class SocialIndex extends Component {
     
     render() {
 
+        let avatar = require('../../images/avatar_default.jpg');
+
         if(!this.state) return <div>Loading...</div>
     
         return (
-            <div className="container" id="social">
-                <div className="btn cursor">Retour au film</div>
-                <h2 className="center"></h2>
+            <div id="social">
+                <div className="container">
+                    <div className="social__item userFollow">
+                        <h2>Vous suivez...</h2>
+                        <div>
+                            <i class="fas fa-plus-circle"></i>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                            <div>
+                                <Avatar src={avatar} role="presentation"/>
+                                <p>François</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
