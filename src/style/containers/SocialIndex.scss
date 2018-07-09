@@ -3,12 +3,24 @@
     background-color: #f3f3f3;
 
     .container {
-        margin-top: 3rem;
+        margin: 3rem auto;
     }
 
     .social__item {
+        .social__item__header {
+            display: flex;
+            align-items: center;
+
+            .md-avatar {
+                margin-right: 1rem;
+            }
+        } 
+    }
+
+    .social__item--background {
         background-color: #ffffff;
         padding: 1rem;
+        margin: 1.5rem 0;
     }
 
     .userFollow {
