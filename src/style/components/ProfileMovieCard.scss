@@ -1,0 +1,32 @@
+.user-profile__movie-card {
+  line-height: 0;
+
+  i {
+    color: #ffffff;
+  }
+  .favorite_action_container {
+    background-color: $primary-color;
+    color: #ffffff;
+    
+    i:hover {
+      cursor: pointer;
+    }
+  }
+
+  a, img {
+    width: 100%;
+    height: auto;
+  }
+
+  img {
+    cursor: pointer;
+  }
+
+  .favorite_description_container {
+    text-align: center;
+
+    p:last-child {
+      font-weight: bold;
+    }
+  }
+}

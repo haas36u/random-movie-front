@@ -1,0 +1,92 @@
+html {
+    font-size: 1em;
+}
+  
+body {
+    margin: 0;
+    padding: 0;
+    font-size: 1rem;
+    font-family: Roboto;
+
+    .wrapper {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+
+        .main {
+        display: flex;
+        flex: 1 0 auto;
+        }
+    }
+}
+
+.container {
+    margin: 1rem 0;
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;   
+}
+
+a {
+    color: $link-color;
+    text-decoration: none;
+}
+
+ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.md-tooltip {
+    font-size: 0.8rem;
+}
+
+p {
+    font-size: 1rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    line-height: normal;
+}
+
+h4 {
+    font-size: 1.6rem;
+}
+h5 {
+    font-size: 1.4rem;
+}  
+
+
+.logo {
+    position: fixed;
+    bottom: 1rem;
+    left: 1rem;
+    width: 60px;
+    height: auto;
+    animation: bounce 4s ease infinite alternate;
+    cursor: pointer;
+  }
+  
+  @keyframes bounce{
+    0%   {transform: translateY(0);}
+    50%  {transform: translateY(0);}
+    60%  {transform: translateY(-15px);}
+    70% {transform: translateY(0);}
+    100% {transform: translateY(0);}
+  }
+  /**OVERRIDE **/
+  .md-avatar {
+    width: 60px;
+    height: 60px;
+    border: none;
+  }
+  
+  .background-trianglify {
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    background-position: top;
+    background-repeat: no-repeat;
+    z-index: -1;
+  }

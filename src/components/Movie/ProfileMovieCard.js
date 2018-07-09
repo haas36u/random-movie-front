@@ -6,14 +6,14 @@ export default class ProfileMovieCard extends Component {
     render() {
 
         const goToMovieShow = () => {
-            window.location = '/movies/' + this.props.movie.url;
+            window.location.href = '/movies/' + this.props.movie.id;
         }
     
         return (
             <div className="user-profile__movie-card">
-                <img src={this.props.movie.movie_url} alt="" onClick={goToMovieShow}/>
+                <img src={this.props.movie.cover} alt="" onClick={goToMovieShow}/>
                 <div className="favorite_action_container text-right">
-                    <MovieActions/>
+                    <MovieActions movieId={this.props.movie.id}/>
                 </div>
             </div>
         );

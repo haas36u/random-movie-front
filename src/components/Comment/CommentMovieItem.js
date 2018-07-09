@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Avatar } from 'react-md';
+import moment from 'moment';
 
-export default class MovieCard extends Component {
+export default class CommentMovieItem extends Component {
     
     render() {
 
@@ -9,10 +10,10 @@ export default class MovieCard extends Component {
         let createdAt = new Date(this.props.comment.createdAt);
 
         return (
-            <li className="collection-item">
+            <li className="commentsItem">
                 <Avatar src={avatar} role="presentation" />
-                <div className="collection-item-content">
-                    <p className="m-0 text-bold">Par {this.props.comment.user.username}, le {new Intl.DateTimeFormat('fr-FR', { year: 'numeric', month: '2-digit', day: '2-digit'}).format(createdAt)}</p>
+                <div className="commentsItem--content">
+                    <p className="m-0 text-bold">Par {this.props.user.username}, le {moment(createdAt).format("L")}</p>
                 
                     <p>{this.props.comment.content}</p>
                     <span className="right cursor">
