@@ -3,8 +3,6 @@ import axios from 'axios';
 import { Avatar } from 'react-md';
 
 import SocialItem from '../../components/Social/SocialItem';
-import SocialItemComment from '../../components/Social/SocialItemComment';
-import SocialItemLiked from '../../components/Social/SocialItemLiked';
 import SocialItemTableau from '../../components/Social/SocialItemTableau';
 
 export default class SocialIndex extends Component {
@@ -34,7 +32,8 @@ export default class SocialIndex extends Component {
             },
             notation : {
                 mark: 4
-            }
+            },
+            createdAt : '2018-06-14T00:00:00+02:00'
           }
         let actualityLiked = {
             movie : {
@@ -47,7 +46,8 @@ export default class SocialIndex extends Component {
                 "id": 0,
                 "username": "Thomas"
             },
-            favoriteMovie : {}
+            favoriteMovie : {},
+            createdAt : '2018-07-05T00:00:00+02:00'
         }
 
         let actualityComment = {
@@ -63,7 +63,8 @@ export default class SocialIndex extends Component {
             },
             comment : {
                 content : 'C\'était un super film !'
-            }
+            },
+            createdAt : '2018-06-14T00:00:00+02:00'
         }
 
         if(!this.state) return <div>Loading...</div>

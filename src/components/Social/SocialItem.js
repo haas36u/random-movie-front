@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Avatar } from 'react-md';
+import moment from 'moment';
+import 'moment/locale/fr';
 import MovieCard from '../../components/Movie/MovieCard';
 
 export default class SocialItem extends Component {
@@ -15,6 +17,7 @@ export default class SocialItem extends Component {
     }
 
     render() {
+        moment.locale('fr');
 
         let avatar = require('../../images/avatar_default.jpg');
         let userAction;
@@ -36,7 +39,7 @@ export default class SocialItem extends Component {
                     <Avatar src={avatar} role="presentation" />
                     <div>
                         <p className="m-0"><span className="text-bold">{this.props.actuality.user.username}</span> a {userAction} le film : <span className="text-bold">{this.props.actuality.movie.title}</span></p>
-                        <p>3 h</p>
+                        <p>{moment(this.props.actuality.createdAt).startOf('day').fromNow()}</p>
                     </div>
                 </div>
                 <div className="social__item__content">
