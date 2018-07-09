@@ -2,7 +2,8 @@
     width: 100%;
     background-color: #f3f3f3;
 
-    .container {
+    .socialContainer {
+        max-width: 850px;
         margin: 3rem auto;
     }
 
@@ -15,6 +16,11 @@
                 margin-right: 1rem;
             }
         } 
+
+        .social__item__content {
+            width: 80%;
+            margin: 0 auto;
+        }
     }
 
     .social__item--background {
