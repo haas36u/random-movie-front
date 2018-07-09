@@ -127,12 +127,12 @@ export default class Profile extends Component {
             for (let i = 0; i < stats.length; i++) {
                 if (i > 5) {
                     statsLabels[5] = 'Autres';
-                    statsData[5] += parseInt(stats[i].nb_movies);
+                    statsData[5] += parseInt(stats[i].nb_movies, 10);
                 } else {
                     statsLabels.push(stats[i].name);
                     statsData.push(stats[i].nb_movies);
                 }
-                nbWatchedMovies += parseInt(stats[i].nb_movies);
+                nbWatchedMovies += parseInt(stats[i].nb_movies, 10);
             }
 
             const favortieMoviesTypeColor = [ '#CD6155', '#A93226', '#641E16', '#943126', '#CB4335', '#D98880']
@@ -172,7 +172,7 @@ export default class Profile extends Component {
             const statsRating = [];
             let indexUserRating = 0;
             for (let i = 0; i < 5; i++) {
-                if(parseInt(response.data[indexUserRating].mark) === i +1 ){
+                if(parseInt(response.data[indexUserRating].mark, 10) === i +1 ){
                     statsRating.push(response.data[indexUserRating].mark);
                     indexUserRating++;
                 }

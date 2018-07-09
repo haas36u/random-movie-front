@@ -19,7 +19,7 @@ export default class Footer extends Component{
         return (
             <header>
                 <ul>
-                    <li>Fil d'actualités</li>
+                    <li><Link to="/social">Fil d'actualités</Link></li>
                     <li><Link to="/movies">Les films</Link></li>
                 </ul>
                 <div className="searchContainer">
