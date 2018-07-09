@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Avatar } from 'react-md';
 
-import MovieCard from '../../components/Movie/MovieCard';
+import SocialItem from '../../components/Social/SocialItem';
+import SocialItemComment from '../../components/Social/SocialItemComment';
+import SocialItemLiked from '../../components/Social/SocialItemLiked';
+import SocialItemTableau from '../../components/Social/SocialItemTableau';
 
 export default class SocialIndex extends Component {
 
@@ -18,12 +21,50 @@ export default class SocialIndex extends Component {
     render() {
 
         let avatar = require('../../images/avatar_default.jpg');
-        let movie= {
-            "id": 272,
-            "title": "Batman Begins",
-            "cover": "https://image.tmdb.org/t/p/w500/zfVFOo2XCHbeA0mXbst42TAGhfC.jpg",
-            "releasedAt": "2005-06-10T00:00:00+02:00"
+        let actuality = {
+            movie : {
+                "id": 272,
+                "title": "Batman Begins",
+                "cover": "https://image.tmdb.org/t/p/w500/zfVFOo2XCHbeA0mXbst42TAGhfC.jpg",
+                "releasedAt": "2005-06-10T00:00:00+02:00"
+            },
+            user : {
+                "id": 0,
+                "username": "Thomas"
+            },
+            notation : {
+                mark: 4
+            }
           }
+        let actualityLiked = {
+            movie : {
+                "id": 272,
+                "title": "Batman Begins",
+                "cover": "https://image.tmdb.org/t/p/w500/zfVFOo2XCHbeA0mXbst42TAGhfC.jpg",
+                "releasedAt": "2005-06-10T00:00:00+02:00"
+            },
+            user : {
+                "id": 0,
+                "username": "Thomas"
+            },
+            favoriteMovie : {}
+        }
+
+        let actualityComment = {
+            movie : {
+                "id": 272,
+                "title": "Batman Begins",
+                "cover": "https://image.tmdb.org/t/p/w500/zfVFOo2XCHbeA0mXbst42TAGhfC.jpg",
+                "releasedAt": "2005-06-10T00:00:00+02:00"
+            },
+            user : {
+                "id": 0,
+                "username": "Thomas"
+            },
+            comment : {
+                content : 'C\'était un super film !'
+            }
+        }
 
         if(!this.state) return <div>Loading...</div>
     
@@ -106,45 +147,9 @@ export default class SocialIndex extends Component {
                         </div>
                     </div>
 
-                    <div className="social__item social__item--background">
-                        <div className="social__item__header">
-                            <Avatar src={avatar} role="presentation" />
-                            <div>
-                                <p className="m-0"><span className="text-bold">Alexandre</span> a aimé le film : <span className="text-bold">Jurassic Park</span></p>
-                                <p>3 h</p>
-                            </div>
-                        </div>
-                        <div className="social__item__content">
-                            <MovieCard movie={movie} />
-                        </div>
-                    </div>
-
-                    <div className="social__item social__item--background">
-                        <div className="social__item__header">
-                            <Avatar src={avatar} role="presentation" />
-                            <div>
-                                <p className="m-0"><span className="text-bold">Yoann</span> a commenté le film : <span className="text-bold">Jurassic Park</span></p>
-                                <p>3 h</p>
-                            </div>
-                        </div>
-                        <div className="social__item__content">
-                            <p>C'est film est une vraie perle !!!</p>
-                            <MovieCard movie={movie} />
-                        </div>
-                    </div>
-
-                    <div className="social__item social__item--background">
-                        <div className="social__item__header">
-                            <Avatar src={avatar} role="presentation" />
-                            <div>
-                                <p className="m-0"><span className="text-bold">Yoann</span> a noté le film : <span className="text-bold">Jurassic Park</span></p>
-                                <p>3 h</p>
-                            </div>
-                        </div>
-                        <div className="social__item__content">
-                            <MovieCard movie={movie} />
-                        </div>
-                    </div>
+                    <SocialItem actuality={actuality} />
+                    <SocialItem actuality={actualityLiked} />
+                    <SocialItem actuality={actualityComment} />
                 </div>
             </div>
         );
