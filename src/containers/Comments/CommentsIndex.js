@@ -34,7 +34,7 @@ export default class CommentsIndex extends Component {
 
         const commentsList = this.state.comments.map(function(item, key){
             return(
-                <CommentMovieItem key={key} comment={item}/>
+                <CommentMovieItem key={key} comment={item} user={item.user}/>
             );
         });
     
