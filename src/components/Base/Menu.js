@@ -9,6 +9,7 @@ export default class Menu extends Component {
   render() {
     let userMenu;
     let avatar = require('../../images/avatar_default.jpg');
+    let myPseudo = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).username : null;
 
     const openNav = () => {
         document.getElementById("sidenav").style.width = "340px";
@@ -39,8 +40,7 @@ export default class Menu extends Component {
             <div id="sidenav">
                 <div className="sidenav_header background-trianglify" style={bgTriangle}>
                     <Avatar src={avatar} role="presentation" />
-                    <p>Myriam</p>
-                    <p className="text-capitalize">haasmyriam@ytahoo.com</p>
+                    <p>{myPseudo}</p>
                 </div>
                 <a href="#" onClick={closeNav}> <i className="far fa-newspaper"></i> Fils d'actualités</a>
                 <Link to="/movies" onClick={closeNav}><i className="material-icons md-xl">local_movies</i>Films</Link>

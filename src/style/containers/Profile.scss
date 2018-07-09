@@ -112,6 +112,9 @@
         text-transform: uppercase;
         color: #ffffff;
       }
+      p {
+        color: #ffffff;
+      }
       .favorite-type--chart-description {
         margin-bottom: 0.5rem;
   
@@ -121,18 +124,6 @@
           display: inline-block;
           vertical-align: top;
           margin-right: 0.5rem;
-  
-          &.darkred {
-            background-color: darkred;
-          }
-  
-          &.darkgoldenrod {
-            background-color: darkgoldenrod;
-          }
-  
-          &.darkmagenta {
-            background-color: darkmagenta;
-          }
         }
       }
     }

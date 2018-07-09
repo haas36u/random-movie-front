@@ -38,7 +38,7 @@ export default class MovieIndex extends Component {
     }
 
     getMoviesByTitle = (movieTitle) => {
-        axios.get(`${process.env.REACT_APP_API_URL}/movies/search`, {params : {title: movieTitle}})
+        axios.get(`${process.env.REACT_APP_API_URL}/movies`, {params : {title: movieTitle}})
         .then((response) => {
             this.changeMoviesList(response.data);
         })
