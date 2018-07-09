@@ -33,30 +33,10 @@ export default class ActorShow extends Component {
                 deathday: actor.deathday,
                 biography: actor.biography,
                 also_know_as: actor.also_know_as,
-                castings: [
-                    {
-                        "id": 1,
-                        "role": "Trevor Anderson",
-                        movie: {
-                            "id": 11,
-                            "title": "La Guerre des étoiles",
-                            "cover": "https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg",
-                            "releasedAt": "1977-05-25T00:00:00+01:00"
-                        }
-                    },
-                    {
-                        "id": 2,
-                        "role": "Sean Anderson",
-                        movie: {
-                            "id": 11,
-                            "title": "La Guerre des étoiles",
-                            "cover": "https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg",
-                            "releasedAt": "1977-05-25T00:00:00+01:00"
-                        }
-                    }
-                ]
+                castings: []
             };
 
+            if(actor.birthday) actor.birthday = <p><span className="text-bold">Date de naissance : </span>{moment(actor.birthday).format("L")}</p>;
             if(actor.deathday) actor.deathday = <p><span className="text-bold">Date de décès : </span>{moment(actor.deathday).format("L")}</p>;
             if(actor.place_of_birth) actor.place_of_birth = <p><span className="text-bold">Lieu de naissance : </span>{actor.place_of_birth}</p>;
 
@@ -96,7 +76,7 @@ export default class ActorShow extends Component {
                             <Cell size={4}><img src={this.state.actor.profile} alt={this.state.actor.name}/></Cell>
                             <Cell size={8} id="actor-container_infos">
                                 <h1>{this.state.actor.name}</h1>
-                                <p><span className="text-bold">Date de naissance : </span>{moment(this.state.actor.birthday).format("L")}</p>
+                                {this.state.actor.birthday}
                                 {this.state.actor.deathday}
                                 {this.state.actor.place_of_birth}
                                 <ul>
