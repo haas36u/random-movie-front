@@ -23,8 +23,6 @@ export default class MovieActions extends Component {
     }
 
     render() {
-        console.log(this.props.actions)
-
         const movieActions = () => {
             if(isAuthenticated()) {
 
