@@ -1,0 +1,56 @@
+.socialUserSearch {
+    h2 {
+        margin-left: 1rem;
+    }
+    .searchContainer .search {
+        color: $primary-color;
+        width: 100%;
+        max-width: none;
+        margin: 0;
+
+        ::-webkit-input-placeholder {
+            color: $primary-color;
+        }
+        
+        :-moz-placeholder { /* Firefox 18- */
+            color: $primary-color;  
+        }
+        
+        ::-moz-placeholder {  /* Firefox 19+ */
+            color: $primary-color;  
+        }
+        
+        :-ms-input-placeholder {  
+            color: $primary-color;  
+        }
+    
+        .md-divider--text-field {
+          width: 100%;
+          background-color: $primary-color-light;
+        }
+    }
+
+    .userFollow__user {
+        position: relative;
+        display: flex;
+        align-items: center;
+        margin: 1rem 0;
+        border-bottom: 1px solid $primary-color-light;
+
+        .md-avatar, i {
+            margin-right: 1rem;
+        }
+
+        p {
+            text-align: center;
+            font-size: 0.8rem;
+            margin: 0;
+        }
+
+        .btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0;
+        }
+    }
+}

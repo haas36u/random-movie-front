@@ -21,50 +21,6 @@ header {
         color: #ffffff;
       }
     }
-
-    .searchContainer {
-      display: flex;
-      align-items: center;
-
-      .search {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        height: 100%;
-        width: 300px;
-        max-width: 300px;
-        margin-left: 2rem;
-    
-        ::-webkit-input-placeholder {
-            color: #ffffff;
-        }
-        
-        :-moz-placeholder { /* Firefox 18- */
-            color: #ffffff;  
-        }
-        
-        ::-moz-placeholder {  /* Firefox 19+ */
-            color: #ffffff;  
-        }
-        
-        :-ms-input-placeholder {  
-            color: #ffffff;  
-        }
-    
-        .md-divider--text-field {
-          width: 100%;
-          background-color: #ffffff;
-        }
-    
-        .md-divider--text-field::after {
-          background-color: $secondary-color;
-        }
-      }
-
-      .fas {
-        margin-left: 0.5rem;
-      }
-    }
   
     button {
       background-color: transparent;
@@ -92,4 +48,49 @@ header {
         }
       }
     }
+}
+
+
+.searchContainer {
+  display: flex;
+  align-items: center;
+
+  .search {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    width: 300px;
+    max-width: 300px;
+    margin-left: 2rem;
+
+    ::-webkit-input-placeholder {
+        color: #ffffff;
+    }
+    
+    :-moz-placeholder { /* Firefox 18- */
+        color: #ffffff;  
+    }
+    
+    ::-moz-placeholder {  /* Firefox 19+ */
+        color: #ffffff;  
+    }
+    
+    :-ms-input-placeholder {  
+        color: #ffffff;  
+    }
+
+    .md-divider--text-field {
+      width: 100%;
+      background-color: #ffffff;
+    }
+
+    .md-divider--text-field::after {
+      background-color: $secondary-color;
+    }
+  }
+
+  .fas {
+    margin-left: 0.5rem;
+  }
 }
