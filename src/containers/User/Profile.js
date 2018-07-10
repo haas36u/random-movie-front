@@ -24,7 +24,9 @@ export default class Profile extends Component {
             nbNotations: 0,
             ratingBarChart: {},
             favortieMoviesType : {},
-            favortieMoviesTypeLegend: []
+            favortieMoviesTypeLegend: [],
+            noDataWatchedMovies : null,
+            noDataNotation : null
         };
     }
 
@@ -117,8 +119,7 @@ export default class Profile extends Component {
         .then((response) => {
             const stats = response.data;
             if (stats.length === 0) {
-                this.setState({favortieMoviesTypeLegend: <p>Aucune données disponibles : Vous n'avez pas encore aimé, ajouté comme vu un film</p>})
-                return;
+                return this.setState({noDataWatchedMovies: <p className="mt-3">Aucune données disponibles : Vous n'avez pas encore aimé, ni ajouté comme vu un film</p>})
             }
 
             let nbWatchedMovies = 0;
@@ -171,6 +172,8 @@ export default class Profile extends Component {
         .then((response) => {
             const statsRating = [];
             let indexUserRating = 0;
+            if(response.data.length === 0) return this.setState({noDataNotation: <div className="mt-1 mb-2">Vous n'avez pas encore noté de film</div>});
+
             for (let i = 0; i < 5; i++) {
                 if(parseInt(response.data[indexUserRating].mark, 10) === i +1 ){
                     statsRating.push(response.data[indexUserRating].mark);
@@ -263,6 +266,7 @@ export default class Profile extends Component {
                                 <Grid className="user-profile__favorite-type">
                                     <Cell size={12}>
                                         <h6>Genres favoris</h6>
+                                        {this.state.noDataWatchedMovies}
                                         <Grid>
                                             <Cell size={6} className="mt-1">
                                                 <Grid>
@@ -288,6 +292,7 @@ export default class Profile extends Component {
                                     </Cell>
                                     <Cell size={6}>
                                         <h4>Répartition des notes</h4>
+                                        {this.state.noDataNotation}
                                         <Bar data={this.state.ratingBarChart} />
                                     </Cell>
                                 </Grid>
