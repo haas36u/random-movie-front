@@ -2,6 +2,14 @@
     button i {
       transition: 0.3s color;
   
+      &.active.fa-eye{
+        color: #b8860b;
+      }
+
+      &.active.material-icons {
+        color: #8B008C;
+      }
+
       &.active {
         color: red;
       }

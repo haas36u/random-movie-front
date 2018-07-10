@@ -47,7 +47,7 @@ export default class MovieShow extends Component {
       this.setState({typeOfRequest: 'searchByTitle', movieTitle: movieTitle});
       axios.get(`${process.env.REACT_APP_API_URL}/movies`, {
         params : {title: movieTitle, page: page},
-        headers: {'Content-Type': 'application/vnd.api+json'}
+        headers: {'Content-Type': 'application/vnd.api+json', "Authorization" : localStorage.getItem('token')}
       })
       .then((response) => {
           this.changeMoviesList(response.data);
@@ -82,7 +82,7 @@ export default class MovieShow extends Component {
 
       axios.get(`${process.env.REACT_APP_API_URL}/genres/${this.state.genreId}/movies`, {
         params: {page: page},
-        headers: {'Content-Type': 'application/vnd.api+json'}
+        headers: {'Content-Type': 'application/vnd.api+json', "Authorization" : localStorage.getItem('token')}
       })
       .then((response) => {
           this.changeMoviesList(response.data);
@@ -97,7 +97,7 @@ export default class MovieShow extends Component {
 
       axios.get(`${process.env.REACT_APP_API_URL}/${url}`, {
         params: {page: page},
-        headers: {'Content-Type': 'application/vnd.api+json'}
+        headers: {'Content-Type': 'application/vnd.api+json', "Authorization" : localStorage.getItem('token')} 
       })
       .then((response) => {
           this.changeMoviesList(response.data);

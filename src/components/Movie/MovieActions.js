@@ -23,14 +23,22 @@ export default class MovieActions extends Component {
     }
 
     render() {
+        console.log(this.props.actions)
 
         const movieActions = () => {
             if(isAuthenticated()) {
+
+                let favoriteClass = this.props.userActions && this.props.userActions.liked ? 'fas fa-heart active' : 'fas fa-heart';
+
+                let watchedClass  = this.props.userActions && this.props.userActions.watched ? 'fas fa-eye active' : 'fas fa-eye';
+                
+                let wishedClass   = this.props.userActions && this.props.userActions.wished ? 'material-icons active' : 'material-icons';
+
                 return (
                     <span className="movie-actions-container">
-                        <Button icon onClick={(e) => this.movieSaveAction(e, 'like')} tooltipLabel="Ajouter à vos favoris"><i className="fas fa-heart" id={'js-like-' + this.props.movieId}></i></Button>
-                        <Button icon onClick={(e) => this.movieSaveAction(e, 'watch')}  tooltipLabel="Ajouter aux films déjà vus"><i className="fas fa-eye" id={'js-watch-' + this.props.movieId}></i></Button>
-                        <Button icon onClick={(e) => this.movieSaveAction(e, 'wish')} tooltipLabel="Ajouter à votre liste de film à voir"><i className="material-icons" id={'js-wish-' + this.props.movieId}>playlist_add</i></Button>
+                        <Button icon onClick={(e) => this.movieSaveAction(e, 'like')} tooltipLabel="Ajouter à vos favoris"><i className={favoriteClass} id={'js-like-' + this.props.movieId}></i></Button>
+                        <Button icon onClick={(e) => this.movieSaveAction(e, 'watch')}  tooltipLabel="Ajouter aux films déjà vus"><i className={watchedClass} id={'js-watch-' + this.props.movieId}></i></Button>
+                        <Button icon onClick={(e) => this.movieSaveAction(e, 'wish')} tooltipLabel="Ajouter à votre liste de film à voir"><i className={wishedClass} id={'js-wish-' + this.props.movieId}>playlist_add</i></Button>
                     </span>
                 )
             }
