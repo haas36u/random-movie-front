@@ -4,7 +4,22 @@ import CommentMovieItem from '../../components/Comment/CommentMovieItem';
 
 export default class CommentsIndex extends Component {
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            movie: {},
+            commentsList: [],
+            numberComments: 0
+        }
+    }
+
     componentDidMount() {
+        this.getMovie();
+        this.getComments();
+    }
+
+    getMovie = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}`)
         .then((response) => {
             this.setState({movie : response.data});
@@ -12,10 +27,21 @@ export default class CommentsIndex extends Component {
         .catch(error => {
             console.log(error)
         });
+    }
 
+    getComments = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/comments`)
         .then((response) => {
-            this.setState({comments : response.data});
+            let comments = response.data;
+
+            const commentsList = comments.map(function(item, key){
+                return(
+                    <CommentMovieItem key={key} comment={item} user={item.user}/>
+                );
+            });
+
+            this.setState({numberComments : comments.length});
+            this.setState({commentsList: commentsList});
         })
         .catch(error => {
             console.log(error)
@@ -24,28 +50,20 @@ export default class CommentsIndex extends Component {
     
     render() {
 
-        if(!this.state || !this.state.movie || !this.state.comments) return <div>Loading...</div>
+        if(!this.state) return <div>Loading...</div>
 
         const goToMovie = () => {
             window.location.href = '/movies/' + this.props.match.params.id;
         }
-
-        let numberComments = this.state.comments.length;
-
-        const commentsList = this.state.comments.map(function(item, key){
-            return(
-                <CommentMovieItem key={key} comment={item} user={item.user}/>
-            );
-        });
     
         return (
             <div className="container comments_page">
                 <div className="btn cursor" onClick={goToMovie}>Retour au film</div>
                 <h2 className="center">{this.state.movie.title}</h2>
     
-                <h4>{numberComments} commentaires utilisateurs</h4>
+                <h4>{this.state.numberComments} commentaires utilisateurs</h4>
                 <ul>
-                   {commentsList}
+                   {this.state.commentsList}
                 </ul>
             </div>
         );

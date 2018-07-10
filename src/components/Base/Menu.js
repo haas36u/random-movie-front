@@ -42,7 +42,7 @@ export default class Menu extends Component {
                     <Avatar src={avatar} role="presentation" />
                     <p>{myPseudo}</p>
                 </div>
-                <a href="#" onClick={closeNav}> <i className="far fa-newspaper"></i> Fils d'actualités</a>
+                <Link to="/social" onClick={closeNav}> <i className="far fa-newspaper"></i> Fils d'actualités</Link>
                 <Link to="/movies" onClick={closeNav}><i className="material-icons md-xl">local_movies</i>Films</Link>
                 <div className="line"></div>
                 <p>Profil</p>

@@ -1,0 +1,81 @@
+#social {
+    width: 100%;
+    background-color: #f3f3f3;
+
+    .socialContainer {
+        max-width: 900px;
+        margin: 3rem auto;
+    }
+
+    .social__item--background {
+        background-color: #ffffff;
+        padding: 1rem;
+    }
+
+    .socialContainer__items, .userFollow {
+        display: inline-block;
+        vertical-align: top;
+    }
+    
+    .socialContainer__items {
+        width: 68%;
+        margin-right: 2%;
+    }
+
+    .social__item {
+        @extend .social__item--background;
+        margin: 1rem 0;
+
+        &:first-child {
+            margin-top: 0;
+        }
+
+        .social__item__header {
+            display: flex;
+            align-items: center;
+
+            .md-avatar {
+                margin-right: 1rem;
+            }
+        } 
+
+        .social__item__content {
+            width: 80%;
+            margin: 0 auto;
+        }
+    }
+
+    .userFollow {
+        @extend .social__item--background;
+        width: 30%;
+
+        &>div {
+            i {
+                font-size: 60px;
+                color: #bbbbbb;
+            }
+
+            .userFollow__user {
+                display: flex;
+                align-items: center;
+                margin: 1rem 0;
+
+                .md-avatar, i {
+                    margin-right: 1rem;
+                }
+
+                p {
+                    text-align: center;
+                    font-size: 0.8rem;
+                    margin: 0;
+                }
+            }
+
+            a:last-child {
+                display: block;
+                color: $secondary-color;
+                text-align: center;
+            }
+        }
+    }
+}
