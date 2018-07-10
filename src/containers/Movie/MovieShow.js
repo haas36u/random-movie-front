@@ -16,6 +16,7 @@ export default class MovieShow extends Component {
         super(props);
         this.state = {
             movie : {},
+            userActions : {},
             casting: [],
             similars : [],
             userAlreadyRate: true,
@@ -25,7 +26,7 @@ export default class MovieShow extends Component {
 
     /*MOVIE*/
     getMovie = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}`)
+        axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}`, headers : {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             let movie = response.data;
             movie.releasedAt = new Date(movie.releasedAt);
@@ -38,7 +39,13 @@ export default class MovieShow extends Component {
                 );
             });
 
-            this.setState({movie : movie});
+            let userActions = {
+                liked   : movie.liked,
+                watched : movie.watched,
+                wished  : movie.wished
+            }
+
+            this.setState({movie : movie, userActions: userActions});
         })
         .catch(error => {
             console.log(error)
@@ -66,7 +73,7 @@ export default class MovieShow extends Component {
 
     /*SIMILARS*/
     getSimilars = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/similars`)
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/similars`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             let similars = response.data;
             similars = similars.map(function(item, key){
@@ -209,7 +216,7 @@ export default class MovieShow extends Component {
                                         </div>
                                     </Cell>
                                     <Cell size={5} className="mt-0 text-right">
-                                        <MovieActions movieId={this.state.movie.id}/>
+                                        <MovieActions movieId={this.state.movie.id} userActions={this.state.userActions}/>
                                     </Cell>
                                     <Cell size={12}>
                                         <h5>Synopsis et détails</h5>
