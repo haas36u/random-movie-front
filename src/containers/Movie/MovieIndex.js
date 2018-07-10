@@ -12,7 +12,8 @@ export default class MovieShow extends Component {
     axios.defaults.headers['Accept'] = 'application/vnd.api+json';
     super(props);
     this.state = {
-      url: 'populars',
+      url: 'movies/populars',
+      typeOfRequest : 'default',
       movieTitle : null,
       genreId: null,
       moviesList: [],
@@ -24,110 +25,115 @@ export default class MovieShow extends Component {
   }
   
   componentDidMount() {
-     if(this.props.location.query && this.props.location.query.movieTitle){
-            this.setState({movieTitle: this.props.location.query.movieTitle});
-            this.getMoviesByTitle(this.props.location.query.movieTitle);
-        }
-      else this.getMovies(this.state.url, 1);
+    if(this.props.location.query && this.props.location.query.movieTitle){
+          this.setState({movieTitle: this.props.location.query.movieTitle});
+          this.getMoviesByTitle(this.props.location.query.movieTitle);
+      }
+    else this.getMovies(this.state.url, 1);
 
-      this.getMoviesGenre();
+    this.getMoviesGenre();
   }
   
   //TODO send two request instead of one !!!
     componentWillUpdate(nextProps, nextState){
-       if(nextProps.location.query && nextProps.location.query.movieTitle && this.state.movieTitle !== nextProps.location.query.movieTitle){
-           this.setState(
-               (state) => ({movieTitle: nextProps.location.query.movieTitle}),
-               () => { this.getMoviesByTitle(nextProps.location.query.movieTitle) });
-       }
+      if(nextProps.location.query && nextProps.location.query.movieTitle && this.state.movieTitle !== nextProps.location.query.movieTitle){
+        this.setState(
+            (state) => ({movieTitle: nextProps.location.query.movieTitle}),
+            () => { this.getMoviesByTitle(nextProps.location.query.movieTitle) });
+      }
     }
   
-   getMoviesByTitle = (movieTitle) => {
-        axios.get(`${process.env.REACT_APP_API_URL}/movies`, {
-          params : {title: movieTitle},
-          headers: {'Content-Type': 'application/vnd.api+json'}
-        })
-        .then((response) => {
-            this.changeMoviesList(response.data);
-        })
-        .catch(error => {
-            console.log(error)
-        });
+   getMoviesByTitle = (movieTitle, page = 1) => {
+      this.setState({typeOfRequest: 'searchByTitle', movieTitle: movieTitle});
+      axios.get(`${process.env.REACT_APP_API_URL}/movies`, {
+        params : {title: movieTitle, page: page},
+        headers: {'Content-Type': 'application/vnd.api+json'}
+      })
+      .then((response) => {
+          this.changeMoviesList(response.data);
+      })
+      .catch(error => {
+          console.log(error)
+      });
     }
    
    getMoviesGenre = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/genres`, {
-          headers: {'Content-Type': 'application/vnd.api+json'}
-        })
-        .then((response) => {
-            const genres = [];
-            for(let i = 0; i < response.data.length; i++) {
-                genres.push({
-                    label: response.data[i].name,
-                    value: response.data[i].id,
-                });
-            }
+      axios.get(`${process.env.REACT_APP_API_URL}/genres`)
+      .then((response) => {
+          const genres = [];
+          for(let i = 0; i < response.data.data.length; i++) {
+              genres.push({
+                  label: response.data.data[i].attributes.name,
+                  value: response.data.data[i].attributes._id,
+              });
+          }
 
-            this.setState({genres: genres});
-        })
-        .catch(error => {
-            console.log(error)
-        });
+          this.setState({genres: genres});
+      })
+      .catch(error => {
+          console.log(error)
+      });
     }
 
-    getMoviesByGenre = () => {
-        if(!this.state.genreId) return;
+    getMoviesByGenre = (page = 1) => {
+      if(!this.state.genreId) return;
+      
+      this.setState({typeOfRequest: 'searchByGenre'});
 
-        axios.get(`${process.env.REACT_APP_API_URL}/genres/${this.state.genreId}/movies`, {
-          headers: {'Content-Type': 'application/vnd.api+json'}
-        })
-        .then((response) => {
-            this.changeMoviesList(response.data);
-        })
-        .catch(error => {
-            console.log(error)
-        });
+      axios.get(`${process.env.REACT_APP_API_URL}/genres/${this.state.genreId}/movies`, {
+        params: {page: page},
+        headers: {'Content-Type': 'application/vnd.api+json'}
+      })
+      .then((response) => {
+          this.changeMoviesList(response.data);
+      })
+      .catch(error => {
+          console.log(error)
+      });
     }
     
-     getMovies = (url = 'populars', page = 1) => {
-        this.setState(() => ({url: url, activePage: page}));
+    getMovies = (url = 'movies/populars', page = 1) => {
+      this.setState(() => ({url: url, activePage: page, typeOfRequest: 'default'}));
 
-        axios.get(`${process.env.REACT_APP_API_URL}/movies/${url}`, {
-          params: {page: page},
-          headers: {'Content-Type': 'application/vnd.api+json'}
-        })
-        .then((response) => {
-            this.changeMoviesList(response.data);
-        })
-        .catch(error => {
-            console.log(error)
-        });
+      axios.get(`${process.env.REACT_APP_API_URL}/${url}`, {
+        params: {page: page},
+        headers: {'Content-Type': 'application/vnd.api+json'}
+      })
+      .then((response) => {
+          this.changeMoviesList(response.data);
+      })
+      .catch(error => {
+          console.log(error)
+      });
     }
 
-    changeMoviesList = (movies) => {
-        const moviesList = movies.map(function(item, key){
-            return(
-                <MovieCard key={key} movie={item} />
-            );
-        });
+    changeMoviesList = (data) => {
+      const moviesList = data.data.map(function(item){
+        item.attributes.id = item.attributes._id;
+          return(
+              <MovieCard key={item.id} movie={item.attributes} />
+          );
+      });
 
       this.setState(() => {
           return {
             moviesList: moviesList,
-            currentPage: movies.meta.currentPage,
-            itemsPerPage: movies.meta.itemsPerPage,
-            totalItems: movies.meta.totalItems,
+            currentPage: data.meta.currentPage,
+            itemsPerPage: data.meta.itemsPerPage,
+            totalItems: data.meta.totalItems,
           }
         });
     }
   
   handlePageChange = (pageNumber) => {
-    this.getMovies(this.state.url, pageNumber);
+    if (this.state.typeOfRequest === 'default') this.getMovies(this.state.url, pageNumber);
+    else if (this.state.typeOfRequest === 'searchByTitle') this.getMoviesByTitle(this.state.movieTitle, pageNumber)
+    else this.getMoviesByGenre(pageNumber);
   };
 
-    handleGenreChange = (genreId) => {
-        this.setState({genreId: genreId});
-    }
+  handleGenreChange = (genreId) => {
+    this.setState({genreId: genreId});
+  }
 
   
   render() {
@@ -140,15 +146,15 @@ export default class MovieShow extends Component {
           <Cell size={3} className="movie_tv_menu">
             <h2>Films</h2>
             <ul>
-              <li onClick={(e) => this.getMovies('populars')}>Les plus populaires</li>
-              <li onClick={(e) => this.getMovies('recents')}>Derniers ajouts</li>
+              <li onClick={(e) => this.getMovies('movies/populars')}>Les plus populaires</li>
+              <li onClick={(e) => this.getMovies('movies/recents')}>Derniers ajouts</li>
             </ul>
             <div className="line"></div>
             <form action="">
               <SelectField id="select-movie" placeholder="Genres" menuItems={this.state.genres}
                            position={SelectField.Positions.BELOW} onChange={this.handleGenreChange}/>
               <div className="search">
-                <div className="btn" onClick={this.getMoviesByGenre}>Chercher</div>
+                <div className="btn" onClick={(e) => this.getMoviesByGenre()}>Chercher</div>
               </div>
             </form>
           </Cell>
