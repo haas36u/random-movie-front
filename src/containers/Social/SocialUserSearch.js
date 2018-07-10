@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import { Avatar, TextField } from 'react-md';
+import SocialUserItem from '../../components/Social/SocialUserItem';
 
 export default class SocialIndex extends Component {
 
@@ -20,8 +20,6 @@ export default class SocialIndex extends Component {
         console.log(this.state.username)
         if(!this.state.username) return this.setState({followedUsers: <p className="noResult">Aucun résultat trouvé</p>});
 
-        let avatar = require('../../images/avatar_default.jpg');
-
         const users = [
             {
                 id: 1,
@@ -35,12 +33,7 @@ export default class SocialIndex extends Component {
 
         const followedUsers = users.map(function(user, key){
             return (
-                <div className="userFollow__user" key={key}>
-                    <Avatar src={avatar} role="presentation"/>
-                    <p>{user.username}</p>
-
-                    <div className="btn subscribe">Suivre</div>
-                </div>
+                <SocialUserItem user={user} key={key}/>
             )
         });
 

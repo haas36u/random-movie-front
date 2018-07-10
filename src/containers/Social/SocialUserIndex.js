@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
-import { Avatar, TextField } from 'react-md';
+import { TextField } from 'react-md';
+import SocialUserItem from '../../components/Social/SocialUserItem';
 
 export default class SocialIndex extends Component {
 
@@ -18,26 +18,22 @@ export default class SocialIndex extends Component {
     }
 
     getFollowedUsers = () => {
-        let avatar = require('../../images/avatar_default.jpg');
         const users = [
             {
                 id: 1,
-                username: 'François'
+                username: 'François',
+                follow: true
             },
             {
                 id: 2,
-                username : 'Cedric'
+                username : 'Cedric',
+                follow: true
             }
         ]
 
         const followedUsers = users.map(function(user, key){
             return (
-                <div className="userFollow__user" key={key}>
-                    <Avatar src={avatar} role="presentation"/>
-                    <p>{user.username}</p>
-
-                    <div className="btn">Abonné</div>
-                </div>
+                <SocialUserItem user={user} key={key}/>
             )
         });
 
@@ -46,7 +42,6 @@ export default class SocialIndex extends Component {
 
     getUsersByUsername = () => {
         console.log(this.state.username)
-        let avatar = require('../../images/avatar_default.jpg');
         if(!this.state.username) return this.setState({followedUsers: <p className="noResult">Aucun résultat trouvé</p>});
 
         const users = [
@@ -62,12 +57,7 @@ export default class SocialIndex extends Component {
 
         const followedUsers = users.map(function(user, key){
             return (
-                <div className="userFollow__user" key={key}>
-                    <Avatar src={avatar} role="presentation"/>
-                    <p>{user.username}</p>
-
-                    <div className="btn subscribe">Suivre</div>
-                </div>
+                <SocialUserItem user={user} key={key}/>
             )
         });
 
