@@ -14,14 +14,11 @@ export default class SocialIndex extends Component {
     }
 
     componentDidMount() {
+        this.getFollowedUsers();
     }
 
     getFollowedUsers = () => {
-        console.log(this.state.username)
-        if(!this.state.username) return this.setState({followedUsers: <p className="noResult">Aucun résultat trouvé</p>});
-
         let avatar = require('../../images/avatar_default.jpg');
-
         const users = [
             {
                 id: 1,
@@ -30,6 +27,36 @@ export default class SocialIndex extends Component {
             {
                 id: 2,
                 username : 'Cedric'
+            }
+        ]
+
+        const followedUsers = users.map(function(user, key){
+            return (
+                <div className="userFollow__user" key={key}>
+                    <Avatar src={avatar} role="presentation"/>
+                    <p>{user.username}</p>
+
+                    <div className="btn">Abonné</div>
+                </div>
+            )
+        });
+
+        this.setState({followedUsers: followedUsers});
+    }
+
+    getUsersByUsername = () => {
+        console.log(this.state.username)
+        let avatar = require('../../images/avatar_default.jpg');
+        if(!this.state.username) return this.setState({followedUsers: <p className="noResult">Aucun résultat trouvé</p>});
+
+        const users = [
+            {
+                id: 1,
+                username: 'Thibault'
+            },
+            {
+                id: 2,
+                username : 'Antoine'
             }
         ]
 
@@ -59,11 +86,11 @@ export default class SocialIndex extends Component {
             <div id="social" className="socialUserSearch">
                 <div className="socialContainer social__item--background">
 
-                    <h2><i className="fas fa-users"></i>Chercher un abonné</h2>
+                    <h2><i className="fas fa-users"></i>Abonnements</h2>
 
                     <div className="searchContainer">
                         <TextField id="search" placeholder="Rechercher" className="search" type="search" onChange={this.handleChangeUsername}/>
-                        <div onClick={this.getFollowedUsers} className="cursor"><i className="fas fa-search"></i></div>
+                        <div onClick={this.getUsersByUsername} className="cursor"><i className="fas fa-search"></i></div>
                     </div>
                     {this.state.followedUsers}
                 </div>

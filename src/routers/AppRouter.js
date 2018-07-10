@@ -9,6 +9,7 @@ import MovieShow from '../containers/Movie/MovieShow';
 import CommentsIndex from '../containers/Comments/CommentsIndex';
 import SocialIndex from '../containers/Social/SocialIndex';
 import SocialUserSearch from '../containers/Social/SocialUserSearch';
+import SocialUserIndex from '../containers/Social/SocialUserIndex';
 import Registration from '../containers/User/Registration';
 import RegistrationFavoriteMovies from '../containers/User/RegistrationFavoriteMovies';
 import Connection from '../containers/User/Connection';
@@ -60,6 +61,7 @@ const AppRouter = () => (
                 <Route path="/movies/:id" component={MovieShow}/>
                 <PrivateRoute path="/social" component={SocialIndex} exact={true} />
                 <PrivateRoute path="/social/search" component={SocialUserSearch} exact={true} />
+                <PrivateRoute path="/social/users" component={SocialUserIndex} exact={true} />
                 <Route path="/registration" component={Registration} exact={true} />
                 <PrivateRoute path="/registration/select-movies" component={RegistrationFavoriteMovies} exact={true} />
                 <PrivateRoute path="/registration/select-movies-types" component={RegistrationFavoriteMoviesTypes} exact={true} />

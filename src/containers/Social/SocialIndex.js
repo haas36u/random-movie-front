@@ -127,7 +127,7 @@ export default class SocialIndex extends Component {
                                 <i className="fas fa-plus-circle"></i>
                                 <p>Ajouter un ami</p>
                             </Link>
-                            <Link to="/">Voir la liste complète</Link>
+                            <Link to="/social/users">Voir la liste complète</Link>
                         </div>
                     </div>
                 </div>
