@@ -123,11 +123,11 @@ export default class SocialIndex extends Component {
                         <div>
                             {this.state.followedUsers}
                             
-                            <Link to="/" className="userFollow__user">
+                            <Link to="/social/search" className="userFollow__user">
                                 <i className="fas fa-plus-circle"></i>
                                 <p>Ajouter un ami</p>
                             </Link>
-                            <Link to="/">Voir la liste complète</Link>
+                            <Link to="/social/users">Voir la liste complète</Link>
                         </div>
                     </div>
                 </div>
