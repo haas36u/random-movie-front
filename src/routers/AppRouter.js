@@ -12,7 +12,7 @@ import SocialUserSearch from '../containers/Social/SocialUserSearch';
 import SocialUserIndex from '../containers/Social/SocialUserIndex';
 import Registration from '../containers/User/Registration';
 import RegistrationFavoriteMovies from '../containers/User/RegistrationFavoriteMovies';
-import Connection from '../containers/User/Connection';
+import Login from '../containers/User/Login';
 import Profile from '../containers/User/Profile';
 import Cgu from '../containers/static/Cgu';
 import LegalMentions from '../containers/static/LegalMentions';
@@ -65,7 +65,7 @@ const AppRouter = () => (
                 <Route path="/registration" component={Registration} exact={true} />
                 <PrivateRoute path="/registration/select-movies" component={RegistrationFavoriteMovies} exact={true} />
                 <PrivateRoute path="/registration/select-movies-types" component={RegistrationFavoriteMoviesTypes} exact={true} />
-                <Route path="/login" component={Connection} exact={true} />
+                <Route path="/login" component={Login} exact={true} />
                 <PrivateRoute path="/profile" component={Profile} exact={true} />
                 <Route path="/cgu" component={Cgu} exact={true} />
                 <Route path="/legal-mentions" component={LegalMentions} exact={true} />
