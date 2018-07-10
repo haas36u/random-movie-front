@@ -18,6 +18,7 @@ export default class SocialIndex extends Component {
 
     getFollowedUsers = () => {
         console.log(this.state.username)
+        if(!this.state.username) return this.setState({followedUsers: <p className="noResult">Aucun résultat trouvé</p>});
 
         let avatar = require('../../images/avatar_default.jpg');
 
@@ -58,10 +59,10 @@ export default class SocialIndex extends Component {
             <div id="social" className="socialUserSearch">
                 <div className="socialContainer social__item--background">
 
-                    <h2><i className="fas fa-users"></i>Cherchez un abonnée</h2>
+                    <h2><i className="fas fa-users"></i>Chercher un abonné</h2>
 
                     <div className="searchContainer">
-                        <TextField id="search" placeholder="Rechercher un abonné" className="search" type="search" onChange={this.handleChangeUsername}/>
+                        <TextField id="search" placeholder="Rechercher" className="search" type="search" onChange={this.handleChangeUsername}/>
                         <div onClick={this.getFollowedUsers} className="cursor"><i className="fas fa-search"></i></div>
                     </div>
                     {this.state.followedUsers}

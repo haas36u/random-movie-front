@@ -1,6 +1,8 @@
 .socialUserSearch {
     h2 {
-        margin-left: 1rem;
+        i{
+            margin-right: 0.5rem;
+        }
     }
     .searchContainer .search {
         color: $primary-color;
@@ -35,7 +37,7 @@
         display: flex;
         align-items: center;
         margin: 1rem 0;
-        border-bottom: 1px solid $primary-color-light;
+        border-bottom: 1px solid #e2e2e2;
 
         .md-avatar, i {
             margin-right: 1rem;
@@ -45,6 +47,7 @@
             text-align: center;
             font-size: 0.8rem;
             margin: 0;
+            font-weight: bold;
         }
 
         .btn {
@@ -52,5 +55,10 @@
             top: 0.5rem;
             right: 0;
         }
+    }
+
+    .noResult {
+        margin-top: 1rem;
+        color: $primary-color-light;
     }
 }
