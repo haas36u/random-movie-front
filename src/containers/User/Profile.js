@@ -30,6 +30,7 @@ export default class Profile extends Component {
 
     componentDidMount() {
         this.getUser();
+        this.getUserStats();
     }
 
      /*User*/
@@ -71,45 +72,35 @@ export default class Profile extends Component {
             this.setState({nbNotations: fullUser.notations.length});
             this.setState({commentsList: commentsList});
             this.setState({nbComments: fullUser.comments.length});
-
-            this.getUserStats(fullUser);
         })
         .catch(error => {
             console.log(error)
         });
     }
 
-    getUserStats = (user) => {
-        const favoriteMoviesList = user.moviesLiked.map(function(item, key){
-            return(
-                <Cell size={3} key={key} className="user-profile__movie-card favorite_movies_container">
-                    <ProfileMovieCard movie={item}/>
-                </Cell>
-            );
+    getUserStats = () => {
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/movies`, headers: {"Authorization" : localStorage.getItem('token')}})
+        .then((response) => {
+            const movies = response.data;
+            const moviesList = movies.map(function(movie, key){
+                let cardClass = 'user-profile__movie-card ';
+
+                if (movie.liked)        cardClass += 'favorite_movies_container';
+                else if (movie.watched) cardClass += 'watched_movies_container';
+                else                    cardClass += 'wished_movies_container';
+
+                return(
+                    <Cell size={3} key={key} className={cardClass}>
+                        <ProfileMovieCard movie={movie}/>
+                    </Cell>
+                );
+            });
+
+            this.setState({moviesList: moviesList});
+
+            this.getFavoriteMoviesPieChart();
+            this.getNotationsBarChart();
         });
-
-        const wishedMoviesList = user.moviesWished.map(function(item, key){
-            return(
-                <Cell size={3} key={key} className="user-profile__movie-card wished_movies_container">
-                    <ProfileMovieCard movie={item} />
-                </Cell>
-            );
-        });
-
-        const watchedMoviesList = user.moviesWatched.map(function(item, key){
-            return(
-                <Cell size={3} key={key} className="user-profile__movie-card watched_movies_container">
-                    <ProfileMovieCard movie={item} />
-                </Cell>
-            );
-        });
-
-        this.setState({favoriteMoviesList: favoriteMoviesList});
-        this.setState({wishedMoviesList: wishedMoviesList});
-        this.setState({watchedMoviesList: watchedMoviesList});
-
-        this.getFavoriteMoviesPieChart();
-        this.getNotationsBarChart();
     }
 
     getFavoriteMoviesPieChart = () => {
@@ -307,9 +298,7 @@ export default class Profile extends Component {
                                 <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'wished_movies_container')}>à voir</div>
                             </div>
                             <Grid className="p-0">
-                                {this.state.favoriteMoviesList}
-                                {this.state.watchedMoviesList}
-                                {this.state.wishedMoviesList}
+                                {this.state.moviesList}
                             </Grid>
                         </div>
                     </Tab>
