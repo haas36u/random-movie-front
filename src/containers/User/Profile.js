@@ -239,7 +239,7 @@ export default class Profile extends Component {
     };
 
     openCollectionAddModal = () => {
-        document.getElementById('collectionAddModal').style.display = 'block';
+        document.getElementById('collectionAddModal').style.display = 'flex';
     }
 
     render() {

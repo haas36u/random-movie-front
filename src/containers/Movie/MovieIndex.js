@@ -4,6 +4,7 @@ import axios from 'axios';
 import Pagination from "react-js-pagination";
 
 import MovieCard from '../../components/Movie/MovieCard';
+import CollectionAddMovieModal from '../../components/Collection/CollectionAddMovieModal';
 
 export default class MovieShow extends Component {
   
@@ -134,7 +135,6 @@ export default class MovieShow extends Component {
   handleGenreChange = (genreId) => {
     this.setState({genreId: genreId});
   }
-
   
   render() {
    
@@ -159,6 +159,8 @@ export default class MovieShow extends Component {
             </form>
           </Cell>
           <Cell size={9} offset={3} className="mt-0 mr-0">
+
+            <CollectionAddMovieModal/>
             <div className="movies-list">
               {this.state.moviesList}
             </div>

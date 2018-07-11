@@ -8,7 +8,7 @@ export default class CollectionItem extends Component {
         return (
             <Cell size={4} className="movie_vignette">
                 <div>
-                    <img src={this.props.collection.movie.cover}/>
+                    <img src={this.props.collection.movie.cover} alt={this.props.collection.name}/>
                 </div>
                 <p>{this.props.collection.name}</p>
             </Cell>

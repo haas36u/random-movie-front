@@ -22,6 +22,11 @@ export default class MovieActions extends Component {
         });
     }
 
+    openCollectionModal = (e) => {
+        e.stopPropagation();
+        if(document.getElementById('collectionAddMovieModal')) document.getElementById('collectionAddMovieModal').style.display = 'flex';
+    }
+
     render() {
         const movieActions = () => {
             if(isAuthenticated()) {
@@ -37,6 +42,7 @@ export default class MovieActions extends Component {
                         <Button icon onClick={(e) => this.movieSaveAction(e, 'like')} tooltipLabel="Ajouter à vos favoris"><i className={favoriteClass} id={'js-like-' + this.props.movieId}></i></Button>
                         <Button icon onClick={(e) => this.movieSaveAction(e, 'watch')}  tooltipLabel="Ajouter aux films déjà vus"><i className={watchedClass} id={'js-watch-' + this.props.movieId}></i></Button>
                         <Button icon onClick={(e) => this.movieSaveAction(e, 'wish')} tooltipLabel="Ajouter à votre liste de film à voir"><i className={wishedClass} id={'js-wish-' + this.props.movieId}>playlist_add</i></Button>
+                        <Button icon onClick={(e) => this.openCollectionModal(e)} tooltipLabel="Ajouter à une collection"><i className="fas fa-thumbtack"  id={'js-pin-' + this.props.movieId}></i></Button>
                     </span>
                 )
             }

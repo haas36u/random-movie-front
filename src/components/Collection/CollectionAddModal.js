@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Cell, TextField, DialogContainer } from 'react-md';
+import { Grid, Cell, TextField } from 'react-md';
 
 export default class CollectionAddModal extends Component {
 
