@@ -13,6 +13,8 @@ import MovieActions from '../../components/Movie/MovieActions';
 export default class MovieShow extends Component {
 
     constructor(props) {
+        axios.defaults.headers['Content-Type'] = 'application/json';
+        axios.defaults.headers['Accept'] = 'application/json';
         super(props);
         this.state = {
             movie : {},

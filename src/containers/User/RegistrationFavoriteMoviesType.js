@@ -5,6 +5,8 @@ import axios from 'axios';
 export default class RegistrationFavoriteMoviesTypes extends Component{
 
     constructor(props) {
+        axios.defaults.headers['Content-Type'] = 'application/json';
+        axios.defaults.headers['Accept'] = 'application/json';
         super(props);
         this.state = {
             favoriteTypes : [],

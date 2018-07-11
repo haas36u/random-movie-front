@@ -12,6 +12,8 @@ var Trianglify = require('trianglify');
 export default class Profile extends Component {
 
     constructor(props) {
+        axios.defaults.headers['Content-Type'] = 'application/json';
+        axios.defaults.headers['Accept'] = 'application/json';
         super(props);
         this.state = {
             user : {},
@@ -84,6 +86,8 @@ export default class Profile extends Component {
         axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/movies`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const movies = response.data;
+            if(!Array.isArray(movies)) return;
+
             const moviesList = movies.map(function(movie, key){
                 let cardClass = 'user-profile__movie-card ';
 
@@ -106,7 +110,7 @@ export default class Profile extends Component {
     }
 
     getFavoriteMoviesPieChart = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/favorites`, headers: {"Authorization" : localStorage.getItem('token')}})
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/favorites`, headers: { "Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const stats = response.data;
             if (stats.length === 0) {
