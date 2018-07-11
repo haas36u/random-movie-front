@@ -6,7 +6,8 @@ import moment from 'moment';
 
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
 import CommentMovieItem from '../../components/Comment/CommentMovieItem';
-import NotationsMovieList from '../../components/Notation/NotationsMovieList'
+import NotationsMovieList from '../../components/Notation/NotationsMovieList';
+import CollectionItem from '../../components/Collection/CollectionItem';
 var Trianglify = require('trianglify');
 
 export default class Profile extends Component {
@@ -17,6 +18,7 @@ export default class Profile extends Component {
         super(props);
         this.state = {
             user : {},
+            collections : [],
             favoriteMoviesList : [],
             wishedMoviesList : [],
             watchedMoviesList : [],
@@ -36,6 +38,7 @@ export default class Profile extends Component {
     componentDidMount() {
         this.getUser();
         this.getUserStats();
+        this.getCollections();
     }
 
      /*User*/
@@ -189,6 +192,37 @@ export default class Profile extends Component {
         });
     }
 
+    getCollections = () => {
+
+        const collections = [
+            {
+                name: 'Année 60',
+                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
+            },
+            {
+                name: 'Mes comédies',
+                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
+            },
+            {
+                name: 'Année 60',
+                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
+            },
+            {
+                name: 'Mes comédies',
+                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
+            }
+        ];
+
+        const collectionsList = collections.map((collection, key) => {
+            return (
+               <CollectionItem collection={collection} key={key}/>
+            )
+        })
+
+
+        this.setState({collections: collectionsList});
+    }
+
     showHideMoviesList = (e, className) => {
         let btnClass = e.target.classList;
         let moviesList = document.getElementsByClassName(className);
@@ -214,25 +248,6 @@ export default class Profile extends Component {
         let tabIndex = this.props.location.query && this.props.location.query.tab ? this.props.location.query.tab : 1;
 
         const legend = {display: false};
-
-        const collections = [
-            {
-                name: 'Année 60',
-                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
-            },
-            {
-                name: 'Mes comédies',
-                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
-            },
-            {
-                name: 'Année 60',
-                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
-            },
-            {
-                name: 'Mes comédies',
-                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
-            }
-        ]
 
         return (
         <div id="user-profile">
@@ -319,19 +334,7 @@ export default class Profile extends Component {
                                     </div>
                                     <p>Créer une collection</p>
                                 </Cell>
-                                { 
-                                    collections.map((collection, key) => {
-                                        return (
-                                            <Cell size={4} className="movie_vignette">
-                                                <div>
-                                                    <img src={collection.movie.cover}/>
-                                                </div>
-                                                <p>{collection.name}</p>
-                                            </Cell>
-                                        )
-                                    })
-                                }
-                               
+                                {this.state.collections}
                             </Grid>
                         </div>
                     </Tab>
