@@ -5,6 +5,7 @@
 @import './helpers/class';
 @import './helpers/layout';
 @import './helpers/paddingMargin';
+@import './helpers/modal';
 
 @import './base/base';
 @import './base/header';
@@ -16,6 +17,7 @@
 @import './containers/MovieShow';
 @import './containers/Profile';
 @import './containers/Comments';
+@import './containers/CollectionModals';
 @import './containers/SocialIndex';
 @import './containers/SocialUserSearch';
 @import './containers/RegistrationLogin';

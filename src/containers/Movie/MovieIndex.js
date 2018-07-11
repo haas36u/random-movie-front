@@ -4,6 +4,7 @@ import axios from 'axios';
 import Pagination from "react-js-pagination";
 
 import MovieCard from '../../components/Movie/MovieCard';
+import CollectionAddMovieModal from '../../components/Collection/CollectionAddMovieModal';
 
 export default class MovieShow extends Component {
   
@@ -111,7 +112,7 @@ export default class MovieShow extends Component {
       const moviesList = data.data.map(function(item){
         item.attributes.id = item.attributes._id;
           return(
-              <MovieCard key={item.id} movie={item.attributes} />
+              <MovieCard key={item.id} movie={item.attributes}  showUserAction={true}/>
           );
       });
 
@@ -134,7 +135,6 @@ export default class MovieShow extends Component {
   handleGenreChange = (genreId) => {
     this.setState({genreId: genreId});
   }
-
   
   render() {
    
@@ -151,14 +151,15 @@ export default class MovieShow extends Component {
             </ul>
             <div className="line"></div>
             <form action="">
-              <SelectField id="select-movie" placeholder="Genres" menuItems={this.state.genres}
-                           position={SelectField.Positions.BELOW} onChange={this.handleGenreChange}/>
+              <SelectField id="select-movie" placeholder="Genres" menuItems={this.state.genres} position={SelectField.Positions.BELOW} onChange={this.handleGenreChange}/>
               <div className="search">
                 <div className="btn" onClick={(e) => this.getMoviesByGenre()}>Chercher</div>
               </div>
             </form>
           </Cell>
           <Cell size={9} offset={3} className="mt-0 mr-0">
+
+            <CollectionAddMovieModal/>
             <div className="movies-list">
               {this.state.moviesList}
             </div>

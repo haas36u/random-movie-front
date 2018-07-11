@@ -1,170 +1,219 @@
 
 /** USER PROFILE **/
 #user-profile {
-    width: 100%;
-  
-    .user-profile__header {
-      padding-top: 2rem;
-  
-  
-      .md-avatar {
-        width: 100px;
-        height: 100px;
-      }
-  
-      .user-profile__header__info {
-        display: inline-block;
-        vertical-align: top;
-        padding-left: 1em;
-    
-        h3, p {
-          margin: 0;
-        }
-    
-        h3 {
-          font-size: 1.9em;
-        }
-    
-        p {
-          font-size: 1.3em;
-          color: #4a4a4a;
-        }
-      }
-  
-      .user-profile__header__tracking {
-        margin-top: 1rem;
-        padding: 1rem 0;
-        background: rgba(0, 0, 0, 0.6);
-        color: #ececec;
-  
-        i {
-          font-size: 2.5rem;
-        }
-        
-        p {
-          color: #ececec;
-        }
-      }
+  width: 100%;
+
+  .user-profile__header {
+    padding-top: 2rem;
+
+
+    .md-avatar {
+      width: 100px;
+      height: 100px;
     }
+
+    .user-profile__header__info {
+      display: inline-block;
+      vertical-align: top;
+      padding-left: 1em;
   
-    .md-tabs {
-      margin-top: 0.5rem;
-      text-align: center;
-      text-transform: uppercase;
-  
-      .md-tab {
-        max-width: none;
-      }
-      
-      .md-tab-label {
-        font-size: 1.2rem;
-        transition: 0.5s color;
-  
-        &:hover {
-          color: $secondary-color;
-        }
+      h3, p {
+        margin: 0;
       }
   
-      .md-tab-indicator {
-        background-color: $secondary-color !important;
-      }
-      .md-tab--inactive {
-        color: $primary-color-light ;
-      }
-      .md-tab--active {
-        color: $secondary-color;
-      }
-      a {
-        color: $secondary-color;
-      }
-    }
-  
-    .md-tab-panel {
-      overflow: hidden;
-    }
-  
-    .md-tabs-content {
-      margin: 1rem 0;
-    }
-  
-    .user-profile__title {
-      margin-top: 2rem;
-  
-      i {
-        font-size: 2.2em;
-      }
       h3 {
-        display: inline-block;
-        vertical-align: top;
-        font-size: 1.2em;
-        line-height: 2em;
-        margin: 0;
+        font-size: 1.9em;
       }
-    }
   
-    .user-profile__favorite-type {
-      padding: 1rem;
-      background-color: #000000;
-      color: #ffffff;
-  
-      h6 {
-        font-size: 1.1rem;
-        text-transform: uppercase;
-        color: #ffffff;
-      }
       p {
-        color: #ffffff;
-      }
-      .favorite-type--chart-description {
-        margin-bottom: 0.5rem;
-  
-        div {
-          width: 20px;
-          height: 20px;
-          display: inline-block;
-          vertical-align: top;
-          margin-right: 0.5rem;
-        }
+        font-size: 1.3em;
+        color: #4a4a4a;
       }
     }
-    
-    .user-profile__rate-stats {
-      margin-top: 2rem;
-      h4 {
-        font-size: 1.2rem;
+
+    .user-profile__header__tracking {
+      margin-top: 1rem;
+      padding: 1rem 0;
+      background: rgba(0, 0, 0, 0.6);
+      color: #ececec;
+
+      i {
+        font-size: 2.5rem;
       }
+      
       p {
-        font-size: 2.4rem;
-        color: $secondary-color;
-        margin: 0;
-      }
-    }
-  
-    /** PROFILE FAVORITE **/
-    #favorite {
-      .btn {
-        background-color: $primary-color-light;
-        cursor: pointer;
-        transition: 0.5s background-color;
-        margin-left: 1rem;
-  
-        &:hover {
-          background-color: lighten(#909090, 6%);
-        }
-      
-        &.active {
-          background-color: $secondary-color;
-      
-          &:hover {
-            background-color: lighten($secondary-color, 6%);
-          }
-        }
+        color: #ececec;
       }
     }
   }
-  
-  @media screen and (min-width: 1025px){
-    #user-profile .md-tab {
+
+  .md-tabs {
+    margin-top: 0.5rem;
+    text-align: center;
+    text-transform: uppercase;
+
+    .md-tab {
       max-width: none;
     }
+    
+    .md-tab-label {
+      font-size: 1.2rem;
+      transition: 0.5s color;
+
+      &:hover {
+        color: $secondary-color;
+      }
+    }
+
+    .md-tab-indicator {
+      background-color: $secondary-color !important;
+    }
+    .md-tab--inactive {
+      color: $primary-color-light ;
+    }
+    .md-tab--active {
+      color: $secondary-color;
+    }
+    a {
+      color: $secondary-color;
+    }
   }
+
+  .md-tab-panel {
+    overflow: hidden;
+  }
+
+  .md-tabs-content {
+    margin: 1rem 0;
+  }
+
+  .user-profile__title {
+    margin-top: 2rem;
+
+    i {
+      font-size: 2.2em;
+    }
+    h3 {
+      display: inline-block;
+      vertical-align: top;
+      font-size: 1.2em;
+      line-height: 2em;
+      margin: 0;
+    }
+  }
+
+  .user-profile__favorite-type {
+    padding: 1rem;
+    background-color: #000000;
+    color: #ffffff;
+
+    h6 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      color: #ffffff;
+    }
+    p {
+      color: #ffffff;
+    }
+    .favorite-type--chart-description {
+      margin-bottom: 0.5rem;
+
+      div {
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        vertical-align: top;
+        margin-right: 0.5rem;
+      }
+    }
+  }
+  
+  .user-profile__rate-stats {
+    margin-top: 2rem;
+    h4 {
+      font-size: 1.2rem;
+    }
+    p {
+      font-size: 2.4rem;
+      color: $secondary-color;
+      margin: 0;
+    }
+  }
+
+  /** PROFILE FAVORITE **/
+  #favorite {
+    .btn {
+      background-color: $primary-color-light;
+      cursor: pointer;
+      transition: 0.5s background-color;
+      margin-left: 1rem;
+
+      &:hover {
+        background-color: lighten(#909090, 6%);
+      }
+    
+      &.active {
+        background-color: $secondary-color;
+    
+        &:hover {
+          background-color: lighten($secondary-color, 6%);
+        }
+      }
+    }
+  }
+
+  /*PROFILE COLLECIONS*/
+  #collections {
+    .movie_vignette {
+      position: relative;
+      background-color: #000000;
+      color: #ffffff;
+      margin: 1%;
+      flex: 1 0 31.33%;
+      flex-grow: 0;
+
+      &:hover {
+        cursor: pointer;
+      }
+  
+      div {
+          width:100%;
+          height: 300px;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          img {
+            width: 100%;
+          }
+
+          i {
+            font-size: 3rem;
+            color: #b70f0a;
+          }
+      }
+      p {
+        color: #ffffff;
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        margin: 0;
+      }
+    }
+
+    .movie_vignette.addCollection {
+      background-color: #f1f1f1;
+      
+        p {
+          color: #000000;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+@media screen and (min-width: 1025px){
+  #user-profile .md-tab {
+    max-width: none;
+  }
+}

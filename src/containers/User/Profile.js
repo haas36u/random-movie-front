@@ -6,7 +6,9 @@ import moment from 'moment';
 
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
 import CommentMovieItem from '../../components/Comment/CommentMovieItem';
-import NotationsMovieList from '../../components/Notation/NotationsMovieList'
+import NotationsMovieList from '../../components/Notation/NotationsMovieList';
+import CollectionItem from '../../components/Collection/CollectionItem';
+import CollectionAddModal from '../../components/Collection/CollectionAddModal';
 var Trianglify = require('trianglify');
 
 export default class Profile extends Component {
@@ -17,6 +19,7 @@ export default class Profile extends Component {
         super(props);
         this.state = {
             user : {},
+            collections : [],
             favoriteMoviesList : [],
             wishedMoviesList : [],
             watchedMoviesList : [],
@@ -36,6 +39,7 @@ export default class Profile extends Component {
     componentDidMount() {
         this.getUser();
         this.getUserStats();
+        this.getCollections();
     }
 
      /*User*/
@@ -60,7 +64,7 @@ export default class Profile extends Component {
                 return (
                     <Grid key={key}>
                         <Cell size={2} className="user-profile__movie-card">
-                            <ProfileMovieCard movie={item.movie}/>
+                            <ProfileMovieCard movie={item.movie} showUserAction={false}/>
                         </Cell>
                         <Cell size={10}>
                             <CommentMovieItem comment={item} user={user}/>
@@ -94,7 +98,7 @@ export default class Profile extends Component {
 
                 return(
                     <Cell size={3} key={key} className={cardClass}>
-                        <ProfileMovieCard movie={movie}/>
+                        <ProfileMovieCard movie={movie} showUserAction={true}/>
                     </Cell>
                 );
             });
@@ -189,6 +193,40 @@ export default class Profile extends Component {
         });
     }
 
+    getCollections = () => {
+
+        const collections = [
+            {
+                id: 12,
+                name: 'Année 60',
+                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
+            },
+            {
+                id: 13,
+                name: 'Mes comédies',
+                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
+            },
+            {
+                id: 14,
+                name: 'Année 60',
+                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
+            },
+            {
+                id: 15,
+                name: 'Mes comédies',
+                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
+            }
+        ];
+
+        const collectionsList = collections.map((collection, key) => {
+            return (
+               <CollectionItem collection={collection} key={key}/>
+            )
+        })
+
+        this.setState({collections: collectionsList});
+    }
+
     showHideMoviesList = (e, className) => {
         let btnClass = e.target.classList;
         let moviesList = document.getElementsByClassName(className);
@@ -203,6 +241,10 @@ export default class Profile extends Component {
             }
         }
     };
+
+    openCollectionAddModal = () => {
+        document.getElementById('collectionAddModal').style.display = 'flex';
+    }
 
     render() {
         if(!this.state) return( <div>Loading...</div>);
@@ -245,6 +287,8 @@ export default class Profile extends Component {
                     </div>
                 </div>
             </div>
+
+            <CollectionAddModal/>
             
             <TabsContainer defaultTabIndex={tabIndex}>
                 <Tabs className="container" tabId="profile-tab">
@@ -292,8 +336,16 @@ export default class Profile extends Component {
                         </Grid>
                     </Tab>
                     <Tab label="Collections">
-                        <div id="collections" className="container">
-                            Fonctionnalité bientôt disponible
+                        <div id="collections" className="container pt-1">
+                            <Grid>
+                                <Cell size={4} className="movie_vignette addCollection" onClick={this.openCollectionAddModal}>
+                                    <div>
+                                        <i className="fas fa-plus-circle"></i>
+                                    </div>
+                                    <p>Créer une collection</p>
+                                </Cell>
+                                {this.state.collections}
+                            </Grid>
                         </div>
                     </Tab>
                     <Tab label="Favoris, déjà vus, à voir">
