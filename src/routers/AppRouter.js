@@ -7,12 +7,13 @@ import Homepage from '../containers/Homepage';
 import MovieIndex from '../containers/Movie/MovieIndex';
 import MovieShow from '../containers/Movie/MovieShow';
 import CommentsIndex from '../containers/Comments/CommentsIndex';
+import CollectionUpdate from '../containers/Collection/CollectionUpdate';
 import SocialIndex from '../containers/Social/SocialIndex';
 import SocialUserSearch from '../containers/Social/SocialUserSearch';
 import SocialUserIndex from '../containers/Social/SocialUserIndex';
 import Registration from '../containers/User/Registration';
 import RegistrationFavoriteMovies from '../containers/User/RegistrationFavoriteMovies';
-import Connection from '../containers/User/Connection';
+import Login from '../containers/User/Login';
 import Profile from '../containers/User/Profile';
 import Cgu from '../containers/static/Cgu';
 import LegalMentions from '../containers/static/LegalMentions';
@@ -22,7 +23,8 @@ import Header from '../components/Base/Header';
 import Footer from '../components/Base/Footer';
 import RegistrationFavoriteMoviesTypes from '../containers/User/RegistrationFavoriteMoviesType';
 
-const closeNav = () => {
+const closeNav = (e) => {
+    e.stopPropagation();
     document.getElementById("sidenav").style.width = "0";
 }
 
@@ -59,13 +61,14 @@ const AppRouter = () => (
                 <Route path="/movies" component={MovieIndex} exact={true}/>
                 <PrivateRoute path="/movies/:id/comments" component={CommentsIndex}/>
                 <Route path="/movies/:id" component={MovieShow}/>
+                <PrivateRoute path="/collections/:id/update" component={CollectionUpdate} />
                 <PrivateRoute path="/social" component={SocialIndex} exact={true} />
                 <PrivateRoute path="/social/search" component={SocialUserSearch} exact={true} />
                 <PrivateRoute path="/social/users" component={SocialUserIndex} exact={true} />
                 <Route path="/registration" component={Registration} exact={true} />
                 <PrivateRoute path="/registration/select-movies" component={RegistrationFavoriteMovies} exact={true} />
                 <PrivateRoute path="/registration/select-movies-types" component={RegistrationFavoriteMoviesTypes} exact={true} />
-                <Route path="/login" component={Connection} exact={true} />
+                <Route path="/login" component={Login} exact={true} />
                 <PrivateRoute path="/profile" component={Profile} exact={true} />
                 <Route path="/cgu" component={Cgu} exact={true} />
                 <Route path="/legal-mentions" component={LegalMentions} exact={true} />

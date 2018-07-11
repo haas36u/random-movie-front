@@ -1,0 +1,43 @@
+.collectionModal {
+
+    h2 {
+        text-align: center;
+    }
+
+    .cancel {
+        background-color: #bfbfbf; 
+    }
+}
+
+#collectionAddMovieModal {
+    img {
+        width: auto;
+        max-height: 400px;
+        margin: auto;
+    }
+
+    ul li {
+        margin: 1rem 0;
+        font-weight: bold;
+        color: #606060;
+    }
+
+    .createCollection {
+        margin: 1rem 0;
+
+        &>div {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+        }
+        
+        i {
+            font-size: 2rem;
+            color: #b70f0a;
+        }
+
+        p {
+            margin: 0 0 0 1rem;
+        }
+    }
+}

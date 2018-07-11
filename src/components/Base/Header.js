@@ -14,10 +14,17 @@ export default class Footer extends Component{
     handleChangeMovieTitle = (value) => {
         this.setState({movieTitle: value});
     }
+    
 
     render() {
+
+        const closeNav = (e) => {
+            e.stopPropagation();
+            document.getElementById("sidenav").style.width = "0";
+        }
+
         return (
-            <header>
+            <header onClick={closeNav}>
                 <ul>
                     <li><Link to="/social">Fil d'actualités</Link></li>
                     <li><Link to="/movies">Les films</Link></li>

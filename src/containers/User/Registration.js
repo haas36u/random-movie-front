@@ -5,8 +5,16 @@ import { connect } from 'react-redux';
 
 class Registration extends Component{
 
+    constructor(props){
+        super(props);
+        this.state = {}
+    }
+
     register = () => {
-        this.props.register({username: this.state.username, email: this.state.email, password: this.state.password});
+        if (this.state.username.length < 4) this.setState({error: 'Le nom d\'utilisteur doit être supérieur à 3 caractères'});
+        else if (this.state.password !== this.state.passwordRepeat) this.setState({error: 'Le mot de passe n\'est pas identitque'});
+        else if (this.state.email && this.state.username && this.state.password && this.state.passwordRepeat) this.props.register({username: this.state.username, email: this.state.email, password: this.state.password});
+        else this.setState({error: 'Vous n\'avez pas rempli tous les champs'});
     };
 
     handleChangeEmail = (value) => {
@@ -19,7 +27,8 @@ class Registration extends Component{
         this.setState({password: value});
     }
     handleChangePasswordRepeat = (value) => {
-        if(this.state.password === value) console.log('not the same password');
+        this.setState({passwordRepeat: value});
+        if (this.state.password !== value) this.setState({error: 'Le mot de passe n\'est pas identitque'});
     }
 
     render() {
@@ -32,6 +41,7 @@ class Registration extends Component{
                     <TextField id="username" label="Nom d'utilisateur" lineDirection="center" className="md-cell--bottom" onChange={this.handleChangeUsername}/>
                     <TextField id="password" label="Mot de passe" lineDirection="center" className="md-cell--bottom" type="password" onChange={this.handleChangePassword}/>
                     <TextField id="repeat-password" label="Répéter le mot de passe" lineDirection="center" className="md-cell--bottom" type="password" onChange={this.handleChangePasswordRepeat}/>
+                    <p className="error">{this.state.error}</p>
                     <div className="mt-3">
                         <span className="btn" onClick={this.register}>Créer un compte</span>
                     </div>

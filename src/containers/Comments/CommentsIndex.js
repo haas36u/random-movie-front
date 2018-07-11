@@ -5,6 +5,8 @@ import CommentMovieItem from '../../components/Comment/CommentMovieItem';
 export default class CommentsIndex extends Component {
 
     constructor(props) {
+        axios.defaults.headers['Content-Type'] = 'application/json';
+        axios.defaults.headers['Accept'] = 'application/json';
         super(props);
 
         this.state = {

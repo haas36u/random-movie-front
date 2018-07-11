@@ -11,11 +11,13 @@ export default class Menu extends Component {
     let avatar = require('../../images/avatar_default.jpg');
     let myPseudo = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).username : null;
 
-    const openNav = () => {
+    const openNav = (e) => {
+        e.stopPropagation();
         document.getElementById("sidenav").style.width = "340px";
     }
 
-    const closeNav = () => {
+    const closeNav = (e) => {
+        e.stopPropagation();
         document.getElementById("sidenav").style.width = "0";
     }
 
@@ -37,11 +39,11 @@ export default class Menu extends Component {
 
     return (
         <span>
-            <div id="sidenav">
-                <div className="sidenav_header background-trianglify" style={bgTriangle}>
+            <div id="sidenav" onClick={openNav}>
+                <Link to="/profile" onClick={closeNav} className="sidenav_header background-trianglify" style={bgTriangle}>
                     <Avatar src={avatar} role="presentation" />
                     <p>{myPseudo}</p>
-                </div>
+                </Link>
                 <Link to="/social" onClick={closeNav}> <i className="far fa-newspaper"></i> Fils d'actualités</Link>
                 <Link to="/movies" onClick={closeNav}><i className="material-icons md-xl">local_movies</i>Films</Link>
                 <div className="line"></div>

@@ -13,6 +13,8 @@ import MovieActions from '../../components/Movie/MovieActions';
 export default class MovieShow extends Component {
 
     constructor(props) {
+        axios.defaults.headers['Content-Type'] = 'application/json';
+        axios.defaults.headers['Accept'] = 'application/json';
         super(props);
         this.state = {
             movie : {},
@@ -78,7 +80,7 @@ export default class MovieShow extends Component {
             let similars = response.data;
             similars = similars.map(function(item, key){
                 return(
-                    <MovieCard key={key} movie={item} />
+                    <MovieCard key={key} movie={item} showUserAction={true}/>
                 );
             });
             this.setState({similars : similars});

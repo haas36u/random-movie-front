@@ -6,15 +6,20 @@ import moment from 'moment';
 
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
 import CommentMovieItem from '../../components/Comment/CommentMovieItem';
-import NotationsMovieList from '../../components/Notation/NotationsMovieList'
+import NotationsMovieList from '../../components/Notation/NotationsMovieList';
+import CollectionItem from '../../components/Collection/CollectionItem';
+import CollectionAddModal from '../../components/Collection/CollectionAddModal';
 var Trianglify = require('trianglify');
 
 export default class Profile extends Component {
 
     constructor(props) {
+        axios.defaults.headers['Content-Type'] = 'application/json';
+        axios.defaults.headers['Accept'] = 'application/json';
         super(props);
         this.state = {
             user : {},
+            collections : [],
             favoriteMoviesList : [],
             wishedMoviesList : [],
             watchedMoviesList : [],
@@ -24,12 +29,17 @@ export default class Profile extends Component {
             nbNotations: 0,
             ratingBarChart: {},
             favortieMoviesType : {},
-            favortieMoviesTypeLegend: []
+            favortieMoviesTypeLegend: [],
+            noDataWatchedMovies : null,
+            noDataNotation : null,
+            loader : <span className="spinner"><svg width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-double-ring"><circle cx="50" cy="50" ng-attr-r="{{config.radius}}" ng-attr-stroke-width="{{config.width}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-dasharray="{{config.dasharray}}" fill="none" stroke-linecap="round" r="40" stroke-width="4" stroke="#bd4030" stroke-dasharray="62.83185307179586 62.83185307179586" transform="rotate(328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.3s" begin="0s" repeatCount="indefinite"></animateTransform></circle><circle cx="50" cy="50" ng-attr-r="{{config.radius2}}" ng-attr-stroke-width="{{config.width}}" ng-attr-stroke="{{config.c2}}" ng-attr-stroke-dasharray="{{config.dasharray2}}" ng-attr-stroke-dashoffset="{{config.dashoffset2}}" fill="none" stroke-linecap="round" r="35" stroke-width="4" stroke="#e0b83e" stroke-dasharray="54.97787143782138 54.97787143782138" stroke-dashoffset="54.97787143782138" transform="rotate(-328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg> </span>
         };
     }
 
     componentDidMount() {
         this.getUser();
+        this.getUserStats();
+        this.getCollections();
     }
 
      /*User*/
@@ -54,7 +64,7 @@ export default class Profile extends Component {
                 return (
                     <Grid key={key}>
                         <Cell size={2} className="user-profile__movie-card">
-                            <ProfileMovieCard movie={item.movie}/>
+                            <ProfileMovieCard movie={item.movie} showUserAction={false}/>
                         </Cell>
                         <Cell size={10}>
                             <CommentMovieItem comment={item} user={user}/>
@@ -63,62 +73,49 @@ export default class Profile extends Component {
                 );
             });
 
-            if(fullUser.notations.length === 0) notationsList = <p>Vous n'avez noté aucun film</p>;
-            if(fullUser.comments.length === 0) commentsList = <p>Vous n'avez pas encore commenté de film</p>;
+            if (fullUser.notations.length === 0) notationsList = <p>Vous n'avez noté aucun film</p>;
+            if (fullUser.comments.length === 0) commentsList = <p>Vous n'avez pas encore commenté de film</p>;
 
-            this.setState({user: user});
-            this.setState({notationsList: notationsList});
-            this.setState({nbNotations: fullUser.notations.length});
-            this.setState({commentsList: commentsList});
-            this.setState({nbComments: fullUser.comments.length});
-
-            this.getUserStats(fullUser);
+            this.setState({user: user, notationsList: notationsList, nbNotations: fullUser.notations.length, commentsList: commentsList, nbComments: fullUser.comments.length, loader: null});
         })
         .catch(error => {
             console.log(error)
         });
     }
 
-    getUserStats = (user) => {
-        const favoriteMoviesList = user.moviesLiked.map(function(item, key){
-            return(
-                <Cell size={3} key={key} className="user-profile__movie-card favorite_movies_container">
-                    <ProfileMovieCard movie={item}/>
-                </Cell>
-            );
+    getUserStats = () => {
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/movies`, headers: {"Authorization" : localStorage.getItem('token')}})
+        .then((response) => {
+            const movies = response.data;
+            if(!Array.isArray(movies)) return;
+
+            const moviesList = movies.map(function(movie, key){
+                let cardClass = 'user-profile__movie-card ';
+
+                if (movie.liked)        cardClass += 'favorite_movies_container';
+                else if (movie.watched) cardClass += 'watched_movies_container';
+                else                    cardClass += 'wished_movies_container';
+
+                return(
+                    <Cell size={3} key={key} className={cardClass}>
+                        <ProfileMovieCard movie={movie} showUserAction={true}/>
+                    </Cell>
+                );
+            });
+
+            this.setState({moviesList: moviesList});
+
+            this.getFavoriteMoviesPieChart();
+            this.getNotationsBarChart();
         });
-
-        const wishedMoviesList = user.moviesWished.map(function(item, key){
-            return(
-                <Cell size={3} key={key} className="user-profile__movie-card wished_movies_container">
-                    <ProfileMovieCard movie={item} />
-                </Cell>
-            );
-        });
-
-        const watchedMoviesList = user.moviesWatched.map(function(item, key){
-            return(
-                <Cell size={3} key={key} className="user-profile__movie-card watched_movies_container">
-                    <ProfileMovieCard movie={item} />
-                </Cell>
-            );
-        });
-
-        this.setState({favoriteMoviesList: favoriteMoviesList});
-        this.setState({wishedMoviesList: wishedMoviesList});
-        this.setState({watchedMoviesList: watchedMoviesList});
-
-        this.getFavoriteMoviesPieChart();
-        this.getNotationsBarChart();
     }
 
     getFavoriteMoviesPieChart = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/favorites`, headers: {"Authorization" : localStorage.getItem('token')}})
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/favorites`, headers: { "Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const stats = response.data;
             if (stats.length === 0) {
-                this.setState({favortieMoviesTypeLegend: <p>Aucune données disponibles : Vous n'avez pas encore aimé, ajouté comme vu un film</p>})
-                return;
+                return this.setState({noDataWatchedMovies: <p className="mt-3">Aucune données disponibles : Vous n'avez pas encore aimé, ni ajouté comme vu un film</p>})
             }
 
             let nbWatchedMovies = 0;
@@ -150,7 +147,6 @@ export default class Profile extends Component {
                     }
                 }
             };
-            this.setState({favortieMoviesType: favortieMoviesType});
 
             if(stats.length > 6) stats.splice(6, stats.length - 6);
 
@@ -162,7 +158,7 @@ export default class Profile extends Component {
                     </Cell>
                 )
             });
-            this.setState({favortieMoviesTypeLegend: favortieMoviesTypeLegend});
+            this.setState({favortieMoviesType: favortieMoviesType, favortieMoviesTypeLegend: favortieMoviesTypeLegend});
         });
     }
 
@@ -171,9 +167,11 @@ export default class Profile extends Component {
         .then((response) => {
             const statsRating = [];
             let indexUserRating = 0;
+            if(response.data.length === 0) return this.setState({noDataNotation: <div className="mt-1 mb-2">Vous n'avez pas encore noté de film</div>});
+
             for (let i = 0; i < 5; i++) {
                 if(parseInt(response.data[indexUserRating].mark, 10) === i +1 ){
-                    statsRating.push(response.data[indexUserRating].mark);
+                    statsRating.push(response.data[indexUserRating].nb_notations);
                     indexUserRating++;
                 }
                 else statsRating.push(0);
@@ -195,6 +193,40 @@ export default class Profile extends Component {
         });
     }
 
+    getCollections = () => {
+
+        const collections = [
+            {
+                id: 12,
+                name: 'Année 60',
+                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
+            },
+            {
+                id: 13,
+                name: 'Mes comédies',
+                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
+            },
+            {
+                id: 14,
+                name: 'Année 60',
+                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
+            },
+            {
+                id: 15,
+                name: 'Mes comédies',
+                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
+            }
+        ];
+
+        const collectionsList = collections.map((collection, key) => {
+            return (
+               <CollectionItem collection={collection} key={key}/>
+            )
+        })
+
+        this.setState({collections: collectionsList});
+    }
+
     showHideMoviesList = (e, className) => {
         let btnClass = e.target.classList;
         let moviesList = document.getElementsByClassName(className);
@@ -210,6 +242,10 @@ export default class Profile extends Component {
         }
     };
 
+    openCollectionAddModal = () => {
+        document.getElementById('collectionAddModal').style.display = 'flex';
+    }
+
     render() {
         if(!this.state) return( <div>Loading...</div>);
         let bgTriangle = {
@@ -223,6 +259,7 @@ export default class Profile extends Component {
 
         return (
         <div id="user-profile">
+            {this.state.loader}
             <div className="user-profile__header background-trianglify" style={bgTriangle}>
                 <div className="container">
                     <a href="" className="btn right">Modifier</a>
@@ -250,6 +287,8 @@ export default class Profile extends Component {
                     </div>
                 </div>
             </div>
+
+            <CollectionAddModal/>
             
             <TabsContainer defaultTabIndex={tabIndex}>
                 <Tabs className="container" tabId="profile-tab">
@@ -263,6 +302,7 @@ export default class Profile extends Component {
                                 <Grid className="user-profile__favorite-type">
                                     <Cell size={12}>
                                         <h6>Genres favoris</h6>
+                                        {this.state.noDataWatchedMovies}
                                         <Grid>
                                             <Cell size={6} className="mt-1">
                                                 <Grid>
@@ -288,6 +328,7 @@ export default class Profile extends Component {
                                     </Cell>
                                     <Cell size={6}>
                                         <h4>Répartition des notes</h4>
+                                        {this.state.noDataNotation}
                                         <Bar data={this.state.ratingBarChart} />
                                     </Cell>
                                 </Grid>
@@ -295,8 +336,16 @@ export default class Profile extends Component {
                         </Grid>
                     </Tab>
                     <Tab label="Collections">
-                        <div id="collections" className="container">
-                            Fonctionnalité bientôt disponible
+                        <div id="collections" className="container pt-1">
+                            <Grid>
+                                <Cell size={4} className="movie_vignette addCollection" onClick={this.openCollectionAddModal}>
+                                    <div>
+                                        <i className="fas fa-plus-circle"></i>
+                                    </div>
+                                    <p>Créer une collection</p>
+                                </Cell>
+                                {this.state.collections}
+                            </Grid>
                         </div>
                     </Tab>
                     <Tab label="Favoris, déjà vus, à voir">
@@ -307,9 +356,7 @@ export default class Profile extends Component {
                                 <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'wished_movies_container')}>à voir</div>
                             </div>
                             <Grid className="p-0">
-                                {this.state.favoriteMoviesList}
-                                {this.state.watchedMoviesList}
-                                {this.state.wishedMoviesList}
+                                {this.state.moviesList}
                             </Grid>
                         </div>
                     </Tab>

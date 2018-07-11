@@ -20,12 +20,16 @@ export default class MovieCard extends Component {
             wished : this.props.movie.wished
         }
 
+        const showUserActions = () => {
+            if (this.props.showUserAction) return (<MovieActions movieId={this.props.movie.id} userActions={userActions}/>);
+        }
+
         return (
             <div className="movie_vignette">
                 <div style={bg}></div>
                 <div className="actions_buttons" onClick={goToMovieShow}>
                     <div className="right">
-                        <MovieActions movieId={this.props.movie.id} userActions={userActions}/>
+                        {showUserActions()}
                     </div>
                 </div>
                 <div className="movie_title">
