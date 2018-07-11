@@ -22,7 +22,8 @@ import Header from '../components/Base/Header';
 import Footer from '../components/Base/Footer';
 import RegistrationFavoriteMoviesTypes from '../containers/User/RegistrationFavoriteMoviesType';
 
-const closeNav = () => {
+const closeNav = (e) => {
+    e.stopPropagation();
     document.getElementById("sidenav").style.width = "0";
 }
 

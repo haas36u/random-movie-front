@@ -11,11 +11,13 @@ export default class Menu extends Component {
     let avatar = require('../../images/avatar_default.jpg');
     let myPseudo = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).username : null;
 
-    const openNav = () => {
+    const openNav = (e) => {
+        e.stopPropagation();
         document.getElementById("sidenav").style.width = "340px";
     }
 
-    const closeNav = () => {
+    const closeNav = (e) => {
+        e.stopPropagation();
         document.getElementById("sidenav").style.width = "0";
     }
 
