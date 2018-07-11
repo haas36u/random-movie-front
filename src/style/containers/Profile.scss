@@ -160,6 +160,13 @@
           }
         }
       }
+
+      .user-profile__movie-card[data-show-element='show'] {
+        display: flex;
+      }
+      .user-profile__movie-card[data-show-element='hide'] {
+        display: none;
+      }
     }
   }
   

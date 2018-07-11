@@ -17,9 +17,10 @@ export default class Profile extends Component {
         super(props);
         this.state = {
             user : {},
-            favoriteMoviesList : [],
-            wishedMoviesList : [],
-            watchedMoviesList : [],
+            movies : [],
+            showFavoriteMovies : true,
+            showWatchedMovies : true,
+            showWishedMovies : true,
             commentsList : [],
             notationsList : [],
             nbComments : 0,
@@ -29,13 +30,15 @@ export default class Profile extends Component {
             favortieMoviesTypeLegend: [],
             noDataWatchedMovies : null,
             noDataNotation : null,
-            loader : <span className="spinner"><svg width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-double-ring"><circle cx="50" cy="50" ng-attr-r="{{config.radius}}" ng-attr-stroke-width="{{config.width}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-dasharray="{{config.dasharray}}" fill="none" stroke-linecap="round" r="40" stroke-width="4" stroke="#bd4030" stroke-dasharray="62.83185307179586 62.83185307179586" transform="rotate(328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.3s" begin="0s" repeatCount="indefinite"></animateTransform></circle><circle cx="50" cy="50" ng-attr-r="{{config.radius2}}" ng-attr-stroke-width="{{config.width}}" ng-attr-stroke="{{config.c2}}" ng-attr-stroke-dasharray="{{config.dasharray2}}" ng-attr-stroke-dashoffset="{{config.dashoffset2}}" fill="none" stroke-linecap="round" r="35" stroke-width="4" stroke="#e0b83e" stroke-dasharray="54.97787143782138 54.97787143782138" stroke-dashoffset="54.97787143782138" transform="rotate(-328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg> </span>
+            loader : <span className="spinner"><svg width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="lds-double-ring"><circle cx="50" cy="50" ng-attr-r="{{config.radius}}" strokeWidth="{{config.width}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-dasharray="{{config.dasharray}}" fill="none" strokeLinecap="round" r="40" strokeWidth="4" stroke="#bd4030" strokeDasharray="62.83185307179586 62.83185307179586" transform="rotate(328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.3s" begin="0s" repeatCount="indefinite"></animateTransform></circle><circle cx="50" cy="50" ng-attr-r="{{config.radius2}}" strokeWidth="{{config.width}}" ng-attr-stroke="{{config.c2}}" strokeDasharray="{{config.dasharray2}}" strokeDashoffset="{{config.dashoffset2}}" fill="none" strokeLinecap="round" r="35" strokeWidth="4" stroke="#e0b83e" strokeDasharray="54.97787143782138 54.97787143782138" strokeDashoffset="54.97787143782138" transform="rotate(-328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg> </span>
         };
     }
 
     componentDidMount() {
         this.getUser();
-        this.getUserStats();
+        this.getUserMovies();
+        this.getFavoriteMoviesPieChart();
+        this.getNotationsBarChart();
     }
 
      /*User*/
@@ -79,30 +82,10 @@ export default class Profile extends Component {
         });
     }
 
-    getUserStats = () => {
+    getUserMovies = () => {
         axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/movies`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
-            const movies = response.data;
-            if(!Array.isArray(movies)) return;
-
-            const moviesList = movies.map(function(movie, key){
-                let cardClass = 'user-profile__movie-card ';
-
-                if (movie.liked)        cardClass += 'favorite_movies_container';
-                else if (movie.watched) cardClass += 'watched_movies_container';
-                else                    cardClass += 'wished_movies_container';
-
-                return(
-                    <Cell size={3} key={key} className={cardClass}>
-                        <ProfileMovieCard movie={movie}/>
-                    </Cell>
-                );
-            });
-
-            this.setState({moviesList: moviesList});
-
-            this.getFavoriteMoviesPieChart();
-            this.getNotationsBarChart();
+            this.setState({movies : response.data});
         });
     }
 
@@ -189,19 +172,14 @@ export default class Profile extends Component {
         });
     }
 
-    showHideMoviesList = (e, className) => {
+    showHideMoviesList = (e, selectedList) => {
         let btnClass = e.target.classList;
-        let moviesList = document.getElementsByClassName(className);
+        if (btnClass.length != 0 && btnClass.contains('active')) btnClass.remove('active');
+        else btnClass.add('active');
 
-        for (let i = 0; i < moviesList.length; i++) {
-            if (moviesList[i].offsetHeight > 0) {
-                moviesList[i].style.display = 'none';
-                btnClass.remove('active');
-            } else {
-                moviesList[i].style.display = 'flex';
-                btnClass.add('active');
-            }
-        }
+        if (selectedList === 'showFavoriteMovies') this.setState({showFavoriteMovies: !this.state.showFavoriteMovies});
+        if (selectedList === 'showWatchedMovies') this.setState({showWatchedMovies: !this.state.showWatchedMovies});
+        if (selectedList === 'showWishedMovies') this.setState({showWishedMovies: !this.state.showWishedMovies});
     };
 
     render() {
@@ -299,12 +277,33 @@ export default class Profile extends Component {
                     <Tab label="Favoris, déjà vus, à voir">
                         <div id="favorite" className="container pt-1">
                             <div className="text-right mb-2">
-                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'favorite_movies_container')}>Favoris</div>
-                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'watched_movies_container')}>Déjà vus</div>
-                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'wished_movies_container')}>à voir</div>
+                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'showFavoriteMovies')}>Favoris</div>
+                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'showWatchedMovies')}>Déjà vus</div>
+                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'showWishedMovies')}>à voir</div>
                             </div>
                             <Grid className="p-0">
-                                {this.state.moviesList}
+                                {
+                                    this.state.movies.map((movie, key) => {
+                                        let cardClass = 'user-profile__movie-card';
+                                        let booleanShowElement = true;
+
+                                        console.log(movie.title)
+                                        console.log(movie.liked, movie.watched, movie.wished)
+                                        let movieUserActions = {'showFavoriteMovies': movie.liked, 'showWatchedMovies': movie.watched, 'showWishedMovies' : movie.wished};
+
+                                        for (let key in movieUserActions) {
+                                            if (movieUserActions[key]) booleanShowElement = booleanShowElement && this.state[key];
+                                        }
+                                        
+                                        console.log(booleanShowElement)
+                                        let showElement = booleanShowElement ? 'show' : 'hide';
+                                        return(
+                                            <Cell size={3} key={key} className={cardClass} data-show-element={showElement}>
+                                                <ProfileMovieCard movie={movie}/>
+                                            </Cell>
+                                        );
+                                    })
+                                }
                             </Grid>
                         </div>
                     </Tab>
