@@ -48,7 +48,7 @@ export default class CollectionAddMovieModal extends Component {
                     <h2>Choisir une collection</h2>
                     <Grid>
                         <Cell size={6} className="text-center">
-                            <img src="https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg"/>
+                            <img src="https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg" alt="Poster"/>
                         </Cell>
                         <Cell size={6}>
                             <TextField id="collection-name" placeholder="Chercher une collection" type="search" onChange={this.handleChangeTitle}/>

@@ -44,7 +44,7 @@ export default class SocialItem extends Component {
                 </div>
                 <div className="social__item__content">
                     <p>{content}</p>
-                    <MovieCard movie={this.props.actuality.movie} />
+                    <MovieCard movie={this.props.actuality.movie} showUserAction={true}/>
                 </div>
             </div>
         );

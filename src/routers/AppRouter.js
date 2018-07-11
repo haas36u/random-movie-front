@@ -7,6 +7,7 @@ import Homepage from '../containers/Homepage';
 import MovieIndex from '../containers/Movie/MovieIndex';
 import MovieShow from '../containers/Movie/MovieShow';
 import CommentsIndex from '../containers/Comments/CommentsIndex';
+import CollectionUpdate from '../containers/Collection/CollectionUpdate';
 import SocialIndex from '../containers/Social/SocialIndex';
 import SocialUserSearch from '../containers/Social/SocialUserSearch';
 import SocialUserIndex from '../containers/Social/SocialUserIndex';
@@ -60,6 +61,7 @@ const AppRouter = () => (
                 <Route path="/movies" component={MovieIndex} exact={true}/>
                 <PrivateRoute path="/movies/:id/comments" component={CommentsIndex}/>
                 <Route path="/movies/:id" component={MovieShow}/>
+                <PrivateRoute path="/collections/:id/update" component={CollectionUpdate} />
                 <PrivateRoute path="/social" component={SocialIndex} exact={true} />
                 <PrivateRoute path="/social/search" component={SocialUserSearch} exact={true} />
                 <PrivateRoute path="/social/users" component={SocialUserIndex} exact={true} />

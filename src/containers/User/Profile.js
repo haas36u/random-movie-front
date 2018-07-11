@@ -64,7 +64,7 @@ export default class Profile extends Component {
                 return (
                     <Grid key={key}>
                         <Cell size={2} className="user-profile__movie-card">
-                            <ProfileMovieCard movie={item.movie}/>
+                            <ProfileMovieCard movie={item.movie} showUserAction={false}/>
                         </Cell>
                         <Cell size={10}>
                             <CommentMovieItem comment={item} user={user}/>
@@ -98,7 +98,7 @@ export default class Profile extends Component {
 
                 return(
                     <Cell size={3} key={key} className={cardClass}>
-                        <ProfileMovieCard movie={movie}/>
+                        <ProfileMovieCard movie={movie} showUserAction={true}/>
                     </Cell>
                 );
             });
@@ -197,18 +197,22 @@ export default class Profile extends Component {
 
         const collections = [
             {
+                id: 12,
                 name: 'Année 60',
                 movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
             },
             {
+                id: 13,
                 name: 'Mes comédies',
                 movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
             },
             {
+                id: 14,
                 name: 'Année 60',
                 movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
             },
             {
+                id: 15,
                 name: 'Mes comédies',
                 movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
             }
@@ -249,7 +253,7 @@ export default class Profile extends Component {
         }
         
         let avatar = require('../../images/avatar_default.jpg');
-        let tabIndex = this.props.location.query && this.props.location.query.tab ? this.props.location.query.tab : 1;
+        let tabIndex = this.props.location.query && this.props.location.query.tab ? this.props.location.query.tab : 0;
 
         const legend = {display: false};
 

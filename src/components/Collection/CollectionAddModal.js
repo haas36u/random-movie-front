@@ -47,8 +47,3 @@ export default class CollectionAddModal extends Component {
         );
     }
 }
-
-/*
-
- <DialogContainer id="collectionAddModal" visible={this.props.visible} onHide={hideModal} title="Etez-vous sur?" focusOnMount={false}>
-            </DialogContainer>*/
