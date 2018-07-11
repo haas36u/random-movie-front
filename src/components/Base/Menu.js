@@ -39,11 +39,11 @@ export default class Menu extends Component {
 
     return (
         <span>
-            <div id="sidenav">
-                <div className="sidenav_header background-trianglify" style={bgTriangle}>
+            <div id="sidenav" onClick={openNav}>
+                <Link to="/profile" onClick={closeNav} className="sidenav_header background-trianglify" style={bgTriangle}>
                     <Avatar src={avatar} role="presentation" />
                     <p>{myPseudo}</p>
-                </div>
+                </Link>
                 <Link to="/social" onClick={closeNav}> <i className="far fa-newspaper"></i> Fils d'actualités</Link>
                 <Link to="/movies" onClick={closeNav}><i className="material-icons md-xl">local_movies</i>Films</Link>
                 <div className="line"></div>
