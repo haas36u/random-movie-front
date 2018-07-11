@@ -3,6 +3,7 @@ import decode from 'jwt-decode';
 
 export const register = ({username, email, password}) => {
   return (dispatch) => {
+    requestHeader();
     axios.post(`${process.env.REACT_APP_API_URL}/register`, {username, email, password})
       .then((response) => {
         dispatch(loginSuccess(response.data.token))
@@ -22,6 +23,7 @@ const registrationFailed = (error) => {
 
 export const login = ({username, password}) => {
   return (dispatch) => {
+    requestHeader();
     axios.post(`${process.env.REACT_APP_API_URL}/login_check`, {username, password})
       .then((response) => {
         dispatch(loginSuccess(response.data.token))
@@ -73,4 +75,9 @@ export const logout = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('currentUser');
   window.location.href = '/login';
+}
+
+const requestHeader = () => {
+  axios.defaults.headers['Content-Type'] = 'application/json';
+  axios.defaults.headers['Accept'] = 'application/json';
 }

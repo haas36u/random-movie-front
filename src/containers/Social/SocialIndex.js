@@ -9,6 +9,8 @@ import SocialItemTableau from '../../components/Social/SocialItemTableau';
 export default class SocialIndex extends Component {
 
     constructor(props){
+        axios.defaults.headers['Content-Type'] = 'application/json';
+        axios.defaults.headers['Accept'] = 'application/json';
         super(props);
         this.state = {
             actualityList: [],
