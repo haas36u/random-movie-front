@@ -167,7 +167,7 @@ export default class Profile extends Component {
 
             for (let i = 0; i < 5; i++) {
                 if(parseInt(response.data[indexUserRating].mark, 10) === i +1 ){
-                    statsRating.push(response.data[indexUserRating].mark);
+                    statsRating.push(response.data[indexUserRating].nb_notations);
                     indexUserRating++;
                 }
                 else statsRating.push(0);
