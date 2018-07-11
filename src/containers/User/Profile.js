@@ -211,9 +211,28 @@ export default class Profile extends Component {
         }
         
         let avatar = require('../../images/avatar_default.jpg');
-        let tabIndex = this.props.location.query && this.props.location.query.tab ? this.props.location.query.tab : 0;
+        let tabIndex = this.props.location.query && this.props.location.query.tab ? this.props.location.query.tab : 1;
 
         const legend = {display: false};
+
+        const collections = [
+            {
+                name: 'Année 60',
+                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
+            },
+            {
+                name: 'Mes comédies',
+                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
+            },
+            {
+                name: 'Année 60',
+                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
+            },
+            {
+                name: 'Mes comédies',
+                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
+            }
+        ]
 
         return (
         <div id="user-profile">
@@ -292,8 +311,28 @@ export default class Profile extends Component {
                         </Grid>
                     </Tab>
                     <Tab label="Collections">
-                        <div id="collections" className="container">
-                            Fonctionnalité bientôt disponible
+                        <div id="collections" className="container pt-1">
+                            <Grid>
+                                <Cell size={4} className="movie_vignette addCollection">
+                                    <div>
+                                        <i className="fas fa-plus-circle"></i>
+                                    </div>
+                                    <p>Créer une collection</p>
+                                </Cell>
+                                { 
+                                    collections.map((collection, key) => {
+                                        return (
+                                            <Cell size={4} className="movie_vignette">
+                                                <div>
+                                                    <img src={collection.movie.cover}/>
+                                                </div>
+                                                <p>{collection.name}</p>
+                                            </Cell>
+                                        )
+                                    })
+                                }
+                               
+                            </Grid>
                         </div>
                     </Tab>
                     <Tab label="Favoris, déjà vus, à voir">
