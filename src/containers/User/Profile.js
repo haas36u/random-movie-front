@@ -8,6 +8,7 @@ import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
 import CommentMovieItem from '../../components/Comment/CommentMovieItem';
 import NotationsMovieList from '../../components/Notation/NotationsMovieList';
 import CollectionItem from '../../components/Collection/CollectionItem';
+import CollectionAddModal from '../../components/Collection/CollectionAddModal';
 var Trianglify = require('trianglify');
 
 export default class Profile extends Component {
@@ -219,7 +220,6 @@ export default class Profile extends Component {
             )
         })
 
-
         this.setState({collections: collectionsList});
     }
 
@@ -237,6 +237,10 @@ export default class Profile extends Component {
             }
         }
     };
+
+    openCollectionAddModal = () => {
+        document.getElementById('collectionAddModal').style.display = 'block';
+    }
 
     render() {
         if(!this.state) return( <div>Loading...</div>);
@@ -279,6 +283,8 @@ export default class Profile extends Component {
                     </div>
                 </div>
             </div>
+
+            <CollectionAddModal/>
             
             <TabsContainer defaultTabIndex={tabIndex}>
                 <Tabs className="container" tabId="profile-tab">
@@ -328,7 +334,7 @@ export default class Profile extends Component {
                     <Tab label="Collections">
                         <div id="collections" className="container pt-1">
                             <Grid>
-                                <Cell size={4} className="movie_vignette addCollection">
+                                <Cell size={4} className="movie_vignette addCollection" onClick={this.openCollectionAddModal}>
                                     <div>
                                         <i className="fas fa-plus-circle"></i>
                                     </div>
