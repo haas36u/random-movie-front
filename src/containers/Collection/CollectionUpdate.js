@@ -7,7 +7,11 @@ export default class CollectionUpdate extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            privacy : true
+        };
+
+        this.onChangePrivacy = this.onChangePrivacy.bind(this);
     }
 
     componentDidMount() {
@@ -19,10 +23,12 @@ export default class CollectionUpdate extends Component {
             headers: {'Content-Type': 'application/json-application'} 
         })
         .then((response) => {
-            const movies = response.data.map(function(movie) {
+            const movies = response.data.map((movie) => {
                 return(
-                    <Cell size={3}>
-                        <ProfileMovieCard movie={movie} showUserAction={false}/>
+                    <Cell size={3} >
+                         <div className="user-profile__movie-card">
+                            <img src={movie.cover} alt="" onClick={(e) => this.removeMovie(movie.id)}/>
+                        </div>
                     </Cell>
                 )  
             });
@@ -33,42 +39,64 @@ export default class CollectionUpdate extends Component {
         });
     }
 
-    handleChangeTitle = (value) => {
-        console.log(value)
+    removeMovie = (movieId) => {
+        console.log('remove', movieId)
+    }
+
+    onChangePrivacy(e){
+        this.setState({privacy: e.target.checked});
+    };
+
+    handleUpdateCollection = (e) => {
+        e.preventDefault();
+        const name = e.target.elements.name.value.trim();
+
+        console.log(name, this.state.privacy)
+    }
+
+    goToCollections = () => {
+        window.location.href = `/profile?tab=${this.props.match.params.id}`;
+    }
+
+    deleteCollection = () => {
+        console.log(this.props.match.params.id)
+        window.location.href = `/profile`;
     }
 
     render() {
         return (
             <div className="container">
-                <div className="btn left mt-3">Retour</div>
+                <div className="btn left mt-3" onClick={this.goToCollections}>Retour</div>
                 <h2 className="text-center mt-3">Modifier la collection</h2>
-                <Grid className="vertically-centered p-0">
-                    <Cell size={6}>
-                        <label for="collectionn-name" >Titre de la collection</label>
-                    </Cell>
-                    <Cell size={6}>
-                        <TextField id="collection-name" type="text" onChange={this.handleChangeTitle}/>
-                    </Cell>
-                    <Cell size={6}>
-                        <label for="collectionn-privacy" >Garder cette collection privée</label>
-                    </Cell>
-                    <Cell size={6}>
-                        <label className="switch">
-                            <input id="collection-privacy" type="checkbox"/>
-                            <span className="slider"></span>
-                        </label>
-                    </Cell>
-                    <Cell size={12} className="text-center mt-1">
-                        <div className="btn">Sauvegarder</div>
-                    </Cell>
-                </Grid>
+                <form onSubmit={this.handleUpdateCollection}>
+                    <Grid className="vertically-centered p-0">
+                        <Cell size={6}>
+                            <label for="collection-name" >Titre de la collection</label>
+                        </Cell>
+                        <Cell size={6}>
+                            <TextField id="collection-name" name="name" type="text"/>
+                        </Cell>
+                        <Cell size={6}>
+                            <label for="collectionn-privacy" >Garder cette collection privée</label>
+                        </Cell>
+                        <Cell size={6}>
+                            <label className="switch">
+                                <input id="collection-privacy" type="checkbox" checked={this.state.privacy} onChange={this.onChangePrivacy}/>
+                                <span className="slider"></span>
+                            </label>
+                        </Cell>
+                        <Cell size={12} className="text-center mt-1">
+                            <button className="btn">Sauvegarder</button>
+                        </Cell>
+                    </Grid>
+                </form>
                 <h2>Films de ma collection</h2>
                 <p>Cliquez sur un film pour le supprimer</p>
                 <Grid>
                     {this.state.movies}
                 </Grid>
                 <div className="text-right mb-2">
-                    <div className="btn color-red">Supprimer la collection</div>
+                    <div className="btn color-red" onClick={this.deleteCollection}>Supprimer la collection</div>
                 </div>
             </div>
         );

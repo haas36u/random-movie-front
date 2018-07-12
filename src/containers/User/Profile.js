@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
 import {Bar, Pie} from 'react-chartjs-2';
 import moment from 'moment';
@@ -9,6 +10,7 @@ import CommentMovieItem from '../../components/Comment/CommentMovieItem';
 import NotationsMovieList from '../../components/Notation/NotationsMovieList';
 import CollectionItem from '../../components/Collection/CollectionItem';
 import CollectionAddModal from '../../components/Collection/CollectionAddModal';
+import CollectionAddMovieModal from '../../components/Collection/CollectionAddMovieModal';
 var Trianglify = require('trianglify');
 
 export default class Profile extends Component {
@@ -20,6 +22,7 @@ export default class Profile extends Component {
         this.state = {
             user : {},
             collections : [],
+            collection : [],
             favoriteMoviesList : [],
             wishedMoviesList : [],
             watchedMoviesList : [],
@@ -32,7 +35,8 @@ export default class Profile extends Component {
             favortieMoviesTypeLegend: [],
             noDataWatchedMovies : null,
             noDataNotation : null,
-            loader : <span className="spinner"><svg width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-double-ring"><circle cx="50" cy="50" ng-attr-r="{{config.radius}}" ng-attr-stroke-width="{{config.width}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-dasharray="{{config.dasharray}}" fill="none" stroke-linecap="round" r="40" stroke-width="4" stroke="#bd4030" stroke-dasharray="62.83185307179586 62.83185307179586" transform="rotate(328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.3s" begin="0s" repeatCount="indefinite"></animateTransform></circle><circle cx="50" cy="50" ng-attr-r="{{config.radius2}}" ng-attr-stroke-width="{{config.width}}" ng-attr-stroke="{{config.c2}}" ng-attr-stroke-dasharray="{{config.dasharray2}}" ng-attr-stroke-dashoffset="{{config.dashoffset2}}" fill="none" stroke-linecap="round" r="35" stroke-width="4" stroke="#e0b83e" stroke-dasharray="54.97787143782138 54.97787143782138" stroke-dashoffset="54.97787143782138" transform="rotate(-328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg> </span>
+            selectedMovie: {id: null, cover: null, title: null},
+            loader : this.loader
         };
     }
 
@@ -41,6 +45,8 @@ export default class Profile extends Component {
         this.getUserStats();
         this.getCollections();
     }
+    
+    loader = <span className="spinner"><svg width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="lds-double-ring"><circle cx="50" cy="50" ng-attr-r="{{config.radius}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-dasharray="{{config.dasharray}}" fill="none" strokeLinecap="round" r="40" strokeWidth="4" stroke="#bd4030" strokeDasharray="62.83185307179586 62.83185307179586" transform="rotate(328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.3s" begin="0s" repeatCount="indefinite"></animateTransform></circle><circle cx="50" cy="50" ng-attr-r="{{config.radius2}}" ng-attr-stroke="{{config.c2}}" fill="none" strokeLinecap="round" r="35" strokeWidth="4" stroke="#e0b83e" strokeDasharray="54.97787143782138 54.97787143782138" strokeDashoffset="54.97787143782138" transform="rotate(-328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg> </span>;
 
      /*User*/
      getUser = () => {
@@ -60,11 +66,11 @@ export default class Profile extends Component {
                 );
             });
 
-            let commentsList = fullUser.comments.map(function(item, key){
+            let commentsList = fullUser.comments.map((item, key) => {
                 return (
                     <Grid key={key}>
                         <Cell size={2} className="user-profile__movie-card">
-                            <ProfileMovieCard movie={item.movie} showUserAction={false}/>
+                            <ProfileMovieCard movie={item.movie} showUserAction={false} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
                         </Cell>
                         <Cell size={10}>
                             <CommentMovieItem comment={item} user={user}/>
@@ -89,7 +95,7 @@ export default class Profile extends Component {
             const movies = response.data;
             if(!Array.isArray(movies)) return;
 
-            const moviesList = movies.map(function(movie, key){
+            const moviesList = movies.map((movie, key) => {
                 let cardClass = 'user-profile__movie-card ';
 
                 if (movie.liked)        cardClass += 'favorite_movies_container';
@@ -98,7 +104,7 @@ export default class Profile extends Component {
 
                 return(
                     <Cell size={3} key={key} className={cardClass}>
-                        <ProfileMovieCard movie={movie} showUserAction={true}/>
+                        <ProfileMovieCard movie={movie} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
                     </Cell>
                 );
             });
@@ -194,7 +200,6 @@ export default class Profile extends Component {
     }
 
     getCollections = () => {
-
         const collections = [
             {
                 id: 12,
@@ -218,13 +223,53 @@ export default class Profile extends Component {
             }
         ];
 
-        const collectionsList = collections.map((collection, key) => {
+        const collectionsList = collections.map((collection) => {
             return (
-               <CollectionItem collection={collection} key={key}/>
+               <CollectionItem collection={collection} key={collection.id} getCollection={this.getCollection}/>
             )
-        })
+        });
+
+        if (document.getElementById('userCollection')) document.getElementById('userCollection').style.display = 'none';
+        if (document.getElementById('userCollections')) document.getElementById('userCollections').style.display = 'flex';
 
         this.setState({collections: collectionsList});
+    }
+
+    getCollection = (collectionId) => {
+        console.log(collectionId)
+        this.setState({loader: this.loader});
+        const response = 
+            {
+                id: 12,
+                name: 'Année 60',
+                isPrivate : true,
+                movies: [ {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}]
+            };
+
+        const privacy = response.isPrivate ? <i class="fas fa-lock" title="Visible uniquement par vous"></i> : <i class="fas fa-globe-americas" title="Visible en public"></i>;
+
+        const collection = (
+            <div>
+                <div className="userCollection__header">
+                    <h2>{response.name}{privacy}</h2>
+                    <Link to={`/collections/${response.id}/update`} className="btn">Modifier</Link>
+                </div>
+                <Grid>
+                    {response.movies.map((movie) => {
+                        return (
+                        <Cell size={3} key={movie.id} className="user-profile__movie-card ">
+                            <ProfileMovieCard movie={movie} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
+                        </Cell>
+                        )
+                    })}
+                </Grid>
+            </div>
+        );
+
+        if (document.getElementById('userCollections')) document.getElementById('userCollections').style.display = 'none';
+        if (document.getElementById('userCollection')) document.getElementById('userCollection').style.display = 'block';
+
+        this.setState({collection: collection});
     }
 
     showHideMoviesList = (e, className) => {
@@ -242,8 +287,14 @@ export default class Profile extends Component {
         }
     };
 
+    openCollectionAddMovieModal = (e, movie) => {
+        e.stopPropagation();
+        this.setState({selectedMovie: movie});
+        if(document.getElementById('collectionAddMovieModal')) document.getElementById('collectionAddMovieModal').style.display = 'flex';
+    }
+
     openCollectionAddModal = () => {
-        document.getElementById('collectionAddModal').style.display = 'flex';
+        if(document.getElementById('collectionAddModal')) document.getElementById('collectionAddModal').style.display = 'flex';
     }
 
     render() {
@@ -289,6 +340,7 @@ export default class Profile extends Component {
             </div>
 
             <CollectionAddModal/>
+            <CollectionAddMovieModal movie={this.state.selectedMovie}/>
             
             <TabsContainer defaultTabIndex={tabIndex}>
                 <Tabs className="container" tabId="profile-tab">
@@ -335,9 +387,9 @@ export default class Profile extends Component {
                             </Cell>
                         </Grid>
                     </Tab>
-                    <Tab label="Collections">
+                    <Tab label="Collections" onClick={this.getCollections}>
                         <div id="collections" className="container pt-1">
-                            <Grid>
+                            <Grid id="userCollections">
                                 <Cell size={4} className="movie_vignette addCollection" onClick={this.openCollectionAddModal}>
                                     <div>
                                         <i className="fas fa-plus-circle"></i>
@@ -346,6 +398,9 @@ export default class Profile extends Component {
                                 </Cell>
                                 {this.state.collections}
                             </Grid>
+                            <div id="userCollection">
+                                {this.state.collection}
+                            </div>
                         </div>
                     </Tab>
                     <Tab label="Favoris, déjà vus, à voir">

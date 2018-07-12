@@ -22,6 +22,7 @@ export default class MovieShow extends Component {
       currentPage: 1,
       itemsPerPage: 0,
       totalItems: 0,
+      selectedMovie: {id: null, cover: null, title: null}
     };
   }
   
@@ -109,21 +110,21 @@ export default class MovieShow extends Component {
     }
 
     changeMoviesList = (data) => {
-      const moviesList = data.data.map(function(item){
+      const moviesList = data.data.map((item) => {
         item.attributes.id = item.attributes._id;
           return(
-              <MovieCard key={item.id} movie={item.attributes}  showUserAction={true}/>
+              <MovieCard key={item.id} movie={item.attributes} showUserAction={true} openCollectionModal={this.openCollectionModal}/>
           );
       });
 
       this.setState(() => {
-          return {
-            moviesList: moviesList,
-            currentPage: data.meta.currentPage,
-            itemsPerPage: data.meta.itemsPerPage,
-            totalItems: data.meta.totalItems,
-          }
-        });
+        return {
+          moviesList: moviesList,
+          currentPage: data.meta.currentPage,
+          itemsPerPage: data.meta.itemsPerPage,
+          totalItems: data.meta.totalItems,
+        }
+      });
     }
   
   handlePageChange = (pageNumber) => {
@@ -134,6 +135,12 @@ export default class MovieShow extends Component {
 
   handleGenreChange = (genreId) => {
     this.setState({genreId: genreId});
+  }
+
+  openCollectionAddMovieModal = (e, movie) => {
+    e.stopPropagation();
+    this.setState({selectedMovie: movie});
+    if(document.getElementById('collectionAddMovieModal')) document.getElementById('collectionAddMovieModal').style.display = 'flex';
   }
   
   render() {
@@ -159,7 +166,7 @@ export default class MovieShow extends Component {
           </Cell>
           <Cell size={9} offset={3} className="mt-0 mr-0">
 
-            <CollectionAddMovieModal/>
+            <CollectionAddMovieModal movie={this.state.selectedMovie}/>
             <div className="movies-list">
               {this.state.moviesList}
             </div>

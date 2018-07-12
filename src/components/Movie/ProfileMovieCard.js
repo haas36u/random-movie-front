@@ -16,7 +16,7 @@ export default class ProfileMovieCard extends Component {
         }
 
         const showUserActions = () => {
-            if (this.props.showUserAction) return (<MovieActions movieId={this.props.movie.id} userActions={userActions}/>);
+            if (this.props.showUserAction) return (<MovieActions movie={this.props.movie} userActions={userActions} openCollectionAddMovieModal={this.props.openCollectionAddMovieModal}/>);
         }
     
         return (
