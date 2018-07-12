@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MovieActions from '../../components/Movie/MovieActions';
-import moment from 'moment'
+import moment from 'moment';
 
 export default class MovieCard extends Component {
 
@@ -20,12 +20,16 @@ export default class MovieCard extends Component {
             wished : this.props.movie.wished
         }
 
+        const showUserActions = () => {
+            if (this.props.showUserAction) return (<MovieActions movie={this.props.movie} userActions={userActions} openCollectionAddMovieModal={this.props.openCollectionAddMovieModal}/>);
+        }
+
         return (
             <div className="movie_vignette">
                 <div style={bg}></div>
                 <div className="actions_buttons" onClick={goToMovieShow}>
                     <div className="right">
-                        <MovieActions movieId={this.props.movie.id} userActions={userActions}/>
+                        {showUserActions()}
                     </div>
                 </div>
                 <div className="movie_title">
