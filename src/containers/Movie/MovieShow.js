@@ -19,10 +19,10 @@ export default class MovieShow extends Component {
         super(props);
         this.state = {
             movie : {},
+            communityNote : 0,
             userActions : {},
             casting: [],
             similars : [],
-            userAlreadyRate: true,
             commentModalVisible: false,
             selectedMovie: {id: null, cover: null, title: null}
         };
@@ -32,11 +32,9 @@ export default class MovieShow extends Component {
         this.getMovie();
         this.getCasting();
         this.getSimilars();
-
-        /*Simulate user already mark*/
-        let mark = 1;
-        if(isAuthenticated() && this.state.userAlreadyRate) document.getElementById('rate' + mark).checked = true;
     }
+
+    RATING = {1 : 'A éviter',  2 : 'Moyen', 3 : 'Super', 4 : 'Excellent', 5 : 'Incroyable'};
 
     /*MOVIE*/
     getMovie = () => {
@@ -59,7 +57,18 @@ export default class MovieShow extends Component {
                 wished  : movie.wished
             }
 
-            this.setState({movie : movie, userActions: userActions});
+            if (movie.mark) document.getElementById('rate' + movie.mark).checked = true;
+
+            let communityNote;
+            if (!movie.community_note) {
+                communityNote = <span>Aucune note pour ce film</span>;
+            } else {
+                communityNote = (
+                    <span>{movie.community_note} étoiles - {this.RATING[Math.round(movie.community_note)]}</span>
+                )
+            }
+
+            this.setState({movie : movie, userActions: userActions, communityNote: communityNote});
         })
         .catch(error => {
             console.log(error)
@@ -158,17 +167,18 @@ export default class MovieShow extends Component {
                                 <form>
                                     <fieldset className="starability-checkmark">
                                         <input type="radio" id="rate1" name="rating" value="1" onClick={(e) => this.sendNotation(1)}/>
-                                        <label for="rate1" title="Terrible">1 star</label>
+                                        <label for="rate1" title={this.RATING[1]}>1 star</label>
                                         <input type="radio" id="rate2" name="rating" value="2" onClick={(e) => this.sendNotation(2)}/>
-                                        <label for="rate2" title="Not good">2 stars</label>
+                                        <label for="rate2" title={this.RATING[2]}>2 stars</label>
                                         <input type="radio" id="rate3" name="rating" value="3" onClick={(e) => this.sendNotation(3)}/>
-                                        <label for="rate3" title="Average">3 stars</label>
+                                        <label for="rate3" title={this.RATING[3]}>3 stars</label>
                                         <input type="radio" id="rate4" name="rating" value="4" onClick={(e) => this.sendNotation(4)}/>
-                                        <label for="rate4" title="Very good">4 stars</label>
+                                        <label for="rate4" title={this.RATING[4]}>4 stars</label>
                                         <input type="radio" id="rate5" name="rating" value="5" onClick={(e) => this.sendNotation(5)}/>
-                                        <label for="rate5" title="Amazing">5 stars</label>
+                                        <label for="rate5" title={this.RATING[5]}>5 stars</label>
                                     </fieldset>
                                 </form>
+                                {!this.state.movie.mark && <p className="text-italic">Vous n'avez pas encore noté ce film</p>}
                             </div>
                         </Cell>
                         <Cell size={6} className="text-right">
@@ -223,7 +233,7 @@ export default class MovieShow extends Component {
                                         <p><span className="text-bold">Genres : </span> {this.state.movie.genres}</p>
                                         <p className="public_rate">Spectateurs</p>
                                         <div>
-                                            <span>Aucune note pour ce film</span>
+                                            {this.state.communityNote}
                                         </div>
                                     </Cell>
                                     <Cell size={5} className="mt-0 text-right">
