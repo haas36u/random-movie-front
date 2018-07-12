@@ -22,6 +22,7 @@ export default class Profile extends Component {
         this.state = {
             user : {},
             movies : [],
+            moviesFilter : [],
             collections : [],
             collection : [],
             showFavoriteMovies : true,
@@ -94,7 +95,7 @@ export default class Profile extends Component {
 
     getUserMovies = () => {
         axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/movies`, headers: {"Authorization" : localStorage.getItem('token')}}).then((response) => {
-            this.setState({movies : response.data});
+            this.setState({movies : response.data, moviesFilter: response.data});
         });
     }
 
@@ -259,10 +260,25 @@ export default class Profile extends Component {
         if (btnClass.length != 0 && btnClass.contains('active')) btnClass.remove('active');
         else btnClass.add('active');
 
-        if (selectedList === 'showFavoriteMovies') this.setState({showFavoriteMovies: !this.state.showFavoriteMovies});
-        if (selectedList === 'showWatchedMovies') this.setState({showWatchedMovies: !this.state.showWatchedMovies});
-        if (selectedList === 'showWishedMovies') this.setState({showWishedMovies: !this.state.showWishedMovies});
+        if (selectedList === 'showFavoriteMovies') this.setState({showFavoriteMovies: !this.state.showFavoriteMovies, moviesFilter : this.state.movies}, this.hideOrDisplayMovies);
+        if (selectedList === 'showWatchedMovies')  this.setState({showWatchedMovies: !this.state.showWatchedMovies, moviesFilter : this.state.movies}, this.hideOrDisplayMovies);
+        if (selectedList === 'showWishedMovies')   this.setState({showWishedMovies: !this.state.showWishedMovies, moviesFilter : this.state.movies}, this.hideOrDisplayMovies);
     };
+
+    hideOrDisplayMovies = () => {
+        let moviesResult = this.state.moviesFilter.filter((current) => {
+            let match = false;
+            if (this.state.showWatchedMovies == true && current.watched == true)
+            match = true
+            if (this.state.showFavoriteMovies == true && current.liked == true)
+            match = true
+            if (this.state.showWishedMovies == true && current.wished == true)
+            match = true
+            return match;
+        });
+
+        this.setState({moviesFilter: moviesResult});
+    }
 
     openCollectionAddMovieModal = (e, movie) => {
         e.stopPropagation();
@@ -389,22 +405,9 @@ export default class Profile extends Component {
                             </div>
                             <Grid className="p-0">
                                 {
-                                    this.state.movies.map((movie, key) => {
-                                        let cardClass = 'user-profile__movie-card';
-                                        let booleanShowElement = true;
-
-                                        console.log(movie.title)
-                                        console.log(movie.liked, movie.watched, movie.wished)
-                                        let movieUserActions = {'showFavoriteMovies': movie.liked, 'showWatchedMovies': movie.watched, 'showWishedMovies' : movie.wished};
-
-                                        for (let key in movieUserActions) {
-                                            if (movieUserActions[key]) booleanShowElement = booleanShowElement && this.state[key];
-                                        }
-                                        
-                                        console.log(booleanShowElement)
-                                        let showElement = booleanShowElement ? 'show' : 'hide';
+                                    this.state.moviesFilter.map((movie) => {
                                         return(
-                                            <Cell size={3} key={key} className={cardClass} data-show-element={showElement}>
+                                            <Cell size={3} key={movie.id} className="user-profile__movie-card">
                                                 <ProfileMovieCard movie={movie} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
                                             </Cell>
                                         );
