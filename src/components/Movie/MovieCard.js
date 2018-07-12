@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import MovieActions from '../../components/Movie/MovieActions';
-import moment from 'moment'
+import moment from 'moment';
 
 export default class MovieCard extends Component {
 
@@ -21,7 +21,7 @@ export default class MovieCard extends Component {
         }
 
         const showUserActions = () => {
-            if (this.props.showUserAction) return (<MovieActions movieId={this.props.movie.id} userActions={userActions}/>);
+            if (this.props.showUserAction) return (<MovieActions movie={this.props.movie} userActions={userActions} openCollectionModal={this.props.openCollectionModal}/>);
         }
 
         return (

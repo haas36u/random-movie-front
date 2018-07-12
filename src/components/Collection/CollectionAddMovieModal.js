@@ -6,52 +6,70 @@ export default class CollectionAddMovieModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            collections : []
+            collections : [],
+            selectedCollection: null
         };
     }
 
     componentDidMount() {
-        this.getCollections();
-    }
-
-    handleChangeTitle = (value) => {
-        console.log(value)
-    }
-
-    getCollections = () => {
         const collections = [
-            {name : 'Super films'},
-            {name: 'Pour maman'}
+            {id: 1, name : 'Super films'},
+            {id: 2, name: 'Pour maman'}
         ]
+        this.getCollections(collections);
+    }
 
-        const collectionsList = collections.map(function(collection, key){
+    getCollections = (collections) => {
+        const collectionsList = collections.map((collection) => {
             return(
-                <li key={key}>{collection.name}</li>
+                <li key={collection.id} onClick={(e) => this.selectCollection(collection.id)} className="cursor">{collection.name}</li>
             );
         });
 
         this.setState({collections: collectionsList});
     }
+
+    handleSearchCollection = (e) => {
+        e.preventDefault();
+        const collectionTitle = e.target.elements.title.value.trim();
+        console.log(collectionTitle)
+        const collections = [
+            {id: 1, name : collectionTitle}
+        ]
+        this.getCollections( collections);
+    }
+
+    selectCollection = (collectionId) => {
+        this.setState({selectedCollection: collectionId});
+    }
+
+    saveMovieInCollection = () => {
+        console.log(this.state.selectedCollection)
+    }
+
+    hideModal = (e) => {
+        if(e.target === document.getElementById('collectionAddMovieModal')) this.cancel();
+    }
+
+    cancel = () => {
+        document.getElementById('collectionAddMovieModal').style.display = 'none';
+    }
     
     render() {
-        const hideModal = (e) => {
-            if(e.target === document.getElementById('collectionAddMovieModal')) cancel();
-        }
-
-        const cancel = () => {
-            document.getElementById('collectionAddMovieModal').style.display = 'none';
-        }
 
         return (
-           <div className="modal" id="collectionAddMovieModal" onClick={hideModal}>
+           <div className="modal" id="collectionAddMovieModal" onClick={this.hideModal}>
                 <div className="collectionModal modal-content">
                     <h2>Choisir une collection</h2>
                     <Grid>
                         <Cell size={6} className="text-center">
-                            <img src="https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg" alt="Poster"/>
+                            <img src={this.props.movie.cover} alt={this.props.movie.title}/>
                         </Cell>
                         <Cell size={6}>
-                            <TextField id="collection-name" placeholder="Chercher une collection" type="search" onChange={this.handleChangeTitle}/>
+                            <form onSubmit={this.handleSearchCollection} className="searchContainer">
+                                <TextField id="collection-id" name="title" placeholder="Chercher une collection" type="search"/>
+                                <button><i className="fas fa-search"></i></button>
+                            </form>
                             <ul>
                                 {this.state.collections}
                             </ul>
@@ -68,8 +86,8 @@ export default class CollectionAddMovieModal extends Component {
                     </Grid>
 
                     <div className="text-right">
-                        <div className="btn mr-1 cancel" onClick={cancel}>Annuler</div>
-                        <div className="btn">Ajouter à la collection</div>
+                        <div className="btn mr-1 cancel" onClick={this.cancel}>Annuler</div>
+                        <div className="btn" onClick={this.saveMovieInCollection}>Ajouter à la collection</div>
                     </div>
                 </div>
             </div>
