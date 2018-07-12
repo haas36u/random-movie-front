@@ -1,21 +1,33 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Grid, Cell, TextField } from 'react-md';
-import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
 
 export default class CollectionUpdate extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            privacy : true
+            collection : {},
+            isPublic : true
         };
 
         this.onChangePrivacy = this.onChangePrivacy.bind(this);
     }
 
     componentDidMount() {
+        this.getCollection();
         this.getMovies();
+    }
+
+    getCollection = () => {
+        const collection =  {
+            id: 12,
+            name: 'Année 60',
+            isPublic: true,
+            movies : [{cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}]
+        };
+
+        this.setState({collection : collection, isPublic : collection.isPublic});
     }
     
     getMovies = () => {
@@ -44,14 +56,14 @@ export default class CollectionUpdate extends Component {
     }
 
     onChangePrivacy(e){
-        this.setState({privacy: e.target.checked});
+        this.setState({isPublic: !e.target.checked});
     };
 
     handleUpdateCollection = (e) => {
         e.preventDefault();
         const name = e.target.elements.name.value.trim();
 
-        console.log(name, this.state.privacy)
+        console.log(name, this.state.isPublic)
     }
 
     goToCollections = () => {
@@ -81,7 +93,7 @@ export default class CollectionUpdate extends Component {
                         </Cell>
                         <Cell size={6}>
                             <label className="switch">
-                                <input id="collection-privacy" type="checkbox" checked={this.state.privacy} onChange={this.onChangePrivacy}/>
+                                <input id="collection-privacy" type="checkbox" checked={this.state.isPublic} onChange={this.onChangePrivacy}/>
                                 <span className="slider"></span>
                             </label>
                         </Cell>

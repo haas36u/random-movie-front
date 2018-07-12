@@ -113,7 +113,7 @@ export default class MovieShow extends Component {
       const moviesList = data.data.map((item) => {
         item.attributes.id = item.attributes._id;
           return(
-              <MovieCard key={item.id} movie={item.attributes} showUserAction={true} openCollectionModal={this.openCollectionModal}/>
+              <MovieCard key={item.id} movie={item.attributes} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
           );
       });
 

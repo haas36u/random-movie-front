@@ -187,22 +187,31 @@ export default class Profile extends Component {
             {
                 id: 12,
                 name: 'Année 60',
-                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
+                isPublic: true,
+                movies : [
+                    {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"},
+                    {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'},
+                    {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
+                ]
             },
             {
                 id: 13,
                 name: 'Mes comédies',
-                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
+                isPublic : false,
+                movies : [{cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'},
+                {cover : "https://image.tmdb.org/t/p/w500/9EwjVrXqYmm3Q5xWJyG1TmtTF8j.jpg", id: 12, title: 'nemo'}]
             },
             {
                 id: 14,
                 name: 'Année 60',
-                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
+                isPublic : false,
+                movies : [{cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}]
             },
             {
                 id: 15,
                 name: 'Mes comédies',
-                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
+                isPublic : true,
+                movies : [{cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}]
             }
         ];
 
@@ -257,7 +266,7 @@ export default class Profile extends Component {
 
     showHideMoviesList = (e, selectedList) => {
         let btnClass = e.target.classList;
-        if (btnClass.length != 0 && btnClass.contains('active')) btnClass.remove('active');
+        if (btnClass.length !== 0 && btnClass.contains('active')) btnClass.remove('active');
         else btnClass.add('active');
 
         if (selectedList === 'showFavoriteMovies') this.setState({showFavoriteMovies: !this.state.showFavoriteMovies, moviesFilter : this.state.movies}, this.hideOrDisplayMovies);
@@ -268,11 +277,11 @@ export default class Profile extends Component {
     hideOrDisplayMovies = () => {
         let moviesResult = this.state.moviesFilter.filter((current) => {
             let match = false;
-            if (this.state.showWatchedMovies == true && current.watched == true)
+            if (this.state.showWatchedMovies === true && current.watched === true)
             match = true
-            if (this.state.showFavoriteMovies == true && current.liked == true)
+            if (this.state.showFavoriteMovies === true && current.liked === true)
             match = true
-            if (this.state.showWishedMovies == true && current.wished == true)
+            if (this.state.showWishedMovies === true && current.wished === true)
             match = true
             return match;
         });
@@ -383,7 +392,7 @@ export default class Profile extends Component {
                     <Tab label="Collections" onClick={this.getCollections}>
                         <div id="collections" className="container pt-1">
                             <Grid id="userCollections">
-                                <Cell size={4} className="movie_vignette addCollection" onClick={this.openCollectionAddModal}>
+                                <Cell size={4} className="collection_vignette addCollection" onClick={this.openCollectionAddModal}>
                                     <div>
                                         <i className="fas fa-plus-circle"></i>
                                     </div>
