@@ -21,7 +21,7 @@ export default class MovieCard extends Component {
         }
 
         const showUserActions = () => {
-            if (this.props.showUserAction) return (<MovieActions movie={this.props.movie} userActions={userActions} openCollectionModal={this.props.openCollectionModal}/>);
+            if (this.props.showUserAction) return (<MovieActions movie={this.props.movie} userActions={userActions} openCollectionAddMovieModal={this.props.openCollectionAddMovieModal}/>);
         }
 
         return (

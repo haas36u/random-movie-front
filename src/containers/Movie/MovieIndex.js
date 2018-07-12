@@ -137,7 +137,7 @@ export default class MovieShow extends Component {
     this.setState({genreId: genreId});
   }
 
-  openCollectionModal = (e, movie) => {
+  openCollectionAddMovieModal = (e, movie) => {
     e.stopPropagation();
     this.setState({selectedMovie: movie});
     if(document.getElementById('collectionAddMovieModal')) document.getElementById('collectionAddMovieModal').style.display = 'flex';

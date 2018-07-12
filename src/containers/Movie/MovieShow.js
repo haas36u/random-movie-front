@@ -9,6 +9,7 @@ import moment from 'moment';
 import ActorCard from '../../components/Actor/ActorCard';
 import MovieCard from '../../components/Movie/MovieCard';
 import MovieActions from '../../components/Movie/MovieActions';
+import CollectionAddMovieModal from '../../components/Collection/CollectionAddMovieModal';
 
 export default class MovieShow extends Component {
 
@@ -22,8 +23,19 @@ export default class MovieShow extends Component {
             casting: [],
             similars : [],
             userAlreadyRate: true,
-            commentModalVisible: false
+            commentModalVisible: false,
+            selectedMovie: {id: null, cover: null, title: null}
         };
+    }
+
+    componentDidMount() {
+        this.getMovie();
+        this.getCasting();
+        this.getSimilars();
+
+        /*Simulate user already mark*/
+        let mark = 1;
+        if(isAuthenticated() && this.state.userAlreadyRate) document.getElementById('rate' + mark).checked = true;
     }
 
     /*MOVIE*/
@@ -78,9 +90,9 @@ export default class MovieShow extends Component {
         axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/similars`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             let similars = response.data;
-            similars = similars.map(function(item, key){
+            similars = similars.map((item) => {
                 return(
-                    <MovieCard key={key} movie={item} showUserAction={true}/>
+                    <MovieCard key={item.id} movie={item} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
                 );
             });
             this.setState({similars : similars});
@@ -90,18 +102,14 @@ export default class MovieShow extends Component {
         });
     }
 
-    componentDidMount() {
-        this.getMovie();
-        this.getCasting();
-        this.getSimilars();
-
-        /*Simulate user already mark*/
-        let mark = 1;
-        if(isAuthenticated() && this.state.userAlreadyRate) document.getElementById('rate' + mark).checked = true;
-    }
-
     handleChangeComment = (value) => {
         this.setState({comment: value});
+    }
+
+    openCollectionAddMovieModal = (e, movie) => {
+        e.stopPropagation();
+        this.setState({selectedMovie: movie});
+        if(document.getElementById('collectionAddMovieModal')) document.getElementById('collectionAddMovieModal').style.display = 'flex';
     }
 
     render() {
@@ -202,6 +210,7 @@ export default class MovieShow extends Component {
         return (
             <div id="movieShow">
                 <div id="movie-container">
+                    <CollectionAddMovieModal movie={this.state.selectedMovie}/>
                     <div className="container">
                         <Grid>
                             <Cell size={4}><img src={this.state.movie.cover} alt={this.state.movie.title}/></Cell>
@@ -218,7 +227,7 @@ export default class MovieShow extends Component {
                                         </div>
                                     </Cell>
                                     <Cell size={5} className="mt-0 text-right">
-                                        <MovieActions movieId={this.state.movie.id} userActions={this.state.userActions}/>
+                                        <MovieActions movie={this.state.movie} userActions={this.state.userActions} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
                                     </Cell>
                                     <Cell size={12}>
                                         <h5>Synopsis et détails</h5>
