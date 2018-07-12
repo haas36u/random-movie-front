@@ -8,6 +8,7 @@
     height: 100%;
     background-color: rgb(0,0,0); 
     background-color: rgba(0,0,0,0.4);
+    animation: opac 0.8s;
 }
 
 .modal-content {
@@ -17,4 +18,9 @@
     border: 1px solid #888;
     width: 80%;
     max-width: 1000px;
+}
+
+@keyframes opac{
+    from{opacity:0}
+    to{opacity:1}
 }

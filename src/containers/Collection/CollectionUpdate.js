@@ -1,14 +1,19 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Grid, Cell, TextField } from 'react-md';
+import { Grid, Cell, TextField, DialogContainer } from 'react-md';
 
 export default class CollectionUpdate extends Component {
 
     constructor(props) {
+        axios.defaults.headers['Content-Type'] = 'application/json';
+        axios.defaults.headers['Accept'] = 'application/json';
         super(props);
         this.state = {
+            movies: [],
             collection : {},
-            isPublic : true
+            isPublic : true,
+            showModal : false,
+            selectedMovie : null
         };
 
         this.onChangePrivacy = this.onChangePrivacy.bind(this);
@@ -31,28 +36,23 @@ export default class CollectionUpdate extends Component {
     }
     
     getMovies = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/movies`, {
-            headers: {'Content-Type': 'application/json-application'} 
-        })
+        axios.get(`${process.env.REACT_APP_API_URL}/movies`)
         .then((response) => {
-            const movies = response.data.map((movie) => {
-                return(
-                    <Cell size={3} >
-                         <div className="user-profile__movie-card">
-                            <img src={movie.cover} alt="" onClick={(e) => this.removeMovie(movie.id)}/>
-                        </div>
-                    </Cell>
-                )  
-            });
-            this.setState({movies: movies});
+            this.setState({movies: response.data});
         })
         .catch(error => {
             console.log(error)
         });
     }
 
-    removeMovie = (movieId) => {
-        console.log('remove', movieId)
+    removeMovie = () => {
+        this.hideModal();
+        const moviesFilter = this.state.movies.filter((movie) => {
+            if (movie.id === this.state.selectedMovie) return false;
+            else return true;
+        });
+
+        this.setState({movies: moviesFilter});
     }
 
     onChangePrivacy(e){
@@ -64,6 +64,13 @@ export default class CollectionUpdate extends Component {
         const name = e.target.elements.name.value.trim();
 
         console.log(name, this.state.isPublic)
+    }
+
+    hideModal = () => {
+        this.setState({showModal : false});
+    }
+    showModal = (movieId) => {
+        this.setState({selectedMovie: movieId, showModal : true});
     }
 
     goToCollections = () => {
@@ -83,13 +90,13 @@ export default class CollectionUpdate extends Component {
                 <form onSubmit={this.handleUpdateCollection}>
                     <Grid className="vertically-centered p-0">
                         <Cell size={6}>
-                            <label for="collection-name" >Titre de la collection</label>
+                            <label>Titre de la collection</label>
                         </Cell>
                         <Cell size={6}>
                             <TextField id="collection-name" name="name" type="text"/>
                         </Cell>
                         <Cell size={6}>
-                            <label for="collectionn-privacy" >Garder cette collection privée</label>
+                            <label>Garder cette collection privée</label>
                         </Cell>
                         <Cell size={6}>
                             <label className="switch">
@@ -104,8 +111,26 @@ export default class CollectionUpdate extends Component {
                 </form>
                 <h2>Films de ma collection</h2>
                 <p>Cliquez sur un film pour le supprimer</p>
+
+                <DialogContainer id="add-comment-container" visible={this.state.showModal} onHide={this.hideModal} title="Voulez-vous supprimer définitivement le film de votre collection ?" focusOnMount={false}>
+                    <div className="text-right">
+                        <div className="btn mr-1" onClick={this.hideModal}>Annuler</div>
+                        <div className="btn" onClick={(e) => this.removeMovie(this.state.selectedMovie)}>Supprimer</div>
+                    </div>
+                </DialogContainer>
+
                 <Grid>
-                    {this.state.movies}
+                    {
+                        this.state.movies.map((movie) => {
+                            return(
+                                <Cell size={3} key={movie.id}>
+                                     <div className="user-profile__movie-card">
+                                        <img src={movie.cover} alt="" onClick={(e) => this.showModal(movie.id)}/>
+                                    </div>
+                                </Cell>
+                            )  
+                        })
+                    }
                 </Grid>
                 <div className="text-right mb-2">
                     <div className="btn color-red" onClick={this.deleteCollection}>Supprimer la collection</div>

@@ -74,12 +74,6 @@ h5 {
     70% {transform: translateY(0);}
     100% {transform: translateY(0);}
 }
-/**OVERRIDE **/
-.md-avatar {
-    width: 60px;
-    height: 60px;
-    border: none;
-}
 
 .background-trianglify {
     -webkit-background-size: cover;
@@ -102,4 +96,15 @@ h5 {
 .searchContainer button {
     background-color: transparent;
     border: none; 
+}
+
+/**OVERRIDE **/
+.md-avatar {
+    width: 60px;
+    height: 60px;
+    border: none;
+}
+
+.md-dialog {
+    width: 400px;
 }
