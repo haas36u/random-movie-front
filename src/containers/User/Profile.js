@@ -21,11 +21,13 @@ export default class Profile extends Component {
         super(props);
         this.state = {
             user : {},
+            movies : [],
+            moviesFilter : [],
             collections : [],
             collection : [],
-            favoriteMoviesList : [],
-            wishedMoviesList : [],
-            watchedMoviesList : [],
+            showFavoriteMovies : true,
+            showWatchedMovies : true,
+            showWishedMovies : true,
             commentsList : [],
             notationsList : [],
             nbComments : 0,
@@ -42,8 +44,10 @@ export default class Profile extends Component {
 
     componentDidMount() {
         this.getUser();
-        this.getUserStats();
+        this.getFavoriteMoviesPieChart();
+        this.getNotationsBarChart();
         this.getCollections();
+        this.getUserMovies();
     }
     
     loader = <span className="spinner"><svg width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="lds-double-ring"><circle cx="50" cy="50" ng-attr-r="{{config.radius}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-dasharray="{{config.dasharray}}" fill="none" strokeLinecap="round" r="40" strokeWidth="4" stroke="#bd4030" strokeDasharray="62.83185307179586 62.83185307179586" transform="rotate(328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.3s" begin="0s" repeatCount="indefinite"></animateTransform></circle><circle cx="50" cy="50" ng-attr-r="{{config.radius2}}" ng-attr-stroke="{{config.c2}}" fill="none" strokeLinecap="round" r="35" strokeWidth="4" stroke="#e0b83e" strokeDasharray="54.97787143782138 54.97787143782138" strokeDashoffset="54.97787143782138" transform="rotate(-328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg> </span>;
@@ -89,30 +93,9 @@ export default class Profile extends Component {
         });
     }
 
-    getUserStats = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/movies`, headers: {"Authorization" : localStorage.getItem('token')}})
-        .then((response) => {
-            const movies = response.data;
-            if(!Array.isArray(movies)) return;
-
-            const moviesList = movies.map((movie, key) => {
-                let cardClass = 'user-profile__movie-card ';
-
-                if (movie.liked)        cardClass += 'favorite_movies_container';
-                else if (movie.watched) cardClass += 'watched_movies_container';
-                else                    cardClass += 'wished_movies_container';
-
-                return(
-                    <Cell size={3} key={key} className={cardClass}>
-                        <ProfileMovieCard movie={movie} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
-                    </Cell>
-                );
-            });
-
-            this.setState({moviesList: moviesList});
-
-            this.getFavoriteMoviesPieChart();
-            this.getNotationsBarChart();
+    getUserMovies = () => {
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/movies`, headers: {"Authorization" : localStorage.getItem('token')}}).then((response) => {
+            this.setState({movies : response.data, moviesFilter: response.data});
         });
     }
 
@@ -272,20 +255,30 @@ export default class Profile extends Component {
         this.setState({collection: collection});
     }
 
-    showHideMoviesList = (e, className) => {
+    showHideMoviesList = (e, selectedList) => {
         let btnClass = e.target.classList;
-        let moviesList = document.getElementsByClassName(className);
+        if (btnClass.length != 0 && btnClass.contains('active')) btnClass.remove('active');
+        else btnClass.add('active');
 
-        for (let i = 0; i < moviesList.length; i++) {
-            if (moviesList[i].offsetHeight > 0) {
-                moviesList[i].style.display = 'none';
-                btnClass.remove('active');
-            } else {
-                moviesList[i].style.display = 'flex';
-                btnClass.add('active');
-            }
-        }
+        if (selectedList === 'showFavoriteMovies') this.setState({showFavoriteMovies: !this.state.showFavoriteMovies, moviesFilter : this.state.movies}, this.hideOrDisplayMovies);
+        if (selectedList === 'showWatchedMovies')  this.setState({showWatchedMovies: !this.state.showWatchedMovies, moviesFilter : this.state.movies}, this.hideOrDisplayMovies);
+        if (selectedList === 'showWishedMovies')   this.setState({showWishedMovies: !this.state.showWishedMovies, moviesFilter : this.state.movies}, this.hideOrDisplayMovies);
     };
+
+    hideOrDisplayMovies = () => {
+        let moviesResult = this.state.moviesFilter.filter((current) => {
+            let match = false;
+            if (this.state.showWatchedMovies == true && current.watched == true)
+            match = true
+            if (this.state.showFavoriteMovies == true && current.liked == true)
+            match = true
+            if (this.state.showWishedMovies == true && current.wished == true)
+            match = true
+            return match;
+        });
+
+        this.setState({moviesFilter: moviesResult});
+    }
 
     openCollectionAddMovieModal = (e, movie) => {
         e.stopPropagation();
@@ -406,12 +399,20 @@ export default class Profile extends Component {
                     <Tab label="Favoris, déjà vus, à voir">
                         <div id="favorite" className="container pt-1">
                             <div className="text-right mb-2">
-                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'favorite_movies_container')}>Favoris</div>
-                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'watched_movies_container')}>Déjà vus</div>
-                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'wished_movies_container')}>à voir</div>
+                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'showFavoriteMovies')}>Favoris</div>
+                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'showWatchedMovies')}>Déjà vus</div>
+                                <div className="btn active" onClick={(e) => this.showHideMoviesList(e, 'showWishedMovies')}>à voir</div>
                             </div>
                             <Grid className="p-0">
-                                {this.state.moviesList}
+                                {
+                                    this.state.moviesFilter.map((movie) => {
+                                        return(
+                                            <Cell size={3} key={movie.id} className="user-profile__movie-card">
+                                                <ProfileMovieCard movie={movie} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
+                                            </Cell>
+                                        );
+                                    })
+                                }
                             </Grid>
                         </div>
                     </Tab>
