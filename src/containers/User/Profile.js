@@ -238,7 +238,7 @@ export default class Profile extends Component {
                 movies: [ {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}]
             };
 
-        const privacy = response.isPrivate ? <i class="fas fa-lock" title="Visible uniquement par vous"></i> : <i class="fas fa-globe-americas" title="Visible en public"></i>;
+        const privacy = response.isPrivate ? <i className="fas fa-lock" title="Visible uniquement par vous"></i> : <i className="fas fa-globe-americas" title="Visible en public"></i>;
 
         const collection = (
             <div>

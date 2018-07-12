@@ -108,3 +108,11 @@ h5 {
 .md-dialog {
     width: 400px;
 }
+.md-snackbar {
+    background-color: $secondary-color;
+    font-weight: bold;
+    left: auto;
+    right: 0rem;
+    bottom: 1rem;
+    font-size: 1.1rem;
+}

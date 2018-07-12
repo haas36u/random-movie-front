@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Grid, Cell, TextField, DialogContainer } from 'react-md';
+import { Grid, Cell, TextField, DialogContainer, Snackbar } from 'react-md';
 
 export default class CollectionUpdate extends Component {
 
@@ -13,7 +13,8 @@ export default class CollectionUpdate extends Component {
             collection : {},
             isPublic : true,
             showModal : false,
-            selectedMovie : null
+            selectedMovie : null,
+            toasts : []
         };
 
         this.onChangePrivacy = this.onChangePrivacy.bind(this);
@@ -53,6 +54,7 @@ export default class CollectionUpdate extends Component {
         });
 
         this.setState({movies: moviesFilter});
+        this.addToast('Film supprimé de la collection');
     }
 
     onChangePrivacy(e){
@@ -64,7 +66,16 @@ export default class CollectionUpdate extends Component {
         const name = e.target.elements.name.value.trim();
 
         console.log(name, this.state.isPublic)
+        this.addToast('Collection mise à jour');
     }
+
+    addToast = (text, action, autohide = true) => {
+        this.setState((state) => {
+          const toasts = state.toasts.slice();
+          toasts.push({ text, action });
+          return { toasts, autohide };
+        });
+    };
 
     hideModal = () => {
         this.setState({showModal : false});
@@ -82,13 +93,18 @@ export default class CollectionUpdate extends Component {
         window.location.href = `/profile`;
     }
 
+    dismissToast = () => {
+        const [, ...toasts] = this.state.toasts;
+        this.setState({ toasts });
+      };
+
     render() {
         return (
             <div className="container">
                 <div className="btn left mt-3" onClick={this.goToCollections}>Retour</div>
                 <h2 className="text-center mt-3">Modifier la collection</h2>
                 <form onSubmit={this.handleUpdateCollection}>
-                    <Grid className="vertically-centered p-0">
+                    <Grid className="vertically-centered p-0 mt-3">
                         <Cell size={6}>
                             <label>Titre de la collection</label>
                         </Cell>
@@ -109,7 +125,7 @@ export default class CollectionUpdate extends Component {
                         </Cell>
                     </Grid>
                 </form>
-                <h2>Films de ma collection</h2>
+                <h2 className="mt-3">Films de ma collection</h2>
                 <p>Cliquez sur un film pour le supprimer</p>
 
                 <DialogContainer id="add-comment-container" visible={this.state.showModal} onHide={this.hideModal} title="Voulez-vous supprimer définitivement le film de votre collection ?" focusOnMount={false}>
@@ -135,6 +151,9 @@ export default class CollectionUpdate extends Component {
                 <div className="text-right mb-2">
                     <div className="btn color-red" onClick={this.deleteCollection}>Supprimer la collection</div>
                 </div>
+
+                <Snackbar id="snackbar" toasts={this.state.toasts} autohide={true} onDismiss={this.dismissToast}
+                />
             </div>
         );
     }

@@ -1,18 +1,30 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import { Grid, Cell, TextField } from 'react-md';
 
 export default class CollectionAddModal extends Component {
 
-    handleChangeTitle = (value) => {
-        console.log(value)
+    constructor(props) {
+        axios.defaults.headers['Content-Type'] = 'application/json';
+        axios.defaults.headers['Accept'] = 'application/json';
+        super(props);
+        this.state = {
+            isPublic : true
+        };
+
+        this.onChangePrivacy = this.onChangePrivacy.bind(this);
     }
 
     handleAddCollection = (e) => {
         e.preventDefault();
         const name = e.target.elements.name.value.trim();
-        const privacy = e.target.elements.privacy.value.trim();
-        console.log(name, privacy)
+        console.log(name, this.state.isPublic)
+        this.cancel();
     }
+
+    onChangePrivacy(e){
+        this.setState({isPublic: !e.target.checked});
+    };
 
     hideModal = (e) => {
         if(e.target === document.getElementById('collectionAddModal')) this.cancel();
@@ -33,14 +45,14 @@ export default class CollectionAddModal extends Component {
                                 <label >Titre de la collection</label>
                             </Cell>
                             <Cell size={6}>
-                                <TextField id="collection-name" name="name" type="text" onChange={this.handleChangeTitle}/>
+                                <TextField id="collection-name" name="name" type="text" />
                             </Cell>
                             <Cell size={6}>
                                 <label>Garder cette collection privée</label>
                             </Cell>
                             <Cell size={6}>
                                 <label className="switch">
-                                    <input id="collection-privacy" name="privacy" type="checkbox"/>
+                                    <input id="collection-privacy" name="privacy" type="checkbox" onChange={this.onChangePrivacy}/>
                                     <span className="slider"></span>
                                 </label>
                             </Cell>
@@ -48,7 +60,7 @@ export default class CollectionAddModal extends Component {
 
                         <div className="text-right">
                             <div className="btn mr-1 cancel" onClick={this.cancel}>Annuler</div>
-                            <div className="btn">Créer</div>
+                            <button className="btn">Créer</button>
                         </div>
                     </form>
                 </div>
