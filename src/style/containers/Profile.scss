@@ -210,6 +210,26 @@
         }
       }
     }
+
+    .userCollection__header {
+      h2 {
+        display: inline-block;
+        vertical-align: middle;
+        text-transform: uppercase;
+        color: $secondary-color;
+        margin-left: 16px;
+
+        i {
+          margin-left: 0.5rem;
+          font-size: 1.2rem;
+          color: #000000;
+        }
+      }
+
+      .btn {
+        float: right;
+      }
+    }
   }
 
 @media screen and (min-width: 1025px){

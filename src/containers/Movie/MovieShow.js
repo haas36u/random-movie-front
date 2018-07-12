@@ -102,6 +102,33 @@ export default class MovieShow extends Component {
         });
     }
 
+    hideCommentModal = () => {
+        this.setState({commentModalVisible : false});
+    }
+    showCommentModal = () => {
+        this.setState({commentModalVisible : true});
+    }
+
+    sendComment = () => {
+        axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/comments`, headers: {"Authorization" : localStorage.getItem('token')}, data: {content: this.state.comment, movie: 'api/movies/' + this.state.movie.id}})
+        .then(() => {
+            this.setState({commentModalVisible: false});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
+    sendNotation = (mark) => {
+        axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/notations`, headers: {"Authorization" : localStorage.getItem('token')}, data: {mark: mark, movie: 'api/movies/' + this.state.movie.id}})
+        .then((response) => {
+            this.setState({userAlreadyRate : true});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
     handleChangeComment = (value) => {
         this.setState({comment: value});
     }
@@ -121,33 +148,6 @@ export default class MovieShow extends Component {
             backgroundImage: 'url(' + imgUrl + ')'
         }
 
-        const hideCommentModal = () => {
-            this.setState({commentModalVisible : false});
-        }
-        const showCommentModal = () => {
-            this.setState({commentModalVisible : true});
-        }
-
-        const sendComment = () => {
-            axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/comments`, headers: {"Authorization" : localStorage.getItem('token')}, data: {content: this.state.comment, movie: 'api/movies/' + this.state.movie.id}})
-            .then(() => {
-                this.setState({commentModalVisible: false});
-            })
-            .catch(error => {
-                console.log(error)
-            });
-        }
-
-        const sendNotation = (mark) => {
-            axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/notations`, headers: {"Authorization" : localStorage.getItem('token')}, data: {mark: mark, movie: 'api/movies/' + this.state.movie.id}})
-            .then((response) => {
-                this.setState({userAlreadyRate : true});
-            })
-            .catch(error => {
-                console.log(error)
-            });
-        }
-
         const userRatingActions = () => {
             if(isAuthenticated()) {
                 return (
@@ -157,22 +157,22 @@ export default class MovieShow extends Component {
                             <div id="movieRating">
                                 <form>
                                     <fieldset className="starability-checkmark">
-                                        <input type="radio" id="rate1" name="rating" value="1" onClick={(e) => sendNotation(1)}/>
+                                        <input type="radio" id="rate1" name="rating" value="1" onClick={(e) => this.sendNotation(1)}/>
                                         <label for="rate1" title="Terrible">1 star</label>
-                                        <input type="radio" id="rate2" name="rating" value="2" onClick={(e) => sendNotation(2)}/>
+                                        <input type="radio" id="rate2" name="rating" value="2" onClick={(e) => this.sendNotation(2)}/>
                                         <label for="rate2" title="Not good">2 stars</label>
-                                        <input type="radio" id="rate3" name="rating" value="3" onClick={(e) => sendNotation(3)}/>
+                                        <input type="radio" id="rate3" name="rating" value="3" onClick={(e) => this.sendNotation(3)}/>
                                         <label for="rate3" title="Average">3 stars</label>
-                                        <input type="radio" id="rate4" name="rating" value="4" onClick={(e) => sendNotation(4)}/>
+                                        <input type="radio" id="rate4" name="rating" value="4" onClick={(e) => this.sendNotation(4)}/>
                                         <label for="rate4" title="Very good">4 stars</label>
-                                        <input type="radio" id="rate5" name="rating" value="5" onClick={(e) => sendNotation(5)}/>
+                                        <input type="radio" id="rate5" name="rating" value="5" onClick={(e) => this.sendNotation(5)}/>
                                         <label for="rate5" title="Amazing">5 stars</label>
                                     </fieldset>
                                 </form>
                             </div>
                         </Cell>
                         <Cell size={6} className="text-right">
-                             <span className="btn" onClick={showCommentModal}>
+                             <span className="btn" onClick={this.showCommentModal}>
                                   <i className="fas fa-edit"></i>Ajouter un commentaire
                               </span>
                         </Cell>
@@ -240,10 +240,10 @@ export default class MovieShow extends Component {
                     </div>
                 </div>
 
-                <DialogContainer id="add-comment-container" visible={this.state.commentModalVisible} onHide={hideCommentModal} title="Ajouter un commentaire">
+                <DialogContainer id="add-comment-container" visible={this.state.commentModalVisible} onHide={this.hideCommentModal} title="Ajouter un commentaire">
                     <TextField id="comment" rows={4} maxLength={1000} placeholder="Un petit commentaire..." onChange={this.handleChangeComment}/>
                     <div className="send-comment">
-                        <div className="btn" onClick={sendComment}>Envoyer le commentaire</div>
+                        <div className="btn" onClick={this.sendComment}>Envoyer le commentaire</div>
                     </div>
                 </DialogContainer>
 
