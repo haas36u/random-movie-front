@@ -19,6 +19,7 @@ export default class MovieShow extends Component {
         super(props);
         this.state = {
             movie : {},
+            communityNote : 0,
             userActions : {},
             casting: [],
             similars : [],
@@ -54,9 +55,20 @@ export default class MovieShow extends Component {
                 wished  : movie.wished
             }
 
-            if(movie.mark) document.getElementById('rate' + movie.mark).checked = true;
+            if (movie.mark) document.getElementById('rate' + movie.mark).checked = true;
 
-            this.setState({movie : movie, userActions: userActions});
+            let communityNote;
+            if (!movie.community_note) {
+                communityNote = <span>Aucune note pour ce film</span>;
+            } else {
+                const RATING = {0 : 'Médiocre', 1 : 'A éviter',  2 : 'Moyen', 3 : 'Super', 4 : 'Excellent', 5 : 'Parfait'};
+
+                communityNote = (
+                    <span>{movie.community_note} étoiles - {RATING[Math.round(movie.community_note)]}</span>
+                )
+            }
+
+            this.setState({movie : movie, userActions: userActions, communityNote: communityNote});
         })
         .catch(error => {
             console.log(error)
@@ -220,7 +232,7 @@ export default class MovieShow extends Component {
                                         <p><span className="text-bold">Genres : </span> {this.state.movie.genres}</p>
                                         <p className="public_rate">Spectateurs</p>
                                         <div>
-                                            <span>Aucune note pour ce film</span>
+                                            {this.state.communityNote}
                                         </div>
                                     </Cell>
                                     <Cell size={5} className="mt-0 text-right">
