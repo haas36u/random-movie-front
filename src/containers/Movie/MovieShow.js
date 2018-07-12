@@ -22,7 +22,6 @@ export default class MovieShow extends Component {
             userActions : {},
             casting: [],
             similars : [],
-            userAlreadyRate: true,
             commentModalVisible: false,
             selectedMovie: {id: null, cover: null, title: null}
         };
@@ -32,10 +31,6 @@ export default class MovieShow extends Component {
         this.getMovie();
         this.getCasting();
         this.getSimilars();
-
-        /*Simulate user already mark*/
-        let mark = 1;
-        if(isAuthenticated() && this.state.userAlreadyRate) document.getElementById('rate' + mark).checked = true;
     }
 
     /*MOVIE*/
@@ -58,6 +53,8 @@ export default class MovieShow extends Component {
                 watched : movie.watched,
                 wished  : movie.wished
             }
+
+            if(movie.mark) document.getElementById('rate' + movie.mark).checked = true;
 
             this.setState({movie : movie, userActions: userActions});
         })
