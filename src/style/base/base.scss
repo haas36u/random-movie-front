@@ -59,29 +59,23 @@ h5 {
 
 .logo {
     position: fixed;
-    bottom: 1rem;
-    left: 1rem;
+    bottom: 2rem;
+    left: 2rem;
     width: 60px;
     height: auto;
     animation: bounce 4s ease infinite alternate;
     cursor: pointer;
-  }
+}
   
-  @keyframes bounce{
+@keyframes bounce{
     0%   {transform: translateY(0);}
     50%  {transform: translateY(0);}
     60%  {transform: translateY(-15px);}
     70% {transform: translateY(0);}
     100% {transform: translateY(0);}
-  }
-  /**OVERRIDE **/
-  .md-avatar {
-    width: 60px;
-    height: 60px;
-    border: none;
-  }
-  
-  .background-trianglify {
+}
+
+.background-trianglify {
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -89,12 +83,41 @@ h5 {
     background-position: top;
     background-repeat: no-repeat;
     z-index: -1;
-  }
+}
 
-  .spinner {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%);
-      z-index: 1000;
-  }
+.spinner {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%);
+    z-index: 1000;
+}
+
+.searchContainer button {
+    background-color: transparent;
+    border: none; 
+}
+
+.noResult {
+    margin-top: 1rem;
+    color: $primary-color-light;
+}
+
+/**OVERRIDE **/
+.md-avatar {
+    width: 60px;
+    height: 60px;
+    border: none;
+}
+
+.md-dialog {
+    width: 400px;
+}
+.md-snackbar {
+    background-color: $secondary-color;
+    font-weight: bold;
+    left: auto;
+    right: 0rem;
+    bottom: 1rem;
+    font-size: 1.1rem;
+}

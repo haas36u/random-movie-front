@@ -9,6 +9,7 @@ import moment from 'moment';
 import ActorCard from '../../components/Actor/ActorCard';
 import MovieCard from '../../components/Movie/MovieCard';
 import MovieActions from '../../components/Movie/MovieActions';
+import CollectionAddMovieModal from '../../components/Collection/CollectionAddMovieModal';
 
 export default class MovieShow extends Component {
 
@@ -18,13 +19,22 @@ export default class MovieShow extends Component {
         super(props);
         this.state = {
             movie : {},
+            communityNote : 0,
             userActions : {},
             casting: [],
             similars : [],
-            userAlreadyRate: true,
-            commentModalVisible: false
+            commentModalVisible: false,
+            selectedMovie: {id: null, cover: null, title: null}
         };
     }
+
+    componentDidMount() {
+        this.getMovie();
+        this.getCasting();
+        this.getSimilars();
+    }
+
+    RATING = {1 : 'A éviter',  2 : 'Moyen', 3 : 'Super', 4 : 'Excellent', 5 : 'Incroyable'};
 
     /*MOVIE*/
     getMovie = () => {
@@ -47,7 +57,18 @@ export default class MovieShow extends Component {
                 wished  : movie.wished
             }
 
-            this.setState({movie : movie, userActions: userActions});
+            if (movie.mark) document.getElementById('rate' + movie.mark).checked = true;
+
+            let communityNote;
+            if (!movie.communityNote) {
+                communityNote = <span>Aucune note pour ce film</span>;
+            } else {
+                communityNote = (
+                    <span>{movie.communityNote} étoiles - {this.RATING[Math.round(movie.communityNote)]}</span>
+                )
+            }
+
+            this.setState({movie : movie, userActions: userActions, communityNote: communityNote});
         })
         .catch(error => {
             console.log(error)
@@ -78,9 +99,9 @@ export default class MovieShow extends Component {
         axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/similars`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             let similars = response.data;
-            similars = similars.map(function(item, key){
+            similars = similars.map((item) => {
                 return(
-                    <MovieCard key={key} movie={item} showUserAction={true}/>
+                    <MovieCard key={item.id} movie={item} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
                 );
             });
             this.setState({similars : similars});
@@ -90,18 +111,41 @@ export default class MovieShow extends Component {
         });
     }
 
-    componentDidMount() {
-        this.getMovie();
-        this.getCasting();
-        this.getSimilars();
+    hideCommentModal = () => {
+        this.setState({commentModalVisible : false});
+    }
+    showCommentModal = () => {
+        this.setState({commentModalVisible : true});
+    }
 
-        /*Simulate user already mark*/
-        let mark = 1;
-        if(isAuthenticated() && this.state.userAlreadyRate) document.getElementById('rate' + mark).checked = true;
+    sendComment = () => {
+        axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/comments`, headers: {"Authorization" : localStorage.getItem('token')}, data: {content: this.state.comment, movie: 'api/movies/' + this.state.movie.id}})
+        .then(() => {
+            this.setState({commentModalVisible: false});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
+    sendNotation = (mark) => {
+        axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/notations`, headers: {"Authorization" : localStorage.getItem('token')}, data: {mark: mark, movie: 'api/movies/' + this.state.movie.id}})
+        .then((response) => {
+            this.setState({userAlreadyRate : true});
+        })
+        .catch(error => {
+            console.log(error)
+        });
     }
 
     handleChangeComment = (value) => {
         this.setState({comment: value});
+    }
+
+    openCollectionAddMovieModal = (e, movie) => {
+        e.stopPropagation();
+        this.setState({selectedMovie: movie});
+        if(document.getElementById('collectionAddMovieModal')) document.getElementById('collectionAddMovieModal').style.display = 'flex';
     }
 
     render() {
@@ -113,33 +157,6 @@ export default class MovieShow extends Component {
             backgroundImage: 'url(' + imgUrl + ')'
         }
 
-        const hideCommentModal = () => {
-            this.setState({commentModalVisible : false});
-        }
-        const showCommentModal = () => {
-            this.setState({commentModalVisible : true});
-        }
-
-        const sendComment = () => {
-            axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/comments`, headers: {"Authorization" : localStorage.getItem('token')}, data: {content: this.state.comment, movie: 'api/movies/' + this.state.movie.id}})
-            .then(() => {
-                this.setState({commentModalVisible: false});
-            })
-            .catch(error => {
-                console.log(error)
-            });
-        }
-
-        const sendNotation = (mark) => {
-            axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/notations`, headers: {"Authorization" : localStorage.getItem('token')}, data: {mark: mark, movie: 'api/movies/' + this.state.movie.id}})
-            .then((response) => {
-                this.setState({userAlreadyRate : true});
-            })
-            .catch(error => {
-                console.log(error)
-            });
-        }
-
         const userRatingActions = () => {
             if(isAuthenticated()) {
                 return (
@@ -149,22 +166,23 @@ export default class MovieShow extends Component {
                             <div id="movieRating">
                                 <form>
                                     <fieldset className="starability-checkmark">
-                                        <input type="radio" id="rate1" name="rating" value="1" onClick={(e) => sendNotation(1)}/>
-                                        <label for="rate1" title="Terrible">1 star</label>
-                                        <input type="radio" id="rate2" name="rating" value="2" onClick={(e) => sendNotation(2)}/>
-                                        <label for="rate2" title="Not good">2 stars</label>
-                                        <input type="radio" id="rate3" name="rating" value="3" onClick={(e) => sendNotation(3)}/>
-                                        <label for="rate3" title="Average">3 stars</label>
-                                        <input type="radio" id="rate4" name="rating" value="4" onClick={(e) => sendNotation(4)}/>
-                                        <label for="rate4" title="Very good">4 stars</label>
-                                        <input type="radio" id="rate5" name="rating" value="5" onClick={(e) => sendNotation(5)}/>
-                                        <label for="rate5" title="Amazing">5 stars</label>
+                                        <input type="radio" id="rate1" name="rating" value="1" onClick={(e) => this.sendNotation(1)}/>
+                                        <label for="rate1" title={this.RATING[1]}>1 star</label>
+                                        <input type="radio" id="rate2" name="rating" value="2" onClick={(e) => this.sendNotation(2)}/>
+                                        <label for="rate2" title={this.RATING[2]}>2 stars</label>
+                                        <input type="radio" id="rate3" name="rating" value="3" onClick={(e) => this.sendNotation(3)}/>
+                                        <label for="rate3" title={this.RATING[3]}>3 stars</label>
+                                        <input type="radio" id="rate4" name="rating" value="4" onClick={(e) => this.sendNotation(4)}/>
+                                        <label for="rate4" title={this.RATING[4]}>4 stars</label>
+                                        <input type="radio" id="rate5" name="rating" value="5" onClick={(e) => this.sendNotation(5)}/>
+                                        <label for="rate5" title={this.RATING[5]}>5 stars</label>
                                     </fieldset>
                                 </form>
+                                {!this.state.movie.mark && <p className="text-italic">Vous n'avez pas encore noté ce film</p>}
                             </div>
                         </Cell>
                         <Cell size={6} className="text-right">
-                             <span className="btn" onClick={showCommentModal}>
+                             <span className="btn" onClick={this.showCommentModal}>
                                   <i className="fas fa-edit"></i>Ajouter un commentaire
                               </span>
                         </Cell>
@@ -202,6 +220,7 @@ export default class MovieShow extends Component {
         return (
             <div id="movieShow">
                 <div id="movie-container">
+                    <CollectionAddMovieModal movie={this.state.selectedMovie}/>
                     <div className="container">
                         <Grid>
                             <Cell size={4}><img src={this.state.movie.cover} alt={this.state.movie.title}/></Cell>
@@ -214,11 +233,11 @@ export default class MovieShow extends Component {
                                         <p><span className="text-bold">Genres : </span> {this.state.movie.genres}</p>
                                         <p className="public_rate">Spectateurs</p>
                                         <div>
-                                            <span>Aucune note pour ce film</span>
+                                            {this.state.communityNote}
                                         </div>
                                     </Cell>
                                     <Cell size={5} className="mt-0 text-right">
-                                        <MovieActions movieId={this.state.movie.id} userActions={this.state.userActions}/>
+                                        <MovieActions movie={this.state.movie} userActions={this.state.userActions} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
                                     </Cell>
                                     <Cell size={12}>
                                         <h5>Synopsis et détails</h5>
@@ -231,10 +250,10 @@ export default class MovieShow extends Component {
                     </div>
                 </div>
 
-                <DialogContainer id="add-comment-container" visible={this.state.commentModalVisible} onHide={hideCommentModal} title="Ajouter un commentaire">
+                <DialogContainer id="add-comment-container" visible={this.state.commentModalVisible} onHide={this.hideCommentModal} title="Ajouter un commentaire">
                     <TextField id="comment" rows={4} maxLength={1000} placeholder="Un petit commentaire..." onChange={this.handleChangeComment}/>
                     <div className="send-comment">
-                        <div className="btn" onClick={sendComment}>Envoyer le commentaire</div>
+                        <div className="btn" onClick={this.sendComment}>Envoyer le commentaire</div>
                     </div>
                 </DialogContainer>
 
