@@ -21,6 +21,7 @@ export default class CollectionAddModal extends Component {
         axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/collections`, headers: {"Authorization" : localStorage.getItem('token')}, data: {name: name, isPublic : !this.state.isPrivate}})
         .then(() => {
             this.cancel();
+            this.props.getCollections();
         });
     }
 

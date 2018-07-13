@@ -57,10 +57,10 @@ export default class CollectionAddMovieModal extends Component {
 
     handleSearchCollection = (e) => {
         e.preventDefault();
-        const collectionTitle = e.target.elements.title.value.trim();
+        const collectionTitle = e.target.elements.title.value.toLowerCase();
 
         const collections = this.state.collectionsFilter.filter(function(collection){
-            return collection.name.includes(collectionTitle);
+            return collection.name.toLowerCase().includes(collectionTitle);
         });
 
         this.createCollectionsUI(collections);

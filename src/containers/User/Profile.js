@@ -304,7 +304,7 @@ export default class Profile extends Component {
                 </div>
             </div>
 
-            <CollectionAddModal/>
+            <CollectionAddModal getCollections={this.getCollections}/>
             <CollectionAddMovieModal movie={this.state.selectedMovie}/>
             
             <TabsContainer defaultTabIndex={tabIndex}>
