@@ -207,6 +207,8 @@ export default class Profile extends Component {
                     <h2>{collection.name}{privacy}</h2>
                     <Link to={`/collections/${collection.id}/update`} className="btn">Modifier</Link>
                 </div>
+
+                {collection.movies.length === 0 && <p className="noResult">Vous n'avez pas encore ajouté de film à la collection {collection.name}</p>}
                 <Grid>
                     {collection.movies.map((movie) => {
                         return (

@@ -84,7 +84,7 @@ export default class CollectionUpdate extends Component {
     }
 
     goToCollections = () => {
-        window.location.href = `/profile?tab=${this.props.match.params.id}`;
+        window.location.href = `/profile`;
     }
 
     hideDeleteCollectionModal = () => {
