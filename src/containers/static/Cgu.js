@@ -9,12 +9,12 @@ export default class Cgu extends Component {
             <h5>Conditions générales d'utilisation du site</h5>
 
             <h6>ARTICLE 1 : Objet</h6>
-            <p>Les présentes « conditions générales d'utilisation » ont pour objet l'encadrement juridique des modalités de mise à disposition des services du site Le club des critiques et leur utilisation par « l'Utilisateur ».</p>
+            <p>Les présentes « conditions générales d'utilisation » ont pour objet l'encadrement juridique des modalités de mise à disposition des services du site Random Movie et leur utilisation par « l'Utilisateur ».</p>
             <p>Les conditions générales d'utilisation doivent être acceptées par tout Utilisateur souhaitant accéder au site. Elles constituent le contrat entre le site et l'Utilisateur. L’accès au site par l’Utilisateur signifie son acceptation des présentes conditions générales d’utilisation.</p>
             <p>Éventuellement :</p>
             <ul>
                 <li>En cas de non-acceptation des conditions générales d'utilisation stipulées dans le présent contrat, l'Utilisateur se doit de renoncer à l'accès des services proposés par le site.</li>
-                <li>Le club des critiques se réserve le droit de modifier unilatéralement et à tout moment le contenu des présentes conditions générales d'utilisation.</li>
+                <li>Random Movie se réserve le droit de modifier unilatéralement et à tout moment le contenu des présentes conditions générales d'utilisation.</li>
             </ul>
 
             <h6>ARTICLE 2 : Définitions</h6>
@@ -23,7 +23,7 @@ export default class Cgu extends Component {
                 <li>Utilisateur : ce terme désigne toute personne qui utilise le site ou l'un des services proposés par le site.</li>
                 <li>Contenu utilisateur : ce sont les données transmises par l'Utilisateur au sein du site.</li>
                 <li>Membre : l'Utilisateur devient membre lorsqu'il est identifié sur le site.</li>
-                <li>Email et mot de passe : c'est l'ensemble des informations nécessaires à l'identification d'un Utilisateur sur le site. L'identifiant et le mot de passe permettent à l'Utilisateur d'accéder à des services réservés aux membres du site. Le mot de passe est confidentiel.</li>
+                <li>Nom d'utilistauer et mot de passe : c'est l'ensemble des informations nécessaires à l'identification d'un Utilisateur sur le site. L'identifiant et le mot de passe permettent à l'Utilisateur d'accéder à des services réservés aux membres du site. Le mot de passe est confidentiel.</li>
             </ul>
 
             <h6>ARTICLE 3 : accès aux services</h6>
@@ -35,10 +35,10 @@ export default class Cgu extends Component {
             </ul>
             <p>Le site est accessible gratuitement en tout lieu à tout Utilisateur ayant un accès à Internet. Tous les frais supportés par l'Utilisateur pour accéder au service (matériel informatique, logiciels, connexion Internet, etc.) sont à sa charge.</p>
             <p>Selon le cas :</p>
-            <p>L’Utilisateur non membre n'a pas accès aux services réservés aux membres. Pour cela, il doit s'identifier à l'aide de son email et de son mot de passe.</p>
+            <p>L’Utilisateur non membre n'a pas accès aux services réservés aux membres. Pour cela, il doit s'identifier à l'aide de son nom d'utilisateur et de son mot de passe.</p>
             <p>Ce site est proposé en différents langages web (HTML, HTML5, Javascript, CSS, etc…) pour un meilleur confort d’utilisation et un graphisme plus agréable, nous vous recommandons de recourir à des navigateurs modernes comme Safari, Firefox, Google Chrome, etc…</p>
             <p>Le site met en œuvre tous les moyens mis à sa disposition pour assurer un accès de qualité à ses services. L'obligation étant de moyens, le site ne s'engage pas à atteindre ce résultat.</p>
-            <p>Tout événement dû à un cas de force majeure ayant pour conséquence un dysfonctionnement du réseau ou du serveur n'engage pas la responsabilité de Le club des critiques.</p>
+            <p>Tout événement dû à un cas de force majeure ayant pour conséquence un dysfonctionnement du réseau ou du serveur n'engage pas la responsabilité de Random Movie.</p>
             <p>L'accès aux services du site peut à tout moment faire l'objet d'une interruption, d'une suspension, d'une modification sans préavis pour une maintenance ou pour tout autre cas. L'Utilisateur s'oblige à ne réclamer aucune indemnisation suite à l'interruption, à la suspension ou à la modification du présent contrat.</p>
             <p>L'Utilisateur a la possibilité de contacter le site par messagerie électronique par le biais de la page d'accueil.</p>
 
@@ -79,7 +79,7 @@ export default class Cgu extends Component {
             <p>La législation française s'applique au présent contrat. En cas d'absence de résolution amiable d'un litige né entre les parties, seuls les tribunaux du ressort de la Cour d'appel de Paris sont compétents.</p>
 
             <h6>ARTICLE 10 : Publication par l’Utilisateur</h6>
-            <p>Le site permet aux membres de discutter avec d'autres membres.</p>
+            <p>Le site permet aux membres de discuter avec d'autres membres.</p>
             <p>Dans ses publications, le membre s’engage à respecter les règles de la Netiquette et les règles de droit en vigueur.</p>
             <p>Le site exerce une modération a posteriori sur les publications et se réserve le droit de refuser leur mise en ligne, sans avoir à s’en justifier auprès du membre.</p>
             <p>Le membre reste titulaire de l’intégralité de ses droits de propriété intellectuelle.</p>
