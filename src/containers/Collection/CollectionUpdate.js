@@ -11,7 +11,7 @@ export default class CollectionUpdate extends Component {
         this.state = {
             movies: [],
             collection : {},
-            isPublic : true,
+            isPrivate : true,
             collectionName : '',
             showModal : false,
             showDeleteCollectionModal : false,
@@ -28,7 +28,7 @@ export default class CollectionUpdate extends Component {
 
     getCollection = () => {
         axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}}).then((response) => {
-            this.setState({collection : response.data, movies: response.data.movies, isPublic : response.data.isPublic, collectionName: response.data.name});
+            this.setState({collection : response.data, movies: response.data.movies, isPrivate : !response.data.isPublic, collectionName: response.data.name});
         });
     }
 
@@ -48,13 +48,13 @@ export default class CollectionUpdate extends Component {
     }
 
     onChangePrivacy = (e) => {
-        this.setState({isPublic: e.target.checked});
+        this.setState({isPrivate: e.target.checked});
     };
 
     handleUpdateCollection = (e) => {
         e.preventDefault();
 
-        axios({method: 'put', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}, data: {name: this.state.collectionName, isPublic : this.state.isPublic}})
+        axios({method: 'put', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}, data: {name: this.state.collectionName, isPublic : !this.state.isPrivate}})
         .then(() => {
             this.addToast('Collection mise à jour');
         });
@@ -117,7 +117,7 @@ export default class CollectionUpdate extends Component {
                         </Cell>
                         <Cell size={6}>
                             <label className="switch">
-                                <input id="collection-privacy" type="checkbox" checked={this.state.isPublic} onChange={this.onChangePrivacy}/>
+                                <input id="collection-privacy" type="checkbox" checked={this.state.isPrivate} onChange={this.onChangePrivacy}/>
                                 <span className="slider"></span>
                             </label>
                         </Cell>

@@ -9,7 +9,7 @@ export default class CollectionAddModal extends Component {
         axios.defaults.headers['Accept'] = 'application/json';
         super(props);
         this.state = {
-            isPublic : true
+            isPrivate : false
         };
 
         this.onChangePrivacy = this.onChangePrivacy.bind(this);
@@ -18,12 +18,14 @@ export default class CollectionAddModal extends Component {
     handleAddCollection = (e) => {
         e.preventDefault();
         const name = e.target.elements.name.value.trim();
-        console.log(name, this.state.isPublic)
-        this.cancel();
+        axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/collections`, headers: {"Authorization" : localStorage.getItem('token')}, data: {name: name, isPublic : !this.state.isPrivate}})
+        .then(() => {
+            this.cancel();
+        });
     }
 
     onChangePrivacy(e){
-        this.setState({isPublic: !e.target.checked});
+        this.setState({isPrivate: e.target.checked});
     };
 
     hideModal = (e) => {

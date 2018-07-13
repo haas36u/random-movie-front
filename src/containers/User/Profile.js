@@ -199,7 +199,7 @@ export default class Profile extends Component {
             return collection.id === collectionId;
         });
 
-        const privacy = collection.isPrivate ? <i className="fas fa-lock" title="Visible uniquement par vous"></i> : <i className="fas fa-globe-americas" title="Visible en public"></i>;
+        const privacy = collection.isPublic ? <i className="fas fa-globe-americas" title="Visible en public"></i> : <i className="fas fa-lock" title="Visible uniquement par vous"></i>;
 
         const collectionUi = (
             <div>
