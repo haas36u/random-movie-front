@@ -59,11 +59,6 @@ export default class CollectionUpdate extends Component {
 
         axios({method: 'put', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}, data: {name: this.state.collectionName, isPublic : !this.state.isPrivate}})
         .then(() => {
-            this.hideModal();
-            const moviesFilter = this.state.movies.filter((movie) => {
-                if (movie.id === this.state.selectedMovie) return false;
-                else return true;
-            });
             this.addToast('Collection mise à jour');
         });
     }
@@ -84,7 +79,7 @@ export default class CollectionUpdate extends Component {
     }
 
     goToCollections = () => {
-        window.location.href = `/profile?tab=${this.props.match.params.id}`;
+        window.location.href = `/profile`;
     }
 
     hideDeleteCollectionModal = () => {
