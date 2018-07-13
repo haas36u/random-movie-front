@@ -32,15 +32,18 @@ export default class CollectionUpdate extends Component {
         });
     }
 
-    deleteMovie = () => {
-        this.hideModal();
-        const moviesFilter = this.state.movies.filter((movie) => {
-            if (movie.id === this.state.selectedMovie) return false;
-            else return true;
+    deleteMovie = () => {        
+        axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/collections/movies`, headers: {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}, data: {collection: `api/collections/${this.state.collection.id}`, movie : `api/movies/${this.state.selectedMovie}`}})
+        .then(() => {
+            this.hideModal();
+            const moviesFilter = this.state.movies.filter((movie) => {
+                if (movie.id === this.state.selectedMovie) return false;
+                else return true;
+            });
+    
+            this.setState({movies: moviesFilter});
+            this.addToast('Film supprimé de la collection');
         });
-
-        this.setState({movies: moviesFilter});
-        this.addToast('Film supprimé de la collection');
     }
 
     onChangeName = (value) => {
@@ -56,6 +59,11 @@ export default class CollectionUpdate extends Component {
 
         axios({method: 'put', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}, data: {name: this.state.collectionName, isPublic : !this.state.isPrivate}})
         .then(() => {
+            this.hideModal();
+            const moviesFilter = this.state.movies.filter((movie) => {
+                if (movie.id === this.state.selectedMovie) return false;
+                else return true;
+            });
             this.addToast('Collection mise à jour');
         });
     }
@@ -87,9 +95,7 @@ export default class CollectionUpdate extends Component {
     }
 
     deleteCollection = () => {
-        console.log(this.props.match.params.id)
-        axios({method: 'delete', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}})
-        .then(() => {
+        axios({method: 'delete', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}}).then(() => {
             window.location.href = `/profile`;
         });
     }
@@ -97,7 +103,7 @@ export default class CollectionUpdate extends Component {
     dismissToast = () => {
         const [, ...toasts] = this.state.toasts;
         this.setState({ toasts });
-      };
+    };
 
     render() {
         return (
@@ -136,7 +142,7 @@ export default class CollectionUpdate extends Component {
                 <DialogContainer id="add-comment-container" visible={this.state.showModal} onHide={this.hideModal} title="Voulez-vous supprimer définitivement le film de votre collection ?" focusOnMount={false}>
                     <div className="text-right">
                         <div className="btn mr-1" onClick={this.hideModal}>Annuler</div>
-                        <div className="btn" onClick={(e) => this.deleteMovie(this.state.selectedMovie)}>Supprimer</div>
+                        <div className="btn" onClick={this.deleteMovie}>Supprimer</div>
                     </div>
                 </DialogContainer>
 
