@@ -211,7 +211,7 @@ export default class Profile extends Component {
                     {collection.movies.map((movie) => {
                         return (
                         <Cell size={3} key={movie.id} className="user-profile__movie-card ">
-                            <ProfileMovieCard movie={movie} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
+                            <ProfileMovieCard movie={movie} showUserAction={false} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
                         </Cell>
                         )
                     })}
