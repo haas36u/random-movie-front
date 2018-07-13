@@ -98,6 +98,11 @@ h5 {
     border: none; 
 }
 
+.noResult {
+    margin-top: 1rem;
+    color: $primary-color-light;
+}
+
 /**OVERRIDE **/
 .md-avatar {
     width: 60px;

@@ -60,11 +60,11 @@ export default class MovieShow extends Component {
             if (movie.mark) document.getElementById('rate' + movie.mark).checked = true;
 
             let communityNote;
-            if (!movie.community_note) {
+            if (!movie.communityNote) {
                 communityNote = <span>Aucune note pour ce film</span>;
             } else {
                 communityNote = (
-                    <span>{movie.community_note} étoiles - {this.RATING[Math.round(movie.community_note)]}</span>
+                    <span>{movie.communityNote} étoiles - {this.RATING[Math.round(movie.communityNote)]}</span>
                 )
             }
 

@@ -12,7 +12,9 @@ export default class CollectionUpdate extends Component {
             movies: [],
             collection : {},
             isPublic : true,
+            collectionName : '',
             showModal : false,
+            showDeleteCollectionModal : false,
             selectedMovie : null,
             toasts : []
         };
@@ -22,31 +24,15 @@ export default class CollectionUpdate extends Component {
 
     componentDidMount() {
         this.getCollection();
-        this.getMovies();
     }
 
     getCollection = () => {
-        const collection =  {
-            id: 12,
-            name: 'Année 60',
-            isPublic: true,
-            movies : [{cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}]
-        };
-
-        this.setState({collection : collection, isPublic : collection.isPublic});
-    }
-    
-    getMovies = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/movies`)
-        .then((response) => {
-            this.setState({movies: response.data});
-        })
-        .catch(error => {
-            console.log(error)
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}}).then((response) => {
+            this.setState({collection : response.data, movies: response.data.movies, isPublic : response.data.isPublic, collectionName: response.data.name});
         });
     }
 
-    removeMovie = () => {
+    deleteMovie = () => {
         this.hideModal();
         const moviesFilter = this.state.movies.filter((movie) => {
             if (movie.id === this.state.selectedMovie) return false;
@@ -57,16 +43,21 @@ export default class CollectionUpdate extends Component {
         this.addToast('Film supprimé de la collection');
     }
 
-    onChangePrivacy(e){
-        this.setState({isPublic: !e.target.checked});
+    onChangeName = (value) => {
+        this.setState({collectionName: value});
+    }
+
+    onChangePrivacy = (e) => {
+        this.setState({isPublic: e.target.checked});
     };
 
     handleUpdateCollection = (e) => {
         e.preventDefault();
-        const name = e.target.elements.name.value.trim();
 
-        console.log(name, this.state.isPublic)
-        this.addToast('Collection mise à jour');
+        axios({method: 'put', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}, data: {name: this.state.collectionName, isPublic : this.state.isPublic}})
+        .then(() => {
+            this.addToast('Collection mise à jour');
+        });
     }
 
     addToast = (text, action, autohide = true) => {
@@ -88,9 +79,19 @@ export default class CollectionUpdate extends Component {
         window.location.href = `/profile?tab=${this.props.match.params.id}`;
     }
 
+    hideDeleteCollectionModal = () => {
+        this.setState({showDeleteCollectionModal : false});
+    }
+    showDeleteCollectionModal = () => {
+        this.setState({showDeleteCollectionModal : true});
+    }
+
     deleteCollection = () => {
         console.log(this.props.match.params.id)
-        window.location.href = `/profile`;
+        axios({method: 'delete', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}})
+        .then(() => {
+            window.location.href = `/profile`;
+        });
     }
 
     dismissToast = () => {
@@ -109,7 +110,7 @@ export default class CollectionUpdate extends Component {
                             <label>Titre de la collection</label>
                         </Cell>
                         <Cell size={6}>
-                            <TextField id="collection-name" name="name" type="text"/>
+                            <TextField id="collection-name" name="name" value={this.state.collectionName} type="text" onChange={this.onChangeName}/>
                         </Cell>
                         <Cell size={6}>
                             <label>Garder cette collection privée</label>
@@ -127,33 +128,45 @@ export default class CollectionUpdate extends Component {
                 </form>
                 <h2 className="mt-3">Films de ma collection</h2>
                 <p>Cliquez sur un film pour le supprimer</p>
+                {
+                    this.state.movies.length === 0 &&
+                    <p className="noResult">Vous n'avez pas encore ajouté de film à la collection {this.state.collection.name}</p>
+                }
 
                 <DialogContainer id="add-comment-container" visible={this.state.showModal} onHide={this.hideModal} title="Voulez-vous supprimer définitivement le film de votre collection ?" focusOnMount={false}>
                     <div className="text-right">
                         <div className="btn mr-1" onClick={this.hideModal}>Annuler</div>
-                        <div className="btn" onClick={(e) => this.removeMovie(this.state.selectedMovie)}>Supprimer</div>
+                        <div className="btn" onClick={(e) => this.deleteMovie(this.state.selectedMovie)}>Supprimer</div>
                     </div>
                 </DialogContainer>
 
                 <Grid>
                     {
+                        this.state.movies.length > 0 &&
                         this.state.movies.map((movie) => {
                             return(
                                 <Cell size={3} key={movie.id}>
                                      <div className="user-profile__movie-card">
-                                        <img src={movie.cover} alt="" onClick={(e) => this.showModal(movie.id)}/>
+                                        <img src={movie.cover} alt={movie.title} onClick={(e) => this.showModal(movie.id)}/>
                                     </div>
                                 </Cell>
                             )  
                         })
                     }
                 </Grid>
+
+                <DialogContainer id="add-comment-container" visible={this.state.showDeleteCollectionModal} onHide={this.hideDeleteCollectionModal} title="Voulez-vous supprimer définitivement votre collection ?" focusOnMount={false}>
+                    <div className="text-right">
+                        <div className="btn mr-1" onClick={this.hideDeleteCollectionModal}>Annuler</div>
+                        <div className="btn" onClick={this.deleteCollection}>Supprimer</div>
+                    </div>
+                </DialogContainer>
+
                 <div className="text-right mb-2">
-                    <div className="btn color-red" onClick={this.deleteCollection}>Supprimer la collection</div>
+                    <div className="btn color-red" onClick={this.showDeleteCollectionModal}>Supprimer la collection</div>
                 </div>
 
-                <Snackbar id="snackbar" toasts={this.state.toasts} autohide={true} onDismiss={this.dismissToast}
-                />
+                <Snackbar id="snackbar" toasts={this.state.toasts} autohide={true} onDismiss={this.dismissToast} />
             </div>
         );
     }
