@@ -96,3 +96,20 @@
     }
   }
 }
+
+
+.moviesContainer{
+  width: 100%;
+}
+
+@media screen and (max-width: 800px) {
+  #movieIndex .movie_tv_menu {
+    position: initial;
+    width: 100%;
+  }
+
+  .moviesContainer{
+    margin: 0;
+    width: 100%;
+  }
+}

@@ -164,7 +164,7 @@ export default class MovieShow extends Component {
               </div>
             </form>
           </Cell>
-          <Cell size={9} offset={3} className="mt-0 mr-0">
+          <Cell size={9} offset={3} className="moviesContainer mt-0 mr-0">
 
             <CollectionAddMovieModal movie={this.state.selectedMovie}/>
             <div className="movies-list">
