@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Grid, Cell, TextField } from 'react-md';
 
 export default class CollectionAddMovieModal extends Component {
@@ -45,7 +46,7 @@ export default class CollectionAddMovieModal extends Component {
     createCollectionsUI = (collections) => {
         let collectionsUI = collections.map((collection) => {
             return(
-                <li key={collection.id} onClick={(e) => this.selectCollection(e, collection.id)} className="cursor">{collection.name}</li>
+                <li key={collection.id} onClick={(e) => this.selectCollection(e, collection.id)} className="cursor collectionName">{collection.name}</li>
             );
         });
 
@@ -66,13 +67,19 @@ export default class CollectionAddMovieModal extends Component {
     }
 
     selectCollection = (e, collectionId) => {
-        console.log(e.target.classList)
+        for (let i = 0; i <  document.getElementsByClassName('collectionName').length; i++) {
+            document.getElementsByClassName('collectionName')[i].classList.remove('active');
+        }
         e.target.classList.add('active');
         this.setState({selectedCollection: collectionId});
     }
 
     saveMovieInCollection = () => {
-        console.log(this.state.selectedCollection)
+        if (this.state.selectedCollection === null) return;
+        axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/collections/movies`, headers: {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}, data: {collection: `api/collections/${this.state.selectedCollection}`, movie : `api/movies/${this.props.movie.id}`}})
+        .then(() => {
+            this.cancel();
+        });
     }
 
     hideModal = (e) => {
@@ -107,7 +114,7 @@ export default class CollectionAddMovieModal extends Component {
                             <div className="createCollection float-right">
                                 <div>
                                     <i className="fas fa-plus-circle"></i>
-                                    <p>Créer une collection</p>
+                                    <Link to={{ pathname: '/profile', query: { tab: 1 } }}><p>Créer une collection</p></Link>
                                 </div>
                             </div>
                         </Cell>
