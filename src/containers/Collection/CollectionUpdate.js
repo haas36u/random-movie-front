@@ -1,67 +1,109 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Grid, Cell, TextField } from 'react-md';
-import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
+import { Grid, Cell, TextField, DialogContainer, Snackbar } from 'react-md';
 
 export default class CollectionUpdate extends Component {
 
     constructor(props) {
+        axios.defaults.headers['Content-Type'] = 'application/json';
+        axios.defaults.headers['Accept'] = 'application/json';
         super(props);
         this.state = {
-            privacy : true
+            movies: [],
+            collection : {},
+            isPrivate : true,
+            collectionName : '',
+            showModal : false,
+            showDeleteCollectionModal : false,
+            selectedMovie : null,
+            toasts : []
         };
 
         this.onChangePrivacy = this.onChangePrivacy.bind(this);
     }
 
     componentDidMount() {
-        this.getMovies();
+        this.getCollection();
     }
-    
-    getMovies = () => {
-        axios.get(`${process.env.REACT_APP_API_URL}/movies`, {
-            headers: {'Content-Type': 'application/json-application'} 
-        })
-        .then((response) => {
-            const movies = response.data.map((movie) => {
-                return(
-                    <Cell size={3} >
-                         <div className="user-profile__movie-card">
-                            <img src={movie.cover} alt="" onClick={(e) => this.removeMovie(movie.id)}/>
-                        </div>
-                    </Cell>
-                )  
-            });
-            this.setState({movies: movies});
-        })
-        .catch(error => {
-            console.log(error)
+
+    getCollection = () => {
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}}).then((response) => {
+            this.setState({collection : response.data, movies: response.data.movies, isPrivate : !response.data.isPublic, collectionName: response.data.name});
         });
     }
 
-    removeMovie = (movieId) => {
-        console.log('remove', movieId)
+    deleteMovie = () => {        
+        axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/collections/movies`, headers: {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}, data: {collection: `api/collections/${this.state.collection.id}`, movie : `api/movies/${this.state.selectedMovie}`}})
+        .then(() => {
+            this.hideModal();
+            const moviesFilter = this.state.movies.filter((movie) => {
+                if (movie.id === this.state.selectedMovie) return false;
+                else return true;
+            });
+    
+            this.setState({movies: moviesFilter});
+            this.addToast('Film supprimé de la collection');
+        });
     }
 
-    onChangePrivacy(e){
-        this.setState({privacy: e.target.checked});
+    onChangeName = (value) => {
+        this.setState({collectionName: value});
+    }
+
+    onChangePrivacy = (e) => {
+        this.setState({isPrivate: e.target.checked});
     };
 
     handleUpdateCollection = (e) => {
         e.preventDefault();
-        const name = e.target.elements.name.value.trim();
 
-        console.log(name, this.state.privacy)
+        axios({method: 'put', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}, data: {name: this.state.collectionName, isPublic : !this.state.isPrivate}})
+        .then(() => {
+            this.hideModal();
+            const moviesFilter = this.state.movies.filter((movie) => {
+                if (movie.id === this.state.selectedMovie) return false;
+                else return true;
+            });
+            this.addToast('Collection mise à jour');
+        });
+    }
+
+    addToast = (text, action, autohide = true) => {
+        this.setState((state) => {
+          const toasts = state.toasts.slice();
+          toasts.push({ text, action });
+          return { toasts, autohide };
+        });
+    };
+
+    hideModal = () => {
+        this.setState({showModal : false});
+    }
+    showModal = (movieId) => {
+        this.setState({selectedMovie: movieId, showModal : true});
     }
 
     goToCollections = () => {
         window.location.href = `/profile?tab=${this.props.match.params.id}`;
     }
 
-    deleteCollection = () => {
-        console.log(this.props.match.params.id)
-        window.location.href = `/profile`;
+    hideDeleteCollectionModal = () => {
+        this.setState({showDeleteCollectionModal : false});
     }
+    showDeleteCollectionModal = () => {
+        this.setState({showDeleteCollectionModal : true});
+    }
+
+    deleteCollection = () => {
+        axios({method: 'delete', url: `${process.env.REACT_APP_API_URL}/collections/${this.props.match.params.id}`, headers: {"Authorization" : localStorage.getItem('token')}}).then(() => {
+            window.location.href = `/profile`;
+        });
+    }
+
+    dismissToast = () => {
+        const [, ...toasts] = this.state.toasts;
+        this.setState({ toasts });
+    };
 
     render() {
         return (
@@ -69,19 +111,19 @@ export default class CollectionUpdate extends Component {
                 <div className="btn left mt-3" onClick={this.goToCollections}>Retour</div>
                 <h2 className="text-center mt-3">Modifier la collection</h2>
                 <form onSubmit={this.handleUpdateCollection}>
-                    <Grid className="vertically-centered p-0">
+                    <Grid className="vertically-centered p-0 mt-3">
                         <Cell size={6}>
-                            <label for="collection-name" >Titre de la collection</label>
+                            <label>Titre de la collection</label>
                         </Cell>
                         <Cell size={6}>
-                            <TextField id="collection-name" name="name" type="text"/>
+                            <TextField id="collection-name" name="name" value={this.state.collectionName} type="text" onChange={this.onChangeName}/>
                         </Cell>
                         <Cell size={6}>
-                            <label for="collectionn-privacy" >Garder cette collection privée</label>
+                            <label>Garder cette collection privée</label>
                         </Cell>
                         <Cell size={6}>
                             <label className="switch">
-                                <input id="collection-privacy" type="checkbox" checked={this.state.privacy} onChange={this.onChangePrivacy}/>
+                                <input id="collection-privacy" type="checkbox" checked={this.state.isPrivate} onChange={this.onChangePrivacy}/>
                                 <span className="slider"></span>
                             </label>
                         </Cell>
@@ -90,14 +132,47 @@ export default class CollectionUpdate extends Component {
                         </Cell>
                     </Grid>
                 </form>
-                <h2>Films de ma collection</h2>
+                <h2 className="mt-3">Films de ma collection</h2>
                 <p>Cliquez sur un film pour le supprimer</p>
+                {
+                    this.state.movies.length === 0 &&
+                    <p className="noResult">Vous n'avez pas encore ajouté de film à la collection {this.state.collection.name}</p>
+                }
+
+                <DialogContainer id="add-comment-container" visible={this.state.showModal} onHide={this.hideModal} title="Voulez-vous supprimer définitivement le film de votre collection ?" focusOnMount={false}>
+                    <div className="text-right">
+                        <div className="btn mr-1" onClick={this.hideModal}>Annuler</div>
+                        <div className="btn" onClick={this.deleteMovie}>Supprimer</div>
+                    </div>
+                </DialogContainer>
+
                 <Grid>
-                    {this.state.movies}
+                    {
+                        this.state.movies.length > 0 &&
+                        this.state.movies.map((movie) => {
+                            return(
+                                <Cell size={3} key={movie.id}>
+                                     <div className="user-profile__movie-card">
+                                        <img src={movie.cover} alt={movie.title} onClick={(e) => this.showModal(movie.id)}/>
+                                    </div>
+                                </Cell>
+                            )  
+                        })
+                    }
                 </Grid>
+
+                <DialogContainer id="add-comment-container" visible={this.state.showDeleteCollectionModal} onHide={this.hideDeleteCollectionModal} title="Voulez-vous supprimer définitivement votre collection ?" focusOnMount={false}>
+                    <div className="text-right">
+                        <div className="btn mr-1" onClick={this.hideDeleteCollectionModal}>Annuler</div>
+                        <div className="btn" onClick={this.deleteCollection}>Supprimer</div>
+                    </div>
+                </DialogContainer>
+
                 <div className="text-right mb-2">
-                    <div className="btn color-red" onClick={this.deleteCollection}>Supprimer la collection</div>
+                    <div className="btn color-red" onClick={this.showDeleteCollectionModal}>Supprimer la collection</div>
                 </div>
+
+                <Snackbar id="snackbar" toasts={this.state.toasts} autohide={true} onDismiss={this.dismissToast} />
             </div>
         );
     }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { Grid, Cell, TextField } from 'react-md';
 
 export default class CollectionAddMovieModal extends Component {
@@ -6,45 +8,78 @@ export default class CollectionAddMovieModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            collections : [],
+            collectionsUI : [],
+            collectionsFilter : [],
             selectedCollection: null
         };
     }
 
     componentDidMount() {
-        const collections = [
-            {id: 1, name : 'Super films'},
-            {id: 2, name: 'Pour maman'}
-        ]
-        this.getCollections(collections);
+        this.getCollections();
     }
 
-    getCollections = (collections) => {
-        const collectionsList = collections.map((collection) => {
+    getCollections = () => {
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/collections`, headers: {"Authorization" : localStorage.getItem('token')}})
+        .then((response) => {
+            const collections = this.createCollectionsData(response.data);
+            this.createCollectionsUI(collections);
+
+            this.setState({collections: collections, collectionsFilter : collections});
+        });
+    }
+
+    createCollectionsData = (data) => {
+        if (!data.data) return data;
+
+        const collections = [];
+
+        for (let i = 0; i < data.data.length; i++) {
+            let collection = data.data[i].attributes;
+            collection.id = collection._id;
+            delete collection._id;
+            collections.push(collection);
+        }
+
+        return collections;
+    } 
+
+    createCollectionsUI = (collections) => {
+        let collectionsUI = collections.map((collection) => {
             return(
-                <li key={collection.id} onClick={(e) => this.selectCollection(collection.id)} className="cursor">{collection.name}</li>
+                <li key={collection.id} onClick={(e) => this.selectCollection(e, collection.id)} className="cursor collectionName">{collection.name}</li>
             );
         });
 
-        this.setState({collections: collectionsList});
+        if (collectionsUI.length === 0) collectionsUI = <p className="noResult">Aucune collection ne correspond à votre recherche</p>;
+
+        this.setState({collectionsUI: collectionsUI});
     }
 
     handleSearchCollection = (e) => {
         e.preventDefault();
         const collectionTitle = e.target.elements.title.value.trim();
-        console.log(collectionTitle)
-        const collections = [
-            {id: 1, name : collectionTitle}
-        ]
-        this.getCollections( collections);
+
+        const collections = this.state.collectionsFilter.filter(function(collection){
+            return collection.name.includes(collectionTitle);
+        });
+
+        this.createCollectionsUI(collections);
     }
 
-    selectCollection = (collectionId) => {
+    selectCollection = (e, collectionId) => {
+        for (let i = 0; i <  document.getElementsByClassName('collectionName').length; i++) {
+            document.getElementsByClassName('collectionName')[i].classList.remove('active');
+        }
+        e.target.classList.add('active');
         this.setState({selectedCollection: collectionId});
     }
 
     saveMovieInCollection = () => {
-        console.log(this.state.selectedCollection)
+        if (this.state.selectedCollection === null) return;
+        axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/collections/movies`, headers: {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}, data: {collection: `api/collections/${this.state.selectedCollection}`, movie : `api/movies/${this.props.movie.id}`}})
+        .then(() => {
+            this.cancel();
+        });
     }
 
     hideModal = (e) => {
@@ -71,7 +106,7 @@ export default class CollectionAddMovieModal extends Component {
                                 <button><i className="fas fa-search"></i></button>
                             </form>
                             <ul>
-                                {this.state.collections}
+                                {this.state.collectionsUI}
                             </ul>
                         </Cell>
                         <Cell size={6}></Cell>
@@ -79,7 +114,7 @@ export default class CollectionAddMovieModal extends Component {
                             <div className="createCollection float-right">
                                 <div>
                                     <i className="fas fa-plus-circle"></i>
-                                    <p>Créer une collection</p>
+                                    <Link to={{ pathname: '/profile', query: { tab: 1 } }}><p>Créer une collection</p></Link>
                                 </div>
                             </div>
                         </Cell>

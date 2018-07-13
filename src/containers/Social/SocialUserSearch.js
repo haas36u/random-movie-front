@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import { Avatar, TextField } from 'react-md';
+import { TextField } from 'react-md';
 import SocialUserItem from '../../components/Social/SocialUserItem';
 
 export default class SocialIndex extends Component {

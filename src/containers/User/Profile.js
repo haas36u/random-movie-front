@@ -183,62 +183,32 @@ export default class Profile extends Component {
     }
 
     getCollections = () => {
-        const collections = [
-            {
-                id: 12,
-                name: 'Année 60',
-                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
-            },
-            {
-                id: 13,
-                name: 'Mes comédies',
-                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
-            },
-            {
-                id: 14,
-                name: 'Année 60',
-                movie : {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}
-            },
-            {
-                id: 15,
-                name: 'Mes comédies',
-                movie : {cover : "https://image.tmdb.org/t/p/w500/8zR2vXoXfdlknEYjfHvCbb1rJbI.jpg", id: 12, title: 'nemo'}
-            }
-        ];
+        this.setState({loader: this.loader});
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/collections`, headers: {"Authorization" : localStorage.getItem('token')}})
+        .then((response) => {
 
-        const collectionsList = collections.map((collection) => {
-            return (
-               <CollectionItem collection={collection} key={collection.id} getCollection={this.getCollection}/>
-            )
+            if (document.getElementById('userCollection')) document.getElementById('userCollection').style.display = 'none';
+            if (document.getElementById('userCollections')) document.getElementById('userCollections').style.display = 'flex';
+
+            this.setState({collections: response.data, loader : null});
         });
-
-        if (document.getElementById('userCollection')) document.getElementById('userCollection').style.display = 'none';
-        if (document.getElementById('userCollections')) document.getElementById('userCollections').style.display = 'flex';
-
-        this.setState({collections: collectionsList});
     }
 
     getCollection = (collectionId) => {
-        console.log(collectionId)
-        this.setState({loader: this.loader});
-        const response = 
-            {
-                id: 12,
-                name: 'Année 60',
-                isPrivate : true,
-                movies: [ {cover:"https://image.tmdb.org/t/p/w500/yVaQ34IvVDAZAWxScNdeIkaepDq.jpg", id:11, title:"La Guerre des étoiles"}]
-            };
+        var collection = this.state.collections.find(function(collection) {
+            return collection.id === collectionId;
+        });
 
-        const privacy = response.isPrivate ? <i class="fas fa-lock" title="Visible uniquement par vous"></i> : <i class="fas fa-globe-americas" title="Visible en public"></i>;
+        const privacy = collection.isPublic ? <i className="fas fa-globe-americas" title="Visible en public"></i> : <i className="fas fa-lock" title="Visible uniquement par vous"></i>;
 
-        const collection = (
+        const collectionUi = (
             <div>
                 <div className="userCollection__header">
-                    <h2>{response.name}{privacy}</h2>
-                    <Link to={`/collections/${response.id}/update`} className="btn">Modifier</Link>
+                    <h2>{collection.name}{privacy}</h2>
+                    <Link to={`/collections/${collection.id}/update`} className="btn">Modifier</Link>
                 </div>
                 <Grid>
-                    {response.movies.map((movie) => {
+                    {collection.movies.map((movie) => {
                         return (
                         <Cell size={3} key={movie.id} className="user-profile__movie-card ">
                             <ProfileMovieCard movie={movie} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
@@ -252,12 +222,12 @@ export default class Profile extends Component {
         if (document.getElementById('userCollections')) document.getElementById('userCollections').style.display = 'none';
         if (document.getElementById('userCollection')) document.getElementById('userCollection').style.display = 'block';
 
-        this.setState({collection: collection});
+        this.setState({collection: collectionUi});
     }
 
     showHideMoviesList = (e, selectedList) => {
         let btnClass = e.target.classList;
-        if (btnClass.length != 0 && btnClass.contains('active')) btnClass.remove('active');
+        if (btnClass.length !== 0 && btnClass.contains('active')) btnClass.remove('active');
         else btnClass.add('active');
 
         if (selectedList === 'showFavoriteMovies') this.setState({showFavoriteMovies: !this.state.showFavoriteMovies, moviesFilter : this.state.movies}, this.hideOrDisplayMovies);
@@ -268,11 +238,11 @@ export default class Profile extends Component {
     hideOrDisplayMovies = () => {
         let moviesResult = this.state.moviesFilter.filter((current) => {
             let match = false;
-            if (this.state.showWatchedMovies == true && current.watched == true)
+            if (this.state.showWatchedMovies === true && current.watched === true)
             match = true
-            if (this.state.showFavoriteMovies == true && current.liked == true)
+            if (this.state.showFavoriteMovies === true && current.liked === true)
             match = true
-            if (this.state.showWishedMovies == true && current.wished == true)
+            if (this.state.showWishedMovies === true && current.wished === true)
             match = true
             return match;
         });
@@ -383,13 +353,15 @@ export default class Profile extends Component {
                     <Tab label="Collections" onClick={this.getCollections}>
                         <div id="collections" className="container pt-1">
                             <Grid id="userCollections">
-                                <Cell size={4} className="movie_vignette addCollection" onClick={this.openCollectionAddModal}>
+                                <Cell size={4} className="collection_vignette addCollection" onClick={this.openCollectionAddModal}>
                                     <div>
                                         <i className="fas fa-plus-circle"></i>
                                     </div>
                                     <p>Créer une collection</p>
                                 </Cell>
-                                {this.state.collections}
+                                {this.state.collections.map((collection) => {
+                                    return (<CollectionItem collection={collection} key={collection.id} getCollection={this.getCollection}/>)
+                                })}
                             </Grid>
                             <div id="userCollection">
                                 {this.state.collection}
