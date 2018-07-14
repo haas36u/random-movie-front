@@ -4,7 +4,7 @@ import decode from 'jwt-decode';
 export const register = ({username, email, password}) => {
   return (dispatch) => {
     requestHeader();
-    axios.post(`${process.env.REACT_APP_API_URL}/register`, {username, email, password})
+    axios.post(`${process.env.REACT_APP_API_URL}/register`, {username, email, plainPassword: password})
       .then((response) => {
         dispatch(loginSuccess(response.data.token))
         window.location.href = '/registration/select-movies';
@@ -38,7 +38,7 @@ const loginSuccess = (token) => {
   localStorage.setItem('token', `Bearer ${token}`);
   localStorage.setItem('currentUser', JSON.stringify(decode(token)));
   window.location.href = '/movies';
-  
+
   return {
     type: "LOGIN_SUCCESS",
     token: token
