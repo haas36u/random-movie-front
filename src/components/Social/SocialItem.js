@@ -49,7 +49,7 @@ export default class SocialItem extends Component {
     headerContent = () => {
         let headerContent;
         let userUI = <Link to={`/profile/${this.props.actuality.user.id}`} className="text-bold"> {this.props.actuality.user.username}</Link>;
-        if (this.props.actuality.collection) headerContent = <p className="m-0"> {userUI} a partagé le tableau : <span className="text-bold">Mes films favoris</span></p>
+        if (this.props.actuality.collection) headerContent = <p className="m-0"> {userUI} a partagé le tableau : <span className="text-bold">{this.props.actuality.collection.name}</span></p>
         else headerContent = <p className="m-0">{userUI} a {this.state.userAction} le film : <Link to={`/movies/${this.props.actuality.movie.id}`} className="text-bold">{this.props.actuality.movie.title}</Link></p>
         
         this.setState({headerContent: headerContent});
@@ -74,7 +74,7 @@ export default class SocialItem extends Component {
                     <Avatar src={avatar} role="presentation" />
                     <div>
                         {this.state.headerContent}
-                        <p>{moment(this.props.actuality.createdAt).startOf('day').fromNow()}</p>
+                        <p>{moment(this.props.actuality.createdAt).fromNow()}</p>
                     </div>
                 </div>
                 <div className="social__item__content">

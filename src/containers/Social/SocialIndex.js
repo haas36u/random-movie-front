@@ -25,11 +25,13 @@ export default class SocialIndex extends Component {
     getActuality = () => {
         axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/feeds`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}})
         .then((response) => {
-            const actualityList = response.data.map(function(item, key){
+            let actualityList = response.data.map(function(item, key){
                 return (
                     <SocialItem actuality={item} key={key} />
                 )
             });
+
+            if (actualityList.length === 0) actualityList = <p>Aucune activités n'a été enregistrés de la part de vos abonnements</p>
 
             this.setState({actualityList: actualityList});
         });
