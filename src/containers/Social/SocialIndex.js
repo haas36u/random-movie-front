@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Grid, Cell, Avatar } from 'react-md';
+import { Avatar } from 'react-md';
 
 import SocialItem from '../../components/Social/SocialItem';
 

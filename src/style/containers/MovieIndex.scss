@@ -74,6 +74,11 @@
   .movies-list {
     display: flex;
     flex-wrap: wrap;
+
+    .noResult--movies {
+      color: #ffffff;
+      margin: 2rem 0;
+    }
   }
 
   .pagination li {
