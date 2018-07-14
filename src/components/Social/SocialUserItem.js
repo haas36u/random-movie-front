@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Avatar } from 'react-md';
+import axios from 'axios';
 
 export default class SocialUserItem extends Component {
 
@@ -12,8 +13,10 @@ export default class SocialUserItem extends Component {
     }
 
     followUser = () => {
-        // do request
-        this.setState({btnText: this.state.btnText === 'Suivre' ? 'Abonné' : 'Suivre', btnClass: this.state.btnClass === 'btn' ? 'btn subscribe' : 'btn'});
+        axios({method: 'post', url : `${process.env.REACT_APP_API_URL}/users/follow`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}, data: {follow: `api/users/${this.props.user.id}`}})
+        .then((response) => {
+            this.setState({btnText: this.state.btnText === 'Suivre' ? 'Abonné' : 'Suivre', btnClass: this.state.btnClass === 'btn' ? 'btn subscribe' : 'btn'});
+        });
     }
 
     render() {
