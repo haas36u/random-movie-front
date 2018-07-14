@@ -37,11 +37,11 @@ class Registration extends Component{
     }
 
     handleChangeCgu = (e) => {
-        this.setState({cgu: e.target.value.checked});
+        this.setState({cgu: e.target.checked});
     }
 
     render() {
-    
+
         return (
             <div id="registration-login">
                 <div className="registration-login_container-box">
