@@ -26,8 +26,6 @@ export default class SocialItem extends Component {
         } else if (this.props.actuality.comment) {
             content = this.props.actuality.comment.content;
             userAction = 'commenté';
-        } else if (this.props.actuality.favoriteMovie) {
-            userAction = 'aimé';
         }
 
         this.setState({userAction: userAction, content: content});
