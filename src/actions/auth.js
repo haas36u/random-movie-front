@@ -68,6 +68,7 @@ const getTokenExpirationDate = (encodedToken) => {
 
 const isTokenExpired = (token) => {
   const expirationDate = getTokenExpirationDate(token);
+  if (expirationDate < new Date()) logout();
   return expirationDate < new Date();
 }
 
