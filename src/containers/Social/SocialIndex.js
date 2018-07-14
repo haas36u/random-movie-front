@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Grid, Cell, Avatar } from 'react-md';
 
 import SocialItem from '../../components/Social/SocialItem';
-import SocialItemTableau from '../../components/Social/SocialItemTableau';
 
 export default class SocialIndex extends Component {
 
@@ -24,89 +23,38 @@ export default class SocialIndex extends Component {
     }
 
     getActuality = () => {
-        let actuality = [
-            {
-                movie : {
-                    "id": 272,
-                    "title": "Batman Begins",
-                    "cover": "https://image.tmdb.org/t/p/w500/zfVFOo2XCHbeA0mXbst42TAGhfC.jpg",
-                    "releasedAt": "2005-06-10T00:00:00+02:00"
-                },
-                user : {
-                    "id": 0,
-                    "username": "Thomas"
-                },
-                notation : {
-                    mark: 4
-                },
-                createdAt : '2018-06-14T00:00:00+02:00'
-            },
-            {
-                movie : {
-                    "id": 272,
-                    "title": "Batman Begins",
-                    "cover": "https://image.tmdb.org/t/p/w500/zfVFOo2XCHbeA0mXbst42TAGhfC.jpg",
-                    "releasedAt": "2005-06-10T00:00:00+02:00"
-                },
-                user : {
-                    "id": 0,
-                    "username": "Thomas"
-                },
-                favoriteMovie : {},
-                createdAt : '2018-07-05T00:00:00+02:00'
-            },
-            {
-                movie : {
-                    "id": 272,
-                    "title": "Batman Begins",
-                    "cover": "https://image.tmdb.org/t/p/w500/zfVFOo2XCHbeA0mXbst42TAGhfC.jpg",
-                    "releasedAt": "2005-06-10T00:00:00+02:00"
-                },
-                user : {
-                    "id": 0,
-                    "username": "Thomas"
-                },
-                comment : {
-                    content : 'C\'était un super film !'
-                },
-                createdAt : '2018-06-14T00:00:00+02:00'
-            }
-        ]
+        axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/feeds`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}})
+        .then((response) => {
+            let actualityList = response.data.map(function(item, key){
+                return (
+                    <SocialItem actuality={item} key={key} />
+                )
+            });
 
-        const actualityList = actuality.map(function(item, key){
-            return (
-                <SocialItem actuality={item} key={key} />
-            )
+            if (actualityList.length === 0) actualityList = <p>Aucune activités n'a été enregistrés de la part de vos abonnements</p>
+
+            this.setState({actualityList: actualityList});
         });
-
-        this.setState({actualityList: actualityList})
     }
 
     getFollowedUsers = () => {
-
         let avatar = require('../../images/avatar_default.jpg');
 
-        const users = [
-            {
-                id: 1,
-                username: 'François'
-            },
-            {
-                id: 2,
-                username : 'Cedric'
-            }
-        ]
+        axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/users/follows`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}})
+        .then((response) => {
+            const users = response.data.slice(0, 4);
 
-        const followedUsers = users.map(function(user){
-            return (
-                <div className="userFollow__user">
-                    <Avatar src={avatar} role="presentation"/>
-                    <p>{user.username}</p>
-                </div>
-            )
+            const followedUsers = users.map(function(user){
+                return (
+                    <div className="userFollow__user" key={user.id}>
+                        <Avatar src={avatar} role="presentation"/>
+                        <p>{user.username}</p>
+                    </div>
+                )
+            });
+
+            this.setState({followedUsers: followedUsers});
         });
-
-        this.setState({followedUsers: followedUsers});
     }
     
     render() {
@@ -127,7 +75,7 @@ export default class SocialIndex extends Component {
                             
                             <Link to="/social/search" className="userFollow__user">
                                 <i className="fas fa-plus-circle"></i>
-                                <p>Ajouter un ami</p>
+                                <p>Chercher un abonné</p>
                             </Link>
                             <Link to="/social/users">Voir la liste complète</Link>
                         </div>
