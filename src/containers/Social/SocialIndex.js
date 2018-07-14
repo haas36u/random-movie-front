@@ -13,9 +13,12 @@ export default class SocialIndex extends Component {
         super(props);
         this.state = {
             actualityList: [],
-            followedUsers : []
+            followedUsers : [],
+            loader : this.loader
         };
     }
+
+    loader = <span className="spinner"><svg width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="lds-double-ring"><circle cx="50" cy="50" ng-attr-r="{{config.radius}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-dasharray="{{config.dasharray}}" fill="none" strokeLinecap="round" r="40" strokeWidth="4" stroke="#bd4030" strokeDasharray="62.83185307179586 62.83185307179586" transform="rotate(328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.3s" begin="0s" repeatCount="indefinite"></animateTransform></circle><circle cx="50" cy="50" ng-attr-r="{{config.radius2}}" ng-attr-stroke="{{config.c2}}" fill="none" strokeLinecap="round" r="35" strokeWidth="4" stroke="#e0b83e" strokeDasharray="54.97787143782138 54.97787143782138" strokeDashoffset="54.97787143782138" transform="rotate(-328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg> </span>;        
 
     componentDidMount() {
         this.getActuality();
@@ -33,7 +36,7 @@ export default class SocialIndex extends Component {
 
             if (actualityList.length === 0) actualityList = <p>Aucune activités n'a été enregistrés de la part de vos abonnements</p>
 
-            this.setState({actualityList: actualityList});
+            this.setState({actualityList: actualityList, loader: null});
         });
     }
 
@@ -59,10 +62,9 @@ export default class SocialIndex extends Component {
     
     render() {
         
-        if(!this.state) return <div>Loading...</div>
-    
         return (
             <div id="social">
+                {this.state.loader}
                 <div className="socialContainer">
                     <div className="socialContainer__items">
                         {this.state.actualityList}
