@@ -133,6 +133,7 @@ export default class MovieShow extends Component {
     sendNotation = (mark) => {
         axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/notations`, headers: {"Authorization" : localStorage.getItem('token')}, data: {mark: mark, movie: 'api/movies/' + this.state.movie.id}})
         .then((response) => {
+            if (!this.state.movie.mark) document.getElementById('userNoRated').style.display = 'none';
             this.setState({userAlreadyRate : true});
         })
         .catch(error => {
@@ -180,7 +181,7 @@ export default class MovieShow extends Component {
                                         <label for="rate5" title={this.RATING[5]}>5 stars</label>
                                     </fieldset>
                                 </form>
-                                {!this.state.movie.mark && <p className="text-italic">Vous n'avez pas encore noté ce film</p>}
+                                {!this.state.movie.mark && <p className="text-italic" id="userNoRated">Vous n'avez pas encore noté ce film</p>}
                             </div>
                         </Cell>
                         <Cell size={6} className="text-right">
