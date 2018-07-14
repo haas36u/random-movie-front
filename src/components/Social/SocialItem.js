@@ -13,10 +13,6 @@ export default class SocialItem extends Component {
         this.state = {};
     }
 
-    componentDidMount() {
-        this.headerContent();
-    }
-
     componentWillMount() {
         this.initalize();
     }
@@ -47,6 +43,11 @@ export default class SocialItem extends Component {
         return stars;
     }
 
+    componentDidMount() {
+        this.headerContent();
+        this.getItem();
+    }
+
     headerContent = () => {
         let headerContent;
         let userUI = <Link to={`/profile/${this.props.actuality.user.id}`} className="text-bold"> {this.props.actuality.user.username}</Link>;
@@ -57,7 +58,11 @@ export default class SocialItem extends Component {
     }
 
     getItem = () => {
+        let itemContent;
+        if (this.props.actuality.collection) itemContent = <CollectionItem collection={this.props.actuality.collection}/>;
+        else  itemContent = <MovieCard movie={this.props.actuality.movie} showUserAction={true}/>
 
+        this.setState({itemContent: itemContent});
     }
 
     render() {
@@ -77,8 +82,8 @@ export default class SocialItem extends Component {
                     </div>
                 </div>
                 <div className="social__item__content">
-                    <p>{content}</p>
-
+                    <p>{this.state.content}</p>
+                    {this.state.itemContent}
                 </div>
             </div>
         );
