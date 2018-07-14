@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Grid, Cell, Avatar } from 'react-md';
 
 import SocialItem from '../../components/Social/SocialItem';
-import SocialItemTableau from '../../components/Social/SocialItemTableau';
 
 export default class SocialIndex extends Component {
 
@@ -68,6 +67,31 @@ export default class SocialIndex extends Component {
                 },
                 comment : {
                     content : 'C\'était un super film !'
+                },
+                createdAt : '2018-06-14T00:00:00+02:00'
+            },
+            {
+                collection : {
+                    "id": 0,
+                    "name": "string",
+                    "isPublic": true,
+                    "createdAt": "2018-07-14T19:47:24.266Z",
+                    "movies": [
+                        {
+                            "id": 272,
+                            "title": "Batman Begins",
+                            "cover": "https://image.tmdb.org/t/p/w500/zfVFOo2XCHbeA0mXbst42TAGhfC.jpg",
+                            "releasedAt": "2005-06-10T00:00:00+02:00"
+                        }
+                    ],
+                    "user": {
+                        "id": 0,
+                        "username": "Thomas"
+                    }
+                },
+                user : {
+                    "id": 0,
+                    "username": "Teddy"
                 },
                 createdAt : '2018-06-14T00:00:00+02:00'
             }

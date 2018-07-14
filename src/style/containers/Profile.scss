@@ -164,42 +164,6 @@
 
   /*PROFILE COLLECIONS*/
   #collections {
-    .collection_vignette {
-      position: relative;
-      background-color: #000000;
-      color: #ffffff;
-      flex: 1 0 31.33%;
-      flex-grow: 0;
-
-      &:hover {
-        cursor: pointer;
-      }
-  
-      div {
-          width:100%;
-          height: 300px;
-          overflow: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-
-          img {
-            height: 100%;
-          }
-
-          i {
-            font-size: 3rem;
-            color: #b70f0a;
-          }
-      }
-      p {
-        color: #ffffff;
-        padding: 0.5rem 1rem;
-        font-size: 1rem;
-        margin: 0;
-      }
-    }
-
     .collection_vignette.addCollection {
       background-color: $primary-color;
       

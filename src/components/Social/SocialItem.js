@@ -4,8 +4,38 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
 import MovieCard from '../../components/Movie/MovieCard';
+import CollectionItem from '../../components/Collection/CollectionItem';
 
 export default class SocialItem extends Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {};
+    }
+
+    componentDidMount() {
+        this.headerContent();
+    }
+
+    componentWillMount() {
+        this.initalize();
+    }
+
+    initalize = () => {
+        let userAction;
+        let content;
+        if (this.props.actuality.notation) {
+            content = this.createStars();
+            userAction = 'noté';
+        } else if (this.props.actuality.comment) {
+            content = this.props.actuality.comment.content;
+            userAction = 'commenté';
+        } else if (this.props.actuality.favoriteMovie) {
+            userAction = 'aimé';
+        }
+
+        this.setState({userAction: userAction, content: content});
+    }
 
     createStars = () => {
         const stars = [];
@@ -17,6 +47,19 @@ export default class SocialItem extends Component {
         return stars;
     }
 
+    headerContent = () => {
+        let headerContent;
+        let userUI = <Link to={`/profile/${this.props.actuality.user.id}`} className="text-bold"> {this.props.actuality.user.username}</Link>;
+        if (this.props.actuality.collection) headerContent = <p className="m-0"> {userUI} a partagé le tableau : <span className="text-bold">Mes films favoris</span></p>
+        else headerContent = <p className="m-0">{userUI} a {this.state.userAction} le film : <Link to={`/movies/${this.props.actuality.movie.id}`} className="text-bold">{this.props.actuality.movie.title}</Link></p>
+        
+        this.setState({headerContent: headerContent});
+    }
+
+    getItem = () => {
+
+    }
+
     render() {
         moment.locale('fr');
 
@@ -24,28 +67,18 @@ export default class SocialItem extends Component {
         let userAction;
         let content;
 
-       if (this.props.actuality.notation) {
-            content = this.createStars();
-            userAction = 'noté';
-       } else if (this.props.actuality.comment) {
-            content = this.props.actuality.comment.content;
-            userAction = 'commenté';
-       } else if (this.props.actuality.favoriteMovie) {
-           userAction = 'aimé';
-       }
-
         return (
             <div className="social__item social__item--background">
                 <div className="social__item__header">
                     <Avatar src={avatar} role="presentation" />
                     <div>
-                        <p className="m-0"><Link to={`/profile/${this.props.actuality.user.id}`} className="text-bold">{this.props.actuality.user.username}</Link> a {userAction} le film : <Link to={`/movies/${this.props.actuality.movie.id}`} className="text-bold">{this.props.actuality.movie.title}</Link></p>
+                        {this.state.headerContent}
                         <p>{moment(this.props.actuality.createdAt).startOf('day').fromNow()}</p>
                     </div>
                 </div>
                 <div className="social__item__content">
                     <p>{content}</p>
-                    <MovieCard movie={this.props.actuality.movie} showUserAction={true}/>
+
                 </div>
             </div>
         );
