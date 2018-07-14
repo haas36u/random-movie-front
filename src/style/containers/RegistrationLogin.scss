@@ -29,20 +29,15 @@
 
     label, input {
       left: 0;
-      width: 100%;
       text-align: left;
     }
 
-    #password-forgotten {
-      text-align: right;
-      color: #000000;
+    .cgu {
+      color: $primary-color-light;
       font-size: 0.8rem;
-      color: $error-color;
-      display: block;
-      margin-top: 1rem;
 
-      &:hover {
-        cursor: pointer;
+      a{
+        color: $primary-color;
       }
     }
 
