@@ -107,30 +107,23 @@ export default class SocialIndex extends Component {
     }
 
     getFollowedUsers = () => {
-
         let avatar = require('../../images/avatar_default.jpg');
 
-        const users = [
-            {
-                id: 1,
-                username: 'François'
-            },
-            {
-                id: 2,
-                username : 'Cedric'
-            }
-        ]
+        axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/users/follows`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}})
+        .then((response) => {
+            const users = response.data.slice(0, 4);
 
-        const followedUsers = users.map(function(user){
-            return (
-                <div className="userFollow__user">
-                    <Avatar src={avatar} role="presentation"/>
-                    <p>{user.username}</p>
-                </div>
-            )
+            const followedUsers = users.map(function(user){
+                return (
+                    <div className="userFollow__user" key={user.id}>
+                        <Avatar src={avatar} role="presentation"/>
+                        <p>{user.username}</p>
+                    </div>
+                )
+            });
+
+            this.setState({followedUsers: followedUsers});
         });
-
-        this.setState({followedUsers: followedUsers});
     }
     
     render() {

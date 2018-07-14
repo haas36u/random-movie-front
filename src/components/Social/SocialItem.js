@@ -69,8 +69,6 @@ export default class SocialItem extends Component {
         moment.locale('fr');
 
         let avatar = require('../../images/avatar_default.jpg');
-        let userAction;
-        let content;
 
         return (
             <div className="social__item social__item--background">
