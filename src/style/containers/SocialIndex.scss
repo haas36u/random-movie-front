@@ -30,6 +30,10 @@
             margin-top: 0;
         }
 
+        a {
+            color: $secondary-color;
+        }
+
         .social__item__header {
             display: flex;
             align-items: center;
@@ -42,6 +46,10 @@
         .social__item__content {
             width: 80%;
             margin: 0 auto;
+            
+            .collection_vignette {
+                width: 100%;
+            }
         }
     }
 

@@ -24,7 +24,8 @@ export default class MovieShow extends Component {
             casting: [],
             similars : [],
             commentModalVisible: false,
-            selectedMovie: {id: null, cover: null, title: null}
+            selectedMovie: {id: null, cover: null, title: null},
+            loader: this.loader
         };
     }
 
@@ -35,6 +36,7 @@ export default class MovieShow extends Component {
     }
 
     RATING = {1 : 'A éviter',  2 : 'Moyen', 3 : 'Super', 4 : 'Excellent', 5 : 'Incroyable'};
+    loader = <span className="spinner"><svg width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="lds-double-ring"><circle cx="50" cy="50" ng-attr-r="{{config.radius}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-dasharray="{{config.dasharray}}" fill="none" strokeLinecap="round" r="40" strokeWidth="4" stroke="#bd4030" strokeDasharray="62.83185307179586 62.83185307179586" transform="rotate(328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.3s" begin="0s" repeatCount="indefinite"></animateTransform></circle><circle cx="50" cy="50" ng-attr-r="{{config.radius2}}" ng-attr-stroke="{{config.c2}}" fill="none" strokeLinecap="round" r="35" strokeWidth="4" stroke="#e0b83e" strokeDasharray="54.97787143782138 54.97787143782138" strokeDashoffset="54.97787143782138" transform="rotate(-328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg> </span>;        
 
     /*MOVIE*/
     getMovie = () => {
@@ -68,7 +70,7 @@ export default class MovieShow extends Component {
                 )
             }
 
-            this.setState({movie : movie, userActions: userActions, communityNote: communityNote});
+            this.setState({movie : movie, userActions: userActions, communityNote: communityNote, loader: null});
         })
         .catch(error => {
             console.log(error)
@@ -131,6 +133,7 @@ export default class MovieShow extends Component {
     sendNotation = (mark) => {
         axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/notations`, headers: {"Authorization" : localStorage.getItem('token')}, data: {mark: mark, movie: 'api/movies/' + this.state.movie.id}})
         .then((response) => {
+            if (!this.state.movie.mark) document.getElementById('userNoRated').style.display = 'none';
             this.setState({userAlreadyRate : true});
         })
         .catch(error => {
@@ -178,7 +181,7 @@ export default class MovieShow extends Component {
                                         <label for="rate5" title={this.RATING[5]}>5 stars</label>
                                     </fieldset>
                                 </form>
-                                {!this.state.movie.mark && <p className="text-italic">Vous n'avez pas encore noté ce film</p>}
+                                {!this.state.movie.mark && <p className="text-italic" id="userNoRated">Vous n'avez pas encore noté ce film</p>}
                             </div>
                         </Cell>
                         <Cell size={6} className="text-right">
@@ -191,16 +194,12 @@ export default class MovieShow extends Component {
             }
         }
 
-        const goToComments = () => {
-            window.location.href = '/movies/' + this.state.movie.id + '/comments/';
-        }
-
         const commentsAccess = () => {
-            if(isAuthenticated()){
+            if (isAuthenticated()) {
                 return (
-                    <span onClick={goToComments} className="right cursor text-gold">Voir tous les commentaires</span>
+                    <Link to={`/movies/${this.state.movie.id}/comments`} className="right cursor text-gold">Voir tous les commentaires</Link>
                 )
-            }else{
+            } else {
                 return (
                     <Link to="/login" className="right cursor">Se connecter pour voir les commentaires</Link>
                 )
@@ -208,10 +207,10 @@ export default class MovieShow extends Component {
         }
 
         const commentsSecondAccess = () => {
-            if(isAuthenticated()){
+            if (isAuthenticated()) {
                 return (
                     <Cell size={12} className="ml-0">
-                        <span onClick={goToComments} className="cursor text-gold">Lire la suite</span>
+                        <Link to={`/movies/${this.state.movie.id}/comments`} className="cursor text-gold">Lire la suite</Link>
                     </Cell>
                 )
             }
@@ -219,6 +218,7 @@ export default class MovieShow extends Component {
 
         return (
             <div id="movieShow">
+                {this.state.loader}
                 <div id="movie-container">
                     <CollectionAddMovieModal movie={this.state.selectedMovie}/>
                     <div className="container">

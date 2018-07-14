@@ -46,7 +46,6 @@ export default class Profile extends Component {
         this.getUser();
         this.getFavoriteMoviesPieChart();
         this.getNotationsBarChart();
-        this.getCollections();
         this.getUserMovies();
     }
     
@@ -361,8 +360,8 @@ export default class Profile extends Component {
                                     </div>
                                     <p>Créer une collection</p>
                                 </Cell>
-                                {this.state.collections.map((collection) => {
-                                    return (<CollectionItem collection={collection} key={collection.id} getCollection={this.getCollection}/>)
+                                {this.state.collections.map((collection, key) => {
+                                    return (<CollectionItem collection={collection} key={key} getCollection={this.getCollection}/>)
                                 })}
                             </Grid>
                             <div id="userCollection">

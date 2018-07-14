@@ -7,7 +7,6 @@ export default class Footer extends Component{
         return (
             <footer className="page-footer">
                 <div className="container">
-                    <h6 className="white-text"><a href="">A propos</a></h6>
                     <h6 className="white-text"><a href="">Contact</a></h6>
                     <h6 className="white-text"><Link to="/cgu">Conditions d'utilisation</Link></h6>
                     <h6 className="white-text"><Link to="/legal-mentions">Mentions légales</Link></h6>

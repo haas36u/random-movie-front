@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import MovieActions from '../../components/Movie/MovieActions';
+import { Link } from 'react-router-dom';
 
 export default class ProfileMovieCard extends Component {
     
     render() {
-
-        const goToMovieShow = () => {
-            window.location.href = '/movies/' + this.props.movie.id;
-        }
 
         let userActions = {
             liked   : this.props.movie.liked,
@@ -21,7 +18,7 @@ export default class ProfileMovieCard extends Component {
     
         return (
             <div className="user-profile__movie-card">
-                <img src={this.props.movie.cover} alt="" onClick={goToMovieShow}/>
+                <Link to={`/movies/${this.props.movie.id}`}><img src={this.props.movie.cover} alt={this.props.movie.title}/></Link>
                 <div className="favorite_action_container text-right">
                     {showUserActions()}
                 </div>
