@@ -34,8 +34,6 @@ export default class SocialIndex extends Component {
     }
 
     render() {
-        
-        if(!this.state) return <div>Loading...</div>
     
         return (
             <div id="social" className="socialUserSearch">
