@@ -30,6 +30,10 @@
             margin-top: 0;
         }
 
+        a {
+            color: $secondary-color;
+        }
+
         .social__item__header {
             display: flex;
             align-items: center;

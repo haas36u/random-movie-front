@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Avatar } from 'react-md';
+import { Link } from 'react-router-dom';
 import moment from 'moment';
 import 'moment/locale/fr';
 import MovieCard from '../../components/Movie/MovieCard';
@@ -38,7 +39,7 @@ export default class SocialItem extends Component {
                 <div className="social__item__header">
                     <Avatar src={avatar} role="presentation" />
                     <div>
-                        <p className="m-0"><span className="text-bold">{this.props.actuality.user.username}</span> a {userAction} le film : <span className="text-bold">{this.props.actuality.movie.title}</span></p>
+                        <p className="m-0"><Link to={`/profile/${this.props.actuality.user.id}`} className="text-bold">{this.props.actuality.user.username}</Link> a {userAction} le film : <Link to={`/movies/${this.props.actuality.movie.id}`} className="text-bold">{this.props.actuality.movie.title}</Link></p>
                         <p>{moment(this.props.actuality.createdAt).startOf('day').fromNow()}</p>
                     </div>
                 </div>

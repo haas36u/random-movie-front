@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { TextField, Checkbox } from 'react-md';
+import { TextField } from 'react-md';
 import { register } from '../../actions/auth';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';

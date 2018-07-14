@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Avatar } from 'react-md';
+import { Link } from 'react-router-dom';
 
 export default class NotationsMovieList extends Component {
 
@@ -13,10 +14,6 @@ export default class NotationsMovieList extends Component {
         return stars;
     }
 
-    goToMovieShow = () => {
-        window.location.href = '/movies/' + this.props.notation.movie.id;
-    }
-
     render() {
 
         let avatar = require('../../images/avatar_default.jpg');
@@ -25,8 +22,9 @@ export default class NotationsMovieList extends Component {
             <li className="commentsItem">
                 <Avatar src={avatar} role="presentation" />
                 <div className="commentsItem--content">
-                    <p className="m-0 text-bold">{this.props.user.username} a noté <span onClick={this.goToMovieShow}>{this.props.notation.movie.title}</span></p>
-                
+                    <p className="m-0">
+                        <Link to={`/profile/${this.props.user.id}`} className="text-bold cursor">{this.props.user.username}</Link> a noté <Link to={`/movies/${this.props.notation.movie.id}`} className="text-bold cursor">{this.props.notation.movie.title}</Link>
+                    </p>
                     <p>{this.createStars()}</p>
                 </div>
             </li>
