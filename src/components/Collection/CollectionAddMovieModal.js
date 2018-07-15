@@ -20,7 +20,7 @@ export default class CollectionAddMovieModal extends Component {
     }
 
     getCollections = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/collections`, headers: {"Authorization" : localStorage.getItem('token')}})
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/collections`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const collections = this.createCollectionsData(response.data);
             this.createCollectionsUI(collections);

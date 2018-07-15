@@ -187,7 +187,8 @@ export default class Profile extends Component {
 
     getCollections = () => {
         this.setState({loader: this.loader});
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/collections`, headers: {"Authorization" : localStorage.getItem('token')}})
+        const url = this.state.userId ? this.state.userId + '/collections' : 'collections';
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
 
             if (document.getElementById('userCollection')) document.getElementById('userCollection').style.display = 'none';
@@ -208,7 +209,7 @@ export default class Profile extends Component {
             <div>
                 <div className="userCollection__header">
                     <h2>{collection.name}{privacy}</h2>
-                    <Link to={`/collections/${collection.id}/update`} className="btn">Modifier</Link>
+                    {!this.state.userId && <Link to={`/collections/${collection.id}/update`} className="btn">Modifier</Link>}
                 </div>
 
                 {collection.movies.length === 0 && <p className="noResult">Vous n'avez pas encore ajouté de film à la collection {collection.name}</p>}
@@ -257,11 +258,13 @@ export default class Profile extends Component {
 
     openCollectionAddMovieModal = (e, movie) => {
         e.stopPropagation();
+        if (this.state.userId) return;
         this.setState({selectedMovie: movie});
         if(document.getElementById('collectionAddMovieModal')) document.getElementById('collectionAddMovieModal').style.display = 'flex';
     }
 
     openCollectionAddModal = () => {
+        if (this.state.userId) return;
         if(document.getElementById('collectionAddModal')) document.getElementById('collectionAddModal').style.display = 'flex';
     }
 
@@ -281,7 +284,12 @@ export default class Profile extends Component {
             {this.state.loader}
             <div className="user-profile__header background-trianglify" style={bgTriangle}>
                 <div className="container">
-                    <a href="" className="btn right">Modifier</a>
+                    {
+                        !this.state.userId && <a href="" className="btn right">Modifier</a>
+                    }
+                    {
+                        this.state.userId && <div className={this.state.user.isFollow ? 'followBtn right' : 'followBtn subscribe right'}>{this.state.user.isFollow ? 'Abonné' : 'Suivre'}</div>
+                    }
                     <Avatar src={avatar} role="presentation" />
                     <div className="user-profile__header__info">
                         <h3>{this.state.user.username}</h3>
@@ -358,15 +366,23 @@ export default class Profile extends Component {
                     <Tab label="Collections" onClick={this.getCollections}>
                         <div id="collections" className="container pt-1">
                             <Grid id="userCollections">
-                                <Cell size={4} className="collection_vignette addCollection" onClick={this.openCollectionAddModal}>
-                                    <div>
-                                        <i className="fas fa-plus-circle"></i>
-                                    </div>
-                                    <p>Créer une collection</p>
-                                </Cell>
-                                {this.state.collections.map((collection, key) => {
-                                    return (<CollectionItem collection={collection} key={key} getCollection={this.getCollection}/>)
-                                })}
+                                {
+                                    !this.state.userId &&
+                                    <Cell size={4} className="collection_vignette addCollection" onClick={this.openCollectionAddModal}>
+                                        <div>
+                                            <i className="fas fa-plus-circle"></i>
+                                        </div>
+                                        <p>Créer une collection</p>
+                                    </Cell>
+                                }
+                                {
+                                    this.state.userId && this.state.collections.length === 0 && <p>{this.state.user.username} n'a pas encore partagé de collection</p>
+                                }
+                                {
+                                    this.state.collections.map((collection, key) => {
+                                        return (<CollectionItem collection={collection} key={key} getCollection={this.getCollection}/>)
+                                    })
+                                }
                             </Grid>
                             <div id="userCollection">
                                 {this.state.collection}

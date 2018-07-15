@@ -8,18 +8,18 @@ export default class SocialUserItem extends Component {
         super(props);
         this.state = { 
             btnText : props.user.isFollow ? 'Abonné' : 'Suivre',
-            btnClass : props.user.isFollow ? 'btn' : 'btn subscribe'
+            btnClass : props.user.isFollow ? 'followBtn' : 'followBtn subscribe'
         }
     }
     
     componentWillReceiveProps(nextProps) {
-        this.setState({btnText : nextProps.user.isFollow ? 'Abonné' : 'Suivre', btnClass : nextProps.user.isFollow ? 'btn' : 'btn subscribe'});   
+        this.setState({btnText : nextProps.user.isFollow ? 'Abonné' : 'Suivre', btnClass : nextProps.user.isFollow ? 'followBtn' : 'followBtn subscribe'});   
     }
 
     followUser = () => {
         axios({method: 'post', url : `${process.env.REACT_APP_API_URL}/users/follow`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}, data: {follow: `api/users/${this.props.user.id}`}})
         .then((response) => {
-            this.setState({btnText: this.state.btnText === 'Suivre' ? 'Abonné' : 'Suivre', btnClass: this.state.btnClass === 'btn' ? 'btn subscribe' : 'btn'});
+            this.setState({btnText: this.state.btnText === 'Suivre' ? 'Abonné' : 'Suivre', btnClass: this.state.btnClass === 'followBtn followBtn' ? 'followBtn subscribe' : 'btn'});
         });
     }
 
