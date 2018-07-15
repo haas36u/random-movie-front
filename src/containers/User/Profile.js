@@ -231,6 +231,13 @@ export default class Profile extends Component {
         this.setState({collection: collectionUi});
     }
 
+    followUser = () => {
+        axios({method: 'post', url : `${process.env.REACT_APP_API_URL}/users/follow`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}, data: {follow: `api/users/${this.state.userId}`}})
+        .then((response) => {
+            this.setState({btnText: this.state.btnText === 'Suivre' ? 'Abonné' : 'Suivre', btnClass: this.state.btnClass === 'followBtn followBtn' ? 'followBtn subscribe' : 'btn'});
+        });
+    }
+
     showHideMoviesList = (e, selectedList) => {
         let btnClass = e.target.classList;
         if (btnClass.length !== 0 && btnClass.contains('active')) btnClass.remove('active');
@@ -288,7 +295,7 @@ export default class Profile extends Component {
                         !this.state.userId && <a href="" className="btn right">Modifier</a>
                     }
                     {
-                        this.state.userId && <div className={this.state.user.isFollow ? 'followBtn right' : 'followBtn subscribe right'}>{this.state.user.isFollow ? 'Abonné' : 'Suivre'}</div>
+                        this.state.userId && <div className={this.state.user.isFollow ? 'followBtn right' : 'followBtn subscribe right'} onClick={this.followUser}>{this.state.user.isFollow ? 'Abonné' : 'Suivre'}</div>
                     }
                     <Avatar src={avatar} role="presentation" />
                     <div className="user-profile__header__info">
