@@ -99,17 +99,19 @@ export default class Profile extends Component {
     }
 
     getUserMovies = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/movies`, headers: {"Authorization" : localStorage.getItem('token')}}).then((response) => {
+        const url = this.state.userId ? `${this.state.userId}/movies` : '/movies';
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: {"Authorization" : localStorage.getItem('token')}}).then((response) => {
             this.setState({movies : response.data, moviesFilter: response.data});
         });
     }
 
     getFavoriteMoviesPieChart = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/favorites`, headers: { "Authorization" : localStorage.getItem('token')}})
+        const url = this.state.userId ? `${this.state.userId}/stats/favorites` : '/me/stats/favorites';
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: { "Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const stats = response.data;
             if (stats.length === 0) {
-                return this.setState({noDataWatchedMovies: <p className="mt-3">Aucune données disponibles : Vous n'avez pas encore aimé, ni ajouté comme vu un film</p>})
+                return this.setState({noDataWatchedMovies: this.state.userId ? <p className="mt-3">Aucune données disponibles : Cet utilisateur pas encore aimé, ni ajouté comme vu un film</p> : <p className="mt-3">Aucune données disponibles : Vous n'avez pas encore aimé, ni ajouté comme vu un film</p>})
             }
 
             let nbWatchedMovies = 0;
@@ -157,11 +159,12 @@ export default class Profile extends Component {
     }
 
     getNotationsBarChart = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/marks`, headers: {"Authorization" : localStorage.getItem('token')}})
+        const url = this.state.userId ? `${this.state.userId}/stats/marks` : '/me/stats/marks';
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const statsRating = [];
             let indexUserRating = 0;
-            if(response.data.length === 0) return this.setState({noDataNotation: <div className="mt-1 mb-2">Vous n'avez pas encore noté de film</div>});
+            if(response.data.length === 0) return this.setState({noDataNotation: this.state.userId ? <div className="mt-1 mb-2">Cet utilisateur n'a pas encore noté de film</div> : <div className="mt-1 mb-2">Vous n'avez pas encore noté de film</div>});
 
             for (let i = 0; i < 5; i++) {
                 if(parseInt(response.data[indexUserRating].mark, 10) === i +1 ){
@@ -410,7 +413,7 @@ export default class Profile extends Component {
                                     this.state.moviesFilter.map((movie) => {
                                         return(
                                             <Cell size={3} key={movie.id} className="user-profile__movie-card">
-                                                <ProfileMovieCard movie={movie} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
+                                                <ProfileMovieCard movie={movie} showUserAction={this.state.userId ? false : true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
                                             </Cell>
                                         );
                                     })
