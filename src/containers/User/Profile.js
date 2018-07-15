@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
-import {Bar, Pie} from 'react-chartjs-2';
+import { Bar, Pie } from 'react-chartjs-2';
 import moment from 'moment';
 
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
@@ -38,8 +38,10 @@ export default class Profile extends Component {
             noDataWatchedMovies : null,
             noDataNotation : null,
             selectedMovie: {id: null, cover: null, title: null},
-            loader : this.loader,
-            userId : props.match.params.id
+            loader: this.loader,
+            userId: props.match.params.id,
+            followBtnText: null,
+            followBtnClass: null
         };
     }
 
@@ -89,7 +91,7 @@ export default class Profile extends Component {
             if (fullUser.notations.length === 0) notationsList = this.state.userId ? <p>{user.username} n'a pas encore noté de film</p> : <p>Vous n'avez pas encore noté de film</p>;
             if (fullUser.comments.length === 0) commentsList = this.state.userId ? <p>{user.username} n'a pas encore commenté de film</p> : <p>Vous n'avez pas encore commenté de film</p>;
 
-            this.setState({user: user, notationsList: notationsList, nbNotations: fullUser.notations.length, commentsList: commentsList, nbComments: fullUser.comments.length, loader: null});
+            this.setState({user: user, notationsList: notationsList, nbNotations: fullUser.notations.length, commentsList: commentsList, nbComments: fullUser.comments.length, loader: null, followBtnClass: user.isFollow ? 'followBtn right' : 'followBtn subscribe right', followBtnText: user.isFollow ? 'Abonné' : 'Suivre'});
         })
         .catch(error => {
             console.log(error)
@@ -234,7 +236,7 @@ export default class Profile extends Component {
     followUser = () => {
         axios({method: 'post', url : `${process.env.REACT_APP_API_URL}/users/follow`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}, data: {follow: `api/users/${this.state.userId}`}})
         .then((response) => {
-            this.setState({btnText: this.state.btnText === 'Suivre' ? 'Abonné' : 'Suivre', btnClass: this.state.btnClass === 'followBtn followBtn' ? 'followBtn subscribe' : 'btn'});
+            this.setState({followBtnText: this.state.followBtnText === 'Suivre' ? 'Abonné' : 'Suivre', followBtnClass: this.state.followBtnClass === 'followBtn right' ? 'followBtn subscribe right' : 'followBtn right'});
         });
     }
 
@@ -295,7 +297,7 @@ export default class Profile extends Component {
                         !this.state.userId && <a href="" className="btn right">Modifier</a>
                     }
                     {
-                        this.state.userId && <div className={this.state.user.isFollow ? 'followBtn right' : 'followBtn subscribe right'} onClick={this.followUser}>{this.state.user.isFollow ? 'Abonné' : 'Suivre'}</div>
+                        this.state.userId && <div className={this.state.followBtnClass} onClick={this.followUser}>{this.state.followBtnText}</div>
                     }
                     <Avatar src={avatar} role="presentation" />
                     <div className="user-profile__header__info">
