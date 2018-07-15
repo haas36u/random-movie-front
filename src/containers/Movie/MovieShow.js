@@ -170,15 +170,15 @@ export default class MovieShow extends Component {
                                 <form>
                                     <fieldset className="starability-checkmark">
                                         <input type="radio" id="rate1" name="rating" value="1" onClick={(e) => this.sendNotation(1)}/>
-                                        <label for="rate1" title={this.RATING[1]}>1 star</label>
+                                        <label htmlFor="rate1" title={this.RATING[1]}>1 star</label>
                                         <input type="radio" id="rate2" name="rating" value="2" onClick={(e) => this.sendNotation(2)}/>
-                                        <label for="rate2" title={this.RATING[2]}>2 stars</label>
+                                        <label htmlFor="rate2" title={this.RATING[2]}>2 stars</label>
                                         <input type="radio" id="rate3" name="rating" value="3" onClick={(e) => this.sendNotation(3)}/>
-                                        <label for="rate3" title={this.RATING[3]}>3 stars</label>
+                                        <label htmlFor="rate3" title={this.RATING[3]}>3 stars</label>
                                         <input type="radio" id="rate4" name="rating" value="4" onClick={(e) => this.sendNotation(4)}/>
-                                        <label for="rate4" title={this.RATING[4]}>4 stars</label>
+                                        <label htmlFor="rate4" title={this.RATING[4]}>4 stars</label>
                                         <input type="radio" id="rate5" name="rating" value="5" onClick={(e) => this.sendNotation(5)}/>
-                                        <label for="rate5" title={this.RATING[5]}>5 stars</label>
+                                        <label htmlFor="rate5" title={this.RATING[5]}>5 stars</label>
                                     </fieldset>
                                 </form>
                                 {!this.state.movie.mark && <p className="text-italic" id="userNoRated">Vous n'avez pas encore noté ce film</p>}

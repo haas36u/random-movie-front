@@ -110,12 +110,14 @@ export default class MovieShow extends Component {
     }
 
     changeMoviesList = (data) => {
-      const moviesList = data.data.map((item) => {
+      let moviesList = data.data.map((item) => {
         item.attributes.id = item.attributes._id;
           return(
               <MovieCard key={item.id} movie={item.attributes} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
           );
       });
+
+      if (moviesList.length === 0) moviesList = <p className="noResult--movies">Aucun film ne correspond à votre requête.</p> 
 
       this.setState(() => {
         return {

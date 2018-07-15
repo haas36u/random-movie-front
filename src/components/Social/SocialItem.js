@@ -57,7 +57,7 @@ export default class SocialItem extends Component {
 
     getItem = () => {
         let itemContent;
-        if (this.props.actuality.collection) itemContent = <CollectionItem collection={this.props.actuality.collection}/>;
+        if (this.props.actuality.collection) itemContent = <CollectionItem collection={this.props.actuality.collection} key={this.props.actuality.id}/>;
         else  itemContent = <MovieCard movie={this.props.actuality.movie} showUserAction={true}/>
 
         this.setState({itemContent: itemContent});

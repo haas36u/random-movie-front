@@ -7,9 +7,13 @@ export default class SocialUserItem extends Component {
     constructor(props) {
         super(props);
         this.state = { 
-            btnText : props.user.follow ? 'Abonné' : 'Suivre',
-            btnClass : props.user.follow ? 'btn' : 'btn subscribe'
+            btnText : props.user.isFollow ? 'Abonné' : 'Suivre',
+            btnClass : props.user.isFollow ? 'btn' : 'btn subscribe'
         }
+    }
+    
+    componentWillReceiveProps(nextProps) {
+        this.setState({btnText : nextProps.user.isFollow ? 'Abonné' : 'Suivre', btnClass : nextProps.user.isFollow ? 'btn' : 'btn subscribe'});   
     }
 
     followUser = () => {

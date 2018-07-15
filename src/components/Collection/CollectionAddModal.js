@@ -45,13 +45,13 @@ export default class CollectionAddModal extends Component {
                     <form onSubmit={this.handleAddCollection}>
                         <Grid className="vertically-centered">
                             <Cell size={6}>
-                                <label >Titre de la collection</label>
+                                <label htmlFor="collection-name">Titre de la collection</label>
                             </Cell>
                             <Cell size={6}>
                                 <TextField id="collection-name" name="name" type="text" />
                             </Cell>
                             <Cell size={6}>
-                                <label>Garder cette collection privée</label>
+                                <label htmlFor="collection-privacy">Garder cette collection privée</label>
                             </Cell>
                             <Cell size={6}>
                                 <label className="switch">
