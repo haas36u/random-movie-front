@@ -34,7 +34,7 @@ export default class SocialIndex extends Component {
                 )
             });
 
-            if (actualityList.length === 0) actualityList = <p>Aucune activités n'a été enregistrés de la part de vos abonnements</p>
+            if (actualityList.length === 0) actualityList = <p>Aucune activité a été enregistrée de la part de vos abonnements</p>
 
             this.setState({actualityList: actualityList, loader: null});
         });
@@ -49,10 +49,10 @@ export default class SocialIndex extends Component {
 
             const followedUsers = users.map(function(user){
                 return (
-                    <div className="userFollow__user" key={user.id}>
+                    <Link to={`/profile/${user.id}`} className="userFollow__user" key={user.id}>
                         <Avatar src={avatar} role="presentation"/>
                         <p>{user.username}</p>
-                    </div>
+                    </Link>
                 )
             });
 

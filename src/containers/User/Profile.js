@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { Grid, Cell, Avatar, TabsContainer, Tabs, Tab } from 'react-md';
-import {Bar, Pie} from 'react-chartjs-2';
+import { Bar, Pie } from 'react-chartjs-2';
 import moment from 'moment';
 
 import ProfileMovieCard from '../../components/Movie/ProfileMovieCard';
@@ -38,7 +38,10 @@ export default class Profile extends Component {
             noDataWatchedMovies : null,
             noDataNotation : null,
             selectedMovie: {id: null, cover: null, title: null},
-            loader : this.loader
+            loader: this.loader,
+            userId: props.match.params.id,
+            followBtnText: null,
+            followBtnClass: null
         };
     }
 
@@ -53,12 +56,15 @@ export default class Profile extends Component {
 
      /*User*/
      getUser = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me`, headers: {"Authorization" : localStorage.getItem('token')}})
+        const url = this.state.userId ? this.state.userId : 'me';
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const fullUser = response.data;
             let user = {
                 id: fullUser.id,
-                username: fullUser.username
+                username: fullUser.username,
+                createdAt : fullUser.createdAt,
+                isFollow : fullUser.isFollow
             }
 
             let notationsList = fullUser.notations.map(function(item, key){
@@ -82,10 +88,10 @@ export default class Profile extends Component {
                 );
             });
 
-            if (fullUser.notations.length === 0) notationsList = <p>Vous n'avez noté aucun film</p>;
-            if (fullUser.comments.length === 0) commentsList = <p>Vous n'avez pas encore commenté de film</p>;
+            if (fullUser.notations.length === 0) notationsList = this.state.userId ? <p>{user.username} n'a pas encore noté de film</p> : <p>Vous n'avez pas encore noté de film</p>;
+            if (fullUser.comments.length === 0) commentsList = this.state.userId ? <p>{user.username} n'a pas encore commenté de film</p> : <p>Vous n'avez pas encore commenté de film</p>;
 
-            this.setState({user: user, notationsList: notationsList, nbNotations: fullUser.notations.length, commentsList: commentsList, nbComments: fullUser.comments.length, loader: null});
+            this.setState({user: user, notationsList: notationsList, nbNotations: fullUser.notations.length, commentsList: commentsList, nbComments: fullUser.comments.length, loader: null, followBtnClass: user.isFollow ? 'followBtn right' : 'followBtn subscribe right', followBtnText: user.isFollow ? 'Abonné' : 'Suivre'});
         })
         .catch(error => {
             console.log(error)
@@ -93,17 +99,19 @@ export default class Profile extends Component {
     }
 
     getUserMovies = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/movies`, headers: {"Authorization" : localStorage.getItem('token')}}).then((response) => {
+        const url = this.state.userId ? `${this.state.userId}/movies` : '/movies';
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: {"Authorization" : localStorage.getItem('token')}}).then((response) => {
             this.setState({movies : response.data, moviesFilter: response.data});
         });
     }
 
     getFavoriteMoviesPieChart = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/favorites`, headers: { "Authorization" : localStorage.getItem('token')}})
+        const url = this.state.userId ? `${this.state.userId}/stats/favorites` : '/me/stats/favorites';
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: { "Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const stats = response.data;
             if (stats.length === 0) {
-                return this.setState({noDataWatchedMovies: <p className="mt-3">Aucune données disponibles : Vous n'avez pas encore aimé, ni ajouté comme vu un film</p>})
+                return this.setState({noDataWatchedMovies: this.state.userId ? <p className="mt-3">Aucune données disponibles : Cet utilisateur pas encore aimé, ni ajouté comme vu un film</p> : <p className="mt-3">Aucune données disponibles : Vous n'avez pas encore aimé, ni ajouté comme vu un film</p>})
             }
 
             let nbWatchedMovies = 0;
@@ -151,11 +159,12 @@ export default class Profile extends Component {
     }
 
     getNotationsBarChart = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me/stats/marks`, headers: {"Authorization" : localStorage.getItem('token')}})
+        const url = this.state.userId ? `${this.state.userId}/stats/marks` : '/me/stats/marks';
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const statsRating = [];
             let indexUserRating = 0;
-            if(response.data.length === 0) return this.setState({noDataNotation: <div className="mt-1 mb-2">Vous n'avez pas encore noté de film</div>});
+            if(response.data.length === 0) return this.setState({noDataNotation: this.state.userId ? <div className="mt-1 mb-2">Cet utilisateur n'a pas encore noté de film</div> : <div className="mt-1 mb-2">Vous n'avez pas encore noté de film</div>});
 
             for (let i = 0; i < 5; i++) {
                 if(parseInt(response.data[indexUserRating].mark, 10) === i +1 ){
@@ -183,7 +192,8 @@ export default class Profile extends Component {
 
     getCollections = () => {
         this.setState({loader: this.loader});
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/collections`, headers: {"Authorization" : localStorage.getItem('token')}})
+        const url = this.state.userId ? this.state.userId + '/collections' : 'collections';
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
 
             if (document.getElementById('userCollection')) document.getElementById('userCollection').style.display = 'none';
@@ -204,7 +214,7 @@ export default class Profile extends Component {
             <div>
                 <div className="userCollection__header">
                     <h2>{collection.name}{privacy}</h2>
-                    <Link to={`/collections/${collection.id}/update`} className="btn">Modifier</Link>
+                    {!this.state.userId && <Link to={`/collections/${collection.id}/update`} className="btn">Modifier</Link>}
                 </div>
 
                 {collection.movies.length === 0 && <p className="noResult">Vous n'avez pas encore ajouté de film à la collection {collection.name}</p>}
@@ -224,6 +234,13 @@ export default class Profile extends Component {
         if (document.getElementById('userCollection')) document.getElementById('userCollection').style.display = 'block';
 
         this.setState({collection: collectionUi});
+    }
+
+    followUser = () => {
+        axios({method: 'post', url : `${process.env.REACT_APP_API_URL}/users/follow`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}, data: {follow: `api/users/${this.state.userId}`}})
+        .then((response) => {
+            this.setState({followBtnText: this.state.followBtnText === 'Suivre' ? 'Abonné' : 'Suivre', followBtnClass: this.state.followBtnClass === 'followBtn right' ? 'followBtn subscribe right' : 'followBtn right'});
+        });
     }
 
     showHideMoviesList = (e, selectedList) => {
@@ -253,11 +270,13 @@ export default class Profile extends Component {
 
     openCollectionAddMovieModal = (e, movie) => {
         e.stopPropagation();
+        if (this.state.userId) return;
         this.setState({selectedMovie: movie});
         if(document.getElementById('collectionAddMovieModal')) document.getElementById('collectionAddMovieModal').style.display = 'flex';
     }
 
     openCollectionAddModal = () => {
+        if (this.state.userId) return;
         if(document.getElementById('collectionAddModal')) document.getElementById('collectionAddModal').style.display = 'flex';
     }
 
@@ -277,7 +296,12 @@ export default class Profile extends Component {
             {this.state.loader}
             <div className="user-profile__header background-trianglify" style={bgTriangle}>
                 <div className="container">
-                    <a href="" className="btn right">Modifier</a>
+                    {
+                        !this.state.userId && <a href="" className="btn right">Modifier</a>
+                    }
+                    {
+                        this.state.userId && <div className={this.state.followBtnClass} onClick={this.followUser}>{this.state.followBtnText}</div>
+                    }
                     <Avatar src={avatar} role="presentation" />
                     <div className="user-profile__header__info">
                         <h3>{this.state.user.username}</h3>
@@ -354,15 +378,23 @@ export default class Profile extends Component {
                     <Tab label="Collections" onClick={this.getCollections}>
                         <div id="collections" className="container pt-1">
                             <Grid id="userCollections">
-                                <Cell size={4} className="collection_vignette addCollection" onClick={this.openCollectionAddModal}>
-                                    <div>
-                                        <i className="fas fa-plus-circle"></i>
-                                    </div>
-                                    <p>Créer une collection</p>
-                                </Cell>
-                                {this.state.collections.map((collection, key) => {
-                                    return (<CollectionItem collection={collection} key={key} getCollection={this.getCollection}/>)
-                                })}
+                                {
+                                    !this.state.userId &&
+                                    <Cell size={4} className="collection_vignette addCollection" onClick={this.openCollectionAddModal}>
+                                        <div>
+                                            <i className="fas fa-plus-circle"></i>
+                                        </div>
+                                        <p>Créer une collection</p>
+                                    </Cell>
+                                }
+                                {
+                                    this.state.userId && this.state.collections.length === 0 && <p>{this.state.user.username} n'a pas encore partagé de collection</p>
+                                }
+                                {
+                                    this.state.collections.map((collection, key) => {
+                                        return (<CollectionItem collection={collection} key={key} getCollection={this.getCollection}/>)
+                                    })
+                                }
                             </Grid>
                             <div id="userCollection">
                                 {this.state.collection}
@@ -381,7 +413,7 @@ export default class Profile extends Component {
                                     this.state.moviesFilter.map((movie) => {
                                         return(
                                             <Cell size={3} key={movie.id} className="user-profile__movie-card">
-                                                <ProfileMovieCard movie={movie} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
+                                                <ProfileMovieCard movie={movie} showUserAction={this.state.userId ? false : true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
                                             </Cell>
                                         );
                                     })

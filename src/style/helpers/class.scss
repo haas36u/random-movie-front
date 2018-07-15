@@ -44,6 +44,24 @@
   }
 }
 
+.followBtn {
+  @extend .btn;
+  border-radius: 1rem;
+  box-shadow: none;
+  border: 1px solid transparent;
+  font-size: 0.9rem;
+
+  &.subscribe {
+      background-color: #ffffff; 
+      border: 1px solid #7b7b7b;
+      color: #7b7b7b;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
 /*SWITCH*/
 .switch {
   position: relative;
