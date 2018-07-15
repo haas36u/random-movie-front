@@ -38,7 +38,8 @@ export default class Profile extends Component {
             noDataWatchedMovies : null,
             noDataNotation : null,
             selectedMovie: {id: null, cover: null, title: null},
-            loader : this.loader
+            loader : this.loader,
+            userId : props.match.params.id
         };
     }
 
@@ -53,12 +54,15 @@ export default class Profile extends Component {
 
      /*User*/
      getUser = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/me`, headers: {"Authorization" : localStorage.getItem('token')}})
+        const url = this.state.userId ? this.state.userId : 'me';
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const fullUser = response.data;
             let user = {
                 id: fullUser.id,
-                username: fullUser.username
+                username: fullUser.username,
+                createdAt : fullUser.createdAt,
+                isFollow : fullUser.isFollow
             }
 
             let notationsList = fullUser.notations.map(function(item, key){
@@ -82,8 +86,8 @@ export default class Profile extends Component {
                 );
             });
 
-            if (fullUser.notations.length === 0) notationsList = <p>Vous n'avez noté aucun film</p>;
-            if (fullUser.comments.length === 0) commentsList = <p>Vous n'avez pas encore commenté de film</p>;
+            if (fullUser.notations.length === 0) notationsList = this.state.userId ? <p>{user.username} n'a pas encore noté de film</p> : <p>Vous n'avez pas encore noté de film</p>;
+            if (fullUser.comments.length === 0) commentsList = this.state.userId ? <p>{user.username} n'a pas encore commenté de film</p> : <p>Vous n'avez pas encore commenté de film</p>;
 
             this.setState({user: user, notationsList: notationsList, nbNotations: fullUser.notations.length, commentsList: commentsList, nbComments: fullUser.comments.length, loader: null});
         })
