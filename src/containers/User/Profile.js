@@ -99,14 +99,14 @@ export default class Profile extends Component {
     }
 
     getUserMovies = () => {
-        const url = this.state.userId ? `${this.state.userId}/movies` : '/movies';
+        const url = this.state.userId ? `${this.state.userId}/movies` : 'movies';
         axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: {"Authorization" : localStorage.getItem('token')}}).then((response) => {
             this.setState({movies : response.data, moviesFilter: response.data});
         });
     }
 
     getFavoriteMoviesPieChart = () => {
-        const url = this.state.userId ? `${this.state.userId}/stats/favorites` : '/me/stats/favorites';
+        const url = this.state.userId ? `${this.state.userId}/stats/favorites` : 'me/stats/favorites';
         axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: { "Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const stats = response.data;
@@ -159,7 +159,7 @@ export default class Profile extends Component {
     }
 
     getNotationsBarChart = () => {
-        const url = this.state.userId ? `${this.state.userId}/stats/marks` : '/me/stats/marks';
+        const url = this.state.userId ? `${this.state.userId}/stats/marks` : 'me/stats/marks';
         axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const statsRating = [];
