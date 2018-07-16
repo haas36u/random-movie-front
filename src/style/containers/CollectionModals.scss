@@ -33,6 +33,8 @@
     }
 
     .createCollection {
+        display: inline-block;
+        vertical-align: top;
         margin: 1rem 0;
 
         &>div {
