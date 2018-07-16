@@ -202,22 +202,28 @@ export default class Profile extends Component {
             const response = [
                 {
                     id: 1,
-                    name: 'Stalked',
+                    name: 'Stalker',
+                    description: 'Consulter le profil d\'un autre utilisateur'
+                },
+                {
+                    id: 1,
+                    name: 'Ecrivain',
                     description: 'Consulter le profil d\'un autre utilisateur'
                 }
             ];
 
+            const icon = require('../../images/achievement_icon.png');
+
             const achievements = response.map((achievement) => {
                 return (
-                    <Cell size={3} key={achievement.id}>
-                        <img src="" alt="Badge"/>
-                        <h3>Stalker</h3>
-                        <p>Consulter le profil d'un autre utilisateur</p>
+                    <Cell size={2} key={achievement.id}>
+                        <img src={icon} alt="Badge" title={achievement.description}/>
+                        <h3 className="text-bold">{achievement.name}</h3>
                     </Cell>
                 )
             });
     
-            this.setState({achievement: achievements});
+            this.setState({achievements: achievements});
         }
     };
 
