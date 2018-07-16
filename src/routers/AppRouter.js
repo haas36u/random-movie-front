@@ -15,6 +15,7 @@ import Registration from '../containers/User/Registration';
 import RegistrationFavoriteMovies from '../containers/User/RegistrationFavoriteMovies';
 import Login from '../containers/User/Login';
 import Profile from '../containers/User/Profile';
+import NotificationsIndex from '../containers/notifications/NotificationsIndex';
 import Cgu from '../containers/static/Cgu';
 import LegalMentions from '../containers/static/LegalMentions';
 
@@ -72,6 +73,7 @@ const AppRouter = () => (
                 <Route path="/login" component={Login} exact={true} />
                 <PrivateRoute path="/profile" component={Profile} exact={true} />
                 <PrivateRoute path="/profile/:id" component={Profile} />
+                <PrivateRoute path="/notifications" component={NotificationsIndex} exact={true} />
                 <Route path="/cgu" component={Cgu} exact={true} />
                 <Route path="/legal-mentions" component={LegalMentions} exact={true} />
                 <Route component={NotFoundPage} />
