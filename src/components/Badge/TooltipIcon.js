@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { FontIcon, injectTooltip } from 'react-md';
+import { injectTooltip } from 'react-md';
 
 const styles = {
   tooltipContainer: {
@@ -17,12 +17,11 @@ const styles = {
 class TooltipIcon extends PureComponent {
   static propTypes = {
     children: PropTypes.node,
-    icon: PropTypes.node,
     tooltip: PropTypes.node
   };
 
   render() {
-    const {children, icon, tooltip } = this.props;
+    const {children, tooltip } = this.props;
     return (
       <div style={styles.tooltipContainer}>
         {tooltip}

@@ -51,7 +51,6 @@ export default class Profile extends Component {
         this.getUser();
         this.getResume.getFavoriteMoviesPieChart();
         this.getResume.getNotationsBarChart();
-        this.getResume.getAchievements();
         this.getUserMovies();
     }
     
@@ -69,6 +68,19 @@ export default class Profile extends Component {
                 createdAt : fullUser.createdAt,
                 isFollow : fullUser.isFollow
             }
+
+            const icon = require('../../images/achievement_icon.png');
+
+            let achievements = response.data.achievements.map((achievement) => {
+                return (
+                    <Cell size={2} key={achievement.id} className="text-center">
+                        <TooltipIcon tooltipLabel={achievement.description} tooltipPosition="top">
+                            <img src={icon} alt="Badge"/>
+                        </TooltipIcon>
+                        <h3 className="text-bold">{achievement.name}</h3>
+                    </Cell>
+                )
+            });
 
             let notationsList = fullUser.notations.map(function(item, key){
                 return (
@@ -97,8 +109,11 @@ export default class Profile extends Component {
             if (fullUser.comments.length === 0) {
                 commentsList = this.state.userId ? <p>{user.username} n'a pas encore commenté de film</p> : <p>Vous n'avez pas encore commenté de film</p>;
             }
+            if (response.data.achievements.length === 0) {
+                achievements = this.state.userId ? <p>{user.username} n'a pas encore débloqué de succès !</p> : <p>Vous n'avez pas encore débloqué de succès !</p>;
+            }
 
-            this.setState({user: user, notationsList: notationsList, nbNotations: fullUser.notations.length, commentsList: commentsList, nbComments: fullUser.comments.length, loader: null, followBtnClass: user.isFollow ? 'followBtn right' : 'followBtn subscribe right', followBtnText: user.isFollow ? 'Abonné' : 'Suivre'});
+            this.setState({user: user, notationsList: notationsList, nbNotations: fullUser.notations.length, achievements: achievements, commentsList: commentsList, nbComments: fullUser.comments.length, loader: null, followBtnClass: user.isFollow ? 'followBtn right' : 'followBtn subscribe right', followBtnText: user.isFollow ? 'Abonné' : 'Suivre'});
         })
         .catch(error => {
             console.log(error)
@@ -197,36 +212,6 @@ export default class Profile extends Component {
                 };
                 this.setState({ratingBarChart: ratingBarChart});
             });
-        },
-
-        getAchievements : () => {
-            const response = [
-                {
-                    id: 1,
-                    name: 'Stalker',
-                    description: 'Consulter le profil d\'un autre utilisateur'
-                },
-                {
-                    id: 1,
-                    name: 'Ecrivain',
-                    description: 'Consulter le profil d\'un autre utilisateur'
-                }
-            ];
-
-            const icon = require('../../images/achievement_icon.png');
-
-            const achievements = response.map((achievement) => {
-                return (
-                    <Cell size={2} key={achievement.id} className="text-center">
-                        <TooltipIcon tooltipLabel={achievement.description} tooltipPosition="top">
-                            <img src={icon} alt="Badge"/>
-                        </TooltipIcon>
-                        <h3 className="text-bold">{achievement.name}</h3>
-                    </Cell>
-                )
-            });
-    
-            this.setState({achievements: achievements});
         }
     };
 
