@@ -26,6 +26,13 @@
 .text-gold {
   color: $secondary-color;
 }
+.link {
+  @extend .cursor;
+  @extend .text-gold;
+}
+.display-none {
+  display: none;
+}
 .btn {
   background-color: $secondary-color;
   padding: 0.3rem 1.3rem;

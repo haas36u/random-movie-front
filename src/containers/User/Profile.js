@@ -51,6 +51,7 @@ export default class Profile extends Component {
         this.getUser();
         this.getResume.getFavoriteMoviesPieChart();
         this.getResume.getNotationsBarChart();
+        this.getCollections.getCollections();
         this.getUserMovies();
     }
     

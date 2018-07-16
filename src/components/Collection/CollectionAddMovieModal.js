@@ -93,16 +93,16 @@ export default class CollectionAddMovieModal extends Component {
                 <ul>
                     {collectionsUIList}
                 </ul>
-                <div className="createCollection float-right">
+                <div className="createCollection" onClick={this.showCollectionAdd}>
                     <div>
                         <i className="fas fa-plus-circle"></i>
-                        <p onClick={this.showCollectionAdd}>Créer une collection</p>
+                        <p>Créer une collection</p>
                     </div>
                 </div>
                 <div className="text-right">
-                        <div className="btn mr-1 cancel" onClick={this.cancel}>Annuler</div>
-                        <div className="btn" onClick={this.saveMovieInCollection}>Ajouter à la collection</div>
-                    </div>
+                    <div className="btn mr-1 cancel" onClick={this.cancel}>Annuler</div>
+                    <div className="btn" onClick={this.saveMovieInCollection}>Ajouter à la collection</div>
+                </div>
             </Cell>
         )
     }
