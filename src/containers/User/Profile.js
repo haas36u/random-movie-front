@@ -378,23 +378,6 @@ export default class Profile extends Component {
                         <p>Membre depuis le {moment(this.state.user.createdAt).format("L")}</p>
                     </div>
                 </div>
-                <div className="user-profile__header__tracking">
-                    <div className="container">
-                        <Grid className="p-0">
-                            <Cell size={6} className="m-0">
-                                <Grid className="p-0">
-                                    <Cell size={2} className="m-0">
-                                        <i className="material-icons md-xl">local_movies</i>
-                                    </Cell>
-                                    <Cell size={10} className="m-0">
-                                        <p className="mt-0 mb-0">100 heures, 27 minutes et 20 secondes</p>
-                                        <p className="mt-0">12 films</p>
-                                    </Cell>
-                                </Grid>
-                            </Cell>
-                        </Grid>
-                    </div>
-                </div>
             </div>
 
             <CollectionAddModal getCollections={this.getCollections.getCollections} isModal={true}/>
