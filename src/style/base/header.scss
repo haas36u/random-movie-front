@@ -1,53 +1,73 @@
 /** HEADER **/
 header {
-    background-color: $primary-color;
-    padding: 0 3rem;
-    height: 70px;
-    z-index: 1000;
+  background-color: $primary-color;
+  position: relative;
+  padding: 0 3rem;
+  height: 70px;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+
+  .md-text   {
+    color: #ffffff;
+  }
+
+  ul {
+    text-transform: uppercase;
     display: flex;
     align-items: center;
-  
-    .md-text   {
+
+    li {
+      margin-right: 2rem;
       color: #ffffff;
     }
-  
-    ul {
-      text-transform: uppercase;
-      display: flex;
-      align-items: center;
-  
-      li {
-        margin-right: 2rem;
-        color: #ffffff;
+  }
+
+  button {
+    background-color: transparent;
+    color: #ffffff;
+    border: none;
+  }
+
+  .header_profile {
+    position: absolute;
+    right: 3rem;
+    top: 0;
+    height: 70px;
+    margin: 0;
+    display: flex;
+    align-items: center;
+
+    li {
+      margin-left: 1rem;
+      margin-right: 0;
+
+      .md-avatar {
+        cursor: pointer;
+        width: 55px;
+        height: 55px;
       }
     }
-  
-    button {
-      background-color: transparent;
-      color: #ffffff;
-      border: none;
-    }
-  
-    .header_profile {
+  }
+
+  .notificationMenu {
+    position: relative;
+
+    .notificationMenu--pastille{
+      @extend .color-red;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
       position: absolute;
-      right: 3rem;
-      top: 0;
-      height: 70px;
-      margin: 0;
-      display: flex;
-      align-items: center;
-  
-      li {
-        margin-left: 1rem;
-        margin-right: 0;
-  
-        .md-avatar {
-          cursor: pointer;
-          width: 55px;
-          height: 55px;
-        }
-      }
+      right: 0.2rem;
+      border: 1px solid #fffcda;
     }
+
+    .fa-bell {
+      font-size: 1.6rem;
+      color: #ffffff;
+    }
+  }
 }
 
 
