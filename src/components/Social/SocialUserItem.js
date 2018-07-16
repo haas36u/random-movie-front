@@ -29,12 +29,16 @@ export default class SocialUserItem extends Component {
         let avatar = require('../../images/avatar_default.jpg');
 
         return (
-            <Link to={`/profile/${this.props.user.id}`} className="userFollow__user">
-                <Avatar src={avatar} role="presentation"/>
-                <p>{this.props.user.username}</p>
+            <div className="userFollow__user">
+                <Link to={`/profile/${this.props.user.id}`}>
+                    <Avatar src={avatar} role="presentation"/>
+                </Link>
+                <Link to={`/profile/${this.props.user.id}`}>
+                    <p>{this.props.user.username}</p>
+                </Link>
 
                 <div className={this.state.btnClass} onClick={this.followUser}>{this.state.btnText}</div>
-            </Link>
+            </div>
         );
     }
 }
