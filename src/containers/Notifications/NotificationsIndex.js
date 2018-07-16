@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 
 import SocialItem from '../../components/Social/SocialItem';
 
@@ -23,18 +24,25 @@ export default class NotificationsIndex extends Component {
     }
 
     getActuality = () => {
-       /* axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/feeds`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}})
+        axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/notifications`, headers : {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
-            let notificationsList = response.data.map(function(item, key){
+            let notificationsList = response.data.map(function(notif){
                 return (
-                    <SocialItem actuality={item} key={key} />
+                    <div className={notif.seen ? 'notifsItem' : 'notifsItem notSeen'} key={notif.id}>
+                        {!notif.seen && <p className="notifsItem--markAsReaded">Marquer comme lue</p>}
+                        <i className="fas fa-trophy"></i>
+                        <div>
+                            <p>{notif.notification.message}</p>
+                            <p>{moment(notif.notification.date).fromNow()}</p>
+                        </div>
+                    </div>
                 )
             });
 
             if (notificationsList.length === 0) notificationsList = <div className="noResults">Aucune notifications</div>;
 
             this.setState({notificationsList: notificationsList, loader: null});
-        });*/
+        });
     }
     
     render() {
@@ -50,21 +58,7 @@ export default class NotificationsIndex extends Component {
                 </div>
 
                 <div className="notificationsContainer">
-                    <div className="notifsItem notSeen">
-                        <p className="notifsItem--markAsReaded">Marquer comme lue</p>
-                        <i className="fas fa-user-secret"></i>
-                        <div>
-                            <p>Message and message</p>
-                            <p>Il y a 12 minutes</p>
-                        </div>
-                    </div>
-                    <div className="notifsItem">
-                        <i className="fas fa-trophy"></i>
-                        <div>
-                            <p>Message and message</p>
-                            <p>Il y a 12 minutes</p>
-                        </div>
-                    </div>
+                    {this.state.notificationsList}
                 </div>
             </div>
         );
