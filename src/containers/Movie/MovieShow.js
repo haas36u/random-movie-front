@@ -23,6 +23,7 @@ export default class MovieShow extends Component {
             userActions : {},
             casting: [],
             similars : [],
+            comments: [],
             commentModalVisible: false,
             selectedMovie: {id: null, cover: null, title: null},
             loader: this.loader
@@ -33,6 +34,7 @@ export default class MovieShow extends Component {
         this.getMovie();
         this.getCasting();
         this.getSimilars();
+        this.getSelectionsOfComments();
     }
 
     RATING = {1 : 'A éviter',  2 : 'Moyen', 3 : 'Super', 4 : 'Excellent', 5 : 'Incroyable'};
@@ -113,6 +115,53 @@ export default class MovieShow extends Component {
         });
     }
 
+    getSelectionsOfComments = () => {
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/selected-comments`)
+        .then((response) => {
+            var imgUrl = require('../../images/ryan_reynolds.jpg');
+            var avatarComments = {  
+                backgroundImage: 'url(' + imgUrl + ')'
+            }
+
+            const truncate = (string, length) => {
+                if (string.length > length)
+                    return string.substring(0,length)+'...';
+                else
+                    return string;
+            };
+
+            const comments = response.data.map((comment) => {
+                return (
+                    <Cell size={6} className="ml-0">
+                        <Grid className="pl-0" key={comment.id}>
+                            <Cell size={2}>
+                                <div className="avatar_comments_container" style={avatarComments}></div>
+                            </Cell>
+                            <Cell size={10}>
+                                <p className="m-0">Par {comment.user_username}</p>
+                                <p>{moment(comment.createdAt).fromNow()}</p>
+                            </Cell>
+                            <Cell size={12} className="ml-0">
+                                <p>{truncate(comment.content, 200)}</p>
+                            </Cell>
+                            {
+                                isAuthenticated() &&
+                                <Cell size={12} className="ml-0">
+                                    <Link to={`/movies/${this.props.match.params.id}/comments`} className="cursor text-gold">Lire la suite</Link>
+                                </Cell>
+                            }
+                        </Grid>
+                    </Cell>
+                );
+            });
+
+            this.setState({comments: comments});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
     hideCommentModal = () => {
         this.setState({commentModalVisible : false});
     }
@@ -152,14 +201,7 @@ export default class MovieShow extends Component {
     }
 
     render() {
-
-        if(!this.state ) return <div>Loading...</div>
-
-        var imgUrl = require('../../images/ryan_reynolds.jpg');
-        var avatarComments = {  
-            backgroundImage: 'url(' + imgUrl + ')'
-        }
-
+        
         const userRatingActions = () => {
             if(isAuthenticated()) {
                 return (
@@ -195,23 +237,15 @@ export default class MovieShow extends Component {
         }
 
         const commentsAccess = () => {
-            if (isAuthenticated()) {
+            if (isAuthenticated() && this.state.comments.length > 0) {
                 return (
                     <Link to={`/movies/${this.state.movie.id}/comments`} className="right cursor text-gold">Voir tous les commentaires</Link>
                 )
+            } else if (isAuthenticated() && this.state.comments.length === 0) {
+                return;
             } else {
                 return (
                     <Link to="/login" className="right cursor">Se connecter pour voir les commentaires</Link>
-                )
-            }
-        }
-
-        const commentsSecondAccess = () => {
-            if (isAuthenticated()) {
-                return (
-                    <Cell size={12} className="ml-0">
-                        <Link to={`/movies/${this.state.movie.id}/comments`} className="cursor text-gold">Lire la suite</Link>
-                    </Cell>
                 )
             }
         }
@@ -269,42 +303,10 @@ export default class MovieShow extends Component {
                         <h5>Commentaires</h5>
                         {commentsAccess()}
                         <Grid className="pl-0">
-                            <Cell size={6} className="ml-0">
-                                <Grid className="pl-0">
-                                    <Cell size={2}>
-                                    <div className="avatar_comments_container" style={avatarComments}></div>
-                                    </Cell>
-                                    <Cell size={10}>
-                                        <p className="title_comments m-0">Commentaire positif le plus utile</p>
-                                        <p className="m-0">Par Ryan, le 22/02/2018</p>
-                                        <div>
-                                            <span> 4 étoiles</span>
-                                        </div>
-                                    </Cell>
-                                    <Cell size={12} className="ml-0">
-                                        <p>Un super contenu qu'on va réduire à 150 caractères</p>
-                                    </Cell>
-                                    {commentsSecondAccess()}
-                                </Grid>
-                            </Cell>
-                            <Cell size={6} className="ml-0">
-                                <Grid className="pl-0">
-                                    <Cell size={2}>
-                                    <div className="avatar_comments_container" style={avatarComments}></div>
-                                    </Cell>
-                                    <Cell size={9}>
-                                        <p className="title_comments m-0">Commentaire négatif le plus utile</p>
-                                        <p className="m-0">Par Ryan, le 22/02/2018</p>
-                                        <div>
-                                            <span> 4 étoiles</span>
-                                        </div>
-                                    </Cell>
-                                    <Cell size={12} className="ml-0">
-                                        <p>Un super contenu qu'on va réduire à 150 caractères</p>
-                                    </Cell>
-                                    {commentsSecondAccess()}
-                                </Grid>
-                            </Cell>
+                            {this.state.comments}
+                            {
+                                this.state.comments.length === 0 && <p>Aucun commentaire n'a été rédigé pour ce film...</p>
+                            }
                         </Grid>
                     </div>
                 </div>
