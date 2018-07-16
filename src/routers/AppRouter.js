@@ -21,6 +21,7 @@ import LegalMentions from '../containers/static/LegalMentions';
 import NotFoundPage from '../components/NotFoundPage';
 import Header from '../components/Base/Header';
 import Footer from '../components/Base/Footer';
+import TooltipIcon from '../components/Badge/TooltipIcon';
 import RegistrationFavoriteMoviesTypes from '../containers/User/RegistrationFavoriteMoviesType';
 
 const closeNav = (e) => {
@@ -75,7 +76,11 @@ const AppRouter = () => (
                 <Route path="/legal-mentions" component={LegalMentions} exact={true} />
                 <Route component={NotFoundPage} />
             </Switch>
-            <img src={logo} alt="Logo Random Movie" title="Film aléatoire" onClick={randomAction} className="logo"/>
+            <div className="logo">
+                <TooltipIcon tooltipLabel="Film aléatoire" tooltipPosition="top"> 
+                    <img src={logo} alt="Logo Random Movie" onClick={randomAction} />
+                </TooltipIcon>
+            </div>
         </div>
         <Footer />
     </div>

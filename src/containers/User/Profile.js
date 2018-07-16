@@ -11,6 +11,7 @@ import NotationsMovieList from '../../components/Notation/NotationsMovieList';
 import CollectionItem from '../../components/Collection/CollectionItem';
 import CollectionAddModal from '../../components/Collection/CollectionAddModal';
 import CollectionAddMovieModal from '../../components/Collection/CollectionAddMovieModal';
+import TooltipIcon from '../../components/Badge/TooltipIcon';
 var Trianglify = require('trianglify');
 
 export default class Profile extends Component {
@@ -216,8 +217,10 @@ export default class Profile extends Component {
 
             const achievements = response.map((achievement) => {
                 return (
-                    <Cell size={2} key={achievement.id}>
-                        <img src={icon} alt="Badge" title={achievement.description}/>
+                    <Cell size={2} key={achievement.id} className="text-center">
+                        <TooltipIcon tooltipLabel={achievement.description} tooltipPosition="top">
+                            <img src={icon} alt="Badge"/>
+                        </TooltipIcon>
                         <h3 className="text-bold">{achievement.name}</h3>
                     </Cell>
                 )
