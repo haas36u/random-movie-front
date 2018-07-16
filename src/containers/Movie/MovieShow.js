@@ -304,6 +304,9 @@ export default class MovieShow extends Component {
                         {commentsAccess()}
                         <Grid className="pl-0">
                             {this.state.comments}
+                            {
+                                this.state.comments.length === 0 && <p>Aucun commentaire n'a été rédigé pour ce film...</p>
+                            }
                         </Grid>
                     </div>
                 </div>
