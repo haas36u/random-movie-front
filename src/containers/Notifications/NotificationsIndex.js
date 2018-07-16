@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { Avatar } from 'react-md';
 
 import SocialItem from '../../components/Social/SocialItem';
 
@@ -12,9 +11,8 @@ export default class NotificationsIndex extends Component {
         axios.defaults.headers['Accept'] = 'application/json';
         super(props);
         this.state = {
-            actualityList: [],
-            followedUsers : [],
-            loader : this.loader
+            notificationsList: [],
+            loader : null
         };
     }
 
@@ -22,29 +20,52 @@ export default class NotificationsIndex extends Component {
 
     componentDidMount() {
         this.getActuality();
-        this.getFollowedUsers();
     }
 
     getActuality = () => {
-        axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/feeds`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}})
+       /* axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/feeds`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}})
         .then((response) => {
-            let actualityList = response.data.map(function(item, key){
+            let notificationsList = response.data.map(function(item, key){
                 return (
                     <SocialItem actuality={item} key={key} />
                 )
             });
 
-            if (actualityList.length === 0) actualityList = <p>Aucune activité a été enregistrée de la part de vos abonnements</p>
+            if (notificationsList.length === 0) notificationsList = <div className="noResults">Aucune notifications</div>;
 
-            this.setState({actualityList: actualityList, loader: null});
-        });
+            this.setState({notificationsList: notificationsList, loader: null});
+        });*/
     }
     
     render() {
         
         return (
-            <div id="notifications">
+            <div id="notifications" className="container">
                 {this.state.loader}
+
+                <h2 className="text-center">Toutes mes notifications</h2>
+                <div className="flex notifications__actions">
+                    <div className="link text-bold">Tout marquer comme lu</div>
+                    <div className="link text-bold">Tout supprimer</div>
+                </div>
+
+                <div className="notificationsContainer">
+                    <div className="notifsItem notSeen">
+                        <p className="notifsItem--markAsReaded">Marquer comme lue</p>
+                        <i className="fas fa-user-secret"></i>
+                        <div>
+                            <p>Message and message</p>
+                            <p>Il y a 12 minutes</p>
+                        </div>
+                    </div>
+                    <div className="notifsItem">
+                        <i className="fas fa-trophy"></i>
+                        <div>
+                            <p>Message and message</p>
+                            <p>Il y a 12 minutes</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

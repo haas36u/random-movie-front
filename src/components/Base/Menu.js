@@ -56,10 +56,10 @@ export default class Menu extends Component {
                 <p className="cursor" onClick={logout}><i className="fas fa-sign-out-alt"></i>Se déconnecter</p>
             </div>
             <ul className="header_profile">
-                <div className="notificationMenu">
+                <Link to="/notifications" className="notificationMenu">
                     <div className="notificationMenu--pastille"></div>
                     <i className="fa fa-bell fa-fw"></i>
-                </div>
+                </Link>
                {userMenu}     
             </ul>
         </span>

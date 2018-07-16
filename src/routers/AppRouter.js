@@ -15,7 +15,7 @@ import Registration from '../containers/User/Registration';
 import RegistrationFavoriteMovies from '../containers/User/RegistrationFavoriteMovies';
 import Login from '../containers/User/Login';
 import Profile from '../containers/User/Profile';
-import NotificationsIndex from '../containers/notifications/NotificationsIndex';
+import NotificationsIndex from '../containers/Notifications/NotificationsIndex';
 import Cgu from '../containers/static/Cgu';
 import LegalMentions from '../containers/static/LegalMentions';
 

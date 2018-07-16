@@ -53,6 +53,10 @@ header {
   .notificationMenu {
     position: relative;
 
+    &:hover {
+      cursor: pointer;
+    }
+
     .notificationMenu--pastille{
       @extend .color-red;
       width: 12px;
