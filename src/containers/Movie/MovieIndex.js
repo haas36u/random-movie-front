@@ -22,9 +22,12 @@ export default class MovieShow extends Component {
       currentPage: 1,
       itemsPerPage: 0,
       totalItems: 0,
-      selectedMovie: {id: null, cover: null, title: null}
+      selectedMovie: {id: null, cover: null, title: null},
+      loader : this.loader
     };
   }
+
+  loader = <span className="spinner"><svg width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="lds-double-ring"><circle cx="50" cy="50" ng-attr-r="{{config.radius}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-dasharray="{{config.dasharray}}" fill="none" strokeLinecap="round" r="40" strokeWidth="4" stroke="#bd4030" strokeDasharray="62.83185307179586 62.83185307179586" transform="rotate(328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.3s" begin="0s" repeatCount="indefinite"></animateTransform></circle><circle cx="50" cy="50" ng-attr-r="{{config.radius2}}" ng-attr-stroke="{{config.c2}}" fill="none" strokeLinecap="round" r="35" strokeWidth="4" stroke="#e0b83e" strokeDasharray="54.97787143782138 54.97787143782138" strokeDashoffset="54.97787143782138" transform="rotate(-328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg> </span>;
   
   componentDidMount() {
     if(this.props.location.query && this.props.location.query.movieTitle){
@@ -46,7 +49,7 @@ export default class MovieShow extends Component {
     }
   
    getMoviesByTitle = (movieTitle, page = 1) => {
-      this.setState({typeOfRequest: 'searchByTitle', movieTitle: movieTitle});
+      this.setState({typeOfRequest: 'searchByTitle', movieTitle: movieTitle, loader: this.loader});
       axios.get(`${process.env.REACT_APP_API_URL}/movies`, {
         params : {title: movieTitle, page: page},
         headers: {'Content-Type': 'application/vnd.api+json', "Authorization" : localStorage.getItem('token')}
@@ -80,7 +83,7 @@ export default class MovieShow extends Component {
     getMoviesByGenre = (page = 1) => {
       if(!this.state.genreId) return;
       
-      this.setState({typeOfRequest: 'searchByGenre'});
+      this.setState({typeOfRequest: 'searchByGenre', loader: this.loader});
 
       axios.get(`${process.env.REACT_APP_API_URL}/genres/${this.state.genreId}/movies`, {
         params: {page: page},
@@ -95,7 +98,7 @@ export default class MovieShow extends Component {
     }
     
     getMovies = (url = 'movies/populars', page = 1) => {
-      this.setState(() => ({url: url, activePage: page, typeOfRequest: 'default'}));
+      this.setState(() => ({url: url, activePage: page, typeOfRequest: 'default', loader: this.loader}));
 
       axios.get(`${process.env.REACT_APP_API_URL}/${url}`, {
         params: {page: page},
@@ -125,6 +128,7 @@ export default class MovieShow extends Component {
           currentPage: data.meta.currentPage,
           itemsPerPage: data.meta.itemsPerPage,
           totalItems: data.meta.totalItems,
+          loader: null
         }
       });
     }
@@ -146,11 +150,9 @@ export default class MovieShow extends Component {
   }
   
   render() {
-   
-    if (!this.state) return <div>Loading...</div>;
-    
     return (
       <div id="movieIndex">
+        {this.state.loader}
         <Grid className="p-0">
           <Cell size={3} className="movie_tv_menu">
             <h2>Films</h2>
