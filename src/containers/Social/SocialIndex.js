@@ -54,7 +54,7 @@ export default class SocialIndex extends Component {
     if (isAtEnd) {
       //User at the end of content. load more content
       if (!this.state.isFetching) {
-        this.setState({isFetching: true});
+        this.setState({isFetching: true, loader: true});
 
         //get content from server
         if (this.state.currentCount !== this.state.total) {
@@ -120,6 +120,9 @@ export default class SocialIndex extends Component {
               this.state.actualityList.map((current, key) => {
                 return <SocialItem actuality={current} key={key}/>
               })
+            }
+            {
+                this.state.actualityList.length === 0 && <p>Aucune activités n'a été enregistrés de la part de vos abonnements</p>
             }
             {
               (this.state.currentCount !== this.state.total) ?

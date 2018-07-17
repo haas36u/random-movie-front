@@ -59,16 +59,17 @@ export default class Menu extends Component {
                 <i className="fa fa-bell fa-fw"></i>
             </Link>);
         }else{
-            userMenu =  <li>
-            <Link to="/login" onClick={this.closeNav}>
-                <span>Connexion</span>
-            </Link>
-            </li>
+            userMenu =  (
+            <li>
+                <Link to="/login" onClick={this.closeNav}>
+                    <span>Connexion</span>
+                </Link>
+            </li>)
         }
 
         if (isAuthenticated() && isAdmin()){
             adminLink = (
-                <Link to="/admin">
+                <Link to="/admin" className="mr-1">
                     <span>Administration</span>
                 </Link>
             );
@@ -97,9 +98,9 @@ export default class Menu extends Component {
                     <p className="cursor" onClick={logout}><i className="fas fa-sign-out-alt"></i>Se déconnecter</p>
                 </div>
                 <ul className="header_profile">
-          {adminLink}
+                    {adminLink}
                     {notificationBell}
-                {userMenu}     
+                    {userMenu}     
                 </ul>
             </span>
         );

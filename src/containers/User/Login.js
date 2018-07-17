@@ -18,8 +18,12 @@ class Login extends Component{
         const username = e.target.elements.username.value.trim();
         const password = e.target.elements.password.value.trim();
 
-        if (username && password) this.props.login({username: username, password: password});
-        else this.setState({error: 'Vous n\'avez pas rempli tous les champs'});
+        if (username && password) {
+            this.setState({error: null});
+            this.props.login({username: username, password: password});
+        } else {
+            this.setState({error: 'Vous n\'avez pas rempli tous les champs'});
+        }
     };
 
     render() {
@@ -28,11 +32,11 @@ class Login extends Component{
             <div id="registration-login">
                 <div className="registration-login_container-box">
                     <h5>Se connecter</h5>
-                  {this.props.error && <p className="error">Mauvais mot de passe / nom d'utilisateur</p>}
                     <form onSubmit={this.login}>
                         <TextField id="username" name="username" label="Nom d'utilisateur" lineDirection="center" className="md-cell--bottom" />
                         <TextField id="password" name="password" label="Mot de passe" lineDirection="center" className="md-cell--bottom" type="password" />
                         <p className="error">{this.state.error}</p>
+                        {this.props.error && <p className="error">Mauvais mot de passe / nom d'utilisateur</p>}
                         <div className="mt-3 login-btn">
                             <button className="btn">Connexion</button>
                             <Link to="/registration">Créer un compte</Link>
