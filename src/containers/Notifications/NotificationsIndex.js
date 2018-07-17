@@ -30,7 +30,7 @@ export default class NotificationsIndex extends Component {
 
     markAllAsReaded = () => {
         axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/notifications/mark_all_as_seen`, headers : {"Authorization" : localStorage.getItem('token')}})
-        .then((response) => {
+        .then(() => {
             let notifs = this.state.notifications;
             for (let i = 0; i < notifs.length; i++) {
                 notifs[i].seen = true;
@@ -40,7 +40,10 @@ export default class NotificationsIndex extends Component {
     }
 
     removeAll = () => {
-        this.setState({notifications: []});
+        axios({method: 'delete', url : `${process.env.REACT_APP_API_URL}/notifications/remove_all`, headers : {"Authorization" : localStorage.getItem('token')}})
+        .then(() => {
+            this.setState({notifications: []});
+        });
     }
     
     render() {

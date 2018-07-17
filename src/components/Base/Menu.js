@@ -16,13 +16,13 @@ export default class Menu extends Component {
 
     componentDidMount() {
         // TODO remettre à 5000
-        setInterval(this.getNotifications, 100000);
+        if (isAuthenticated()) setInterval(this.getNotifications, 500000);
     }
 
     getNotifications = () => {
-        axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/notifications`, headers : {"Authorization" : localStorage.getItem('token')}})
+        axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/notifications/unseen`, headers : {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
-            this.setState({nbNotifications : response.data.length});
+            this.setState({nbNotifications : response.data});
         });
     }
 
