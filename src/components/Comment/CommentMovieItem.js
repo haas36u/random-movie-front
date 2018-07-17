@@ -4,7 +4,7 @@ import moment from 'moment';
 import { Link } from 'react-router-dom';
 
 export default class CommentMovieItem extends Component {
-    
+
     render() {
 
         let avatar    = require('../../images/avatar_default.jpg');
@@ -19,9 +19,12 @@ export default class CommentMovieItem extends Component {
                     </p>
                 
                     <p>{this.props.comment.content}</p>
-                    <span className="right cursor commentSignale">
-                        Signaler le commentaire
-                    </span>
+                    {
+                        this.props.canSignal &&
+                        <span className="right cursor" onClick={(e) => this.props.showModal(this.props.comment.id)}>
+                            Signaler le commentaire
+                        </span>
+                    }
                 </div>
             </li>
         );
