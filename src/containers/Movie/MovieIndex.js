@@ -124,7 +124,7 @@ export default class MovieShow extends Component {
         moviesList = <p className="noResult--movies">Aucun film ne correspond à votre requête.</p>;
         this.setState({paginationClass: 'pagination-container display-none'});
       } else {
-        this.setState({paginationClass: 'pagination-container display-none'});
+        this.setState({paginationClass: 'pagination-container'});
       }
 
       this.setState(() => {
