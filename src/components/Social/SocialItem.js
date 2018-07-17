@@ -51,7 +51,6 @@ export default class SocialItem extends Component {
 
     headerContent = () => {
         let headerContent;
-        console.log(this.props.actuality);
         let userUI = <Link to={`/profile/${this.props.actuality.user.id}`} className="text-bold"> {this.props.actuality.user.username}</Link>;
         if (this.props.actuality.type === 'collection') {
             headerContent = <p className="m-0"> {userUI} a partagé le tableau : <span className="text-bold link">{this.props.actuality.collection.name}</span></p>
