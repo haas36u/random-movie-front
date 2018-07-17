@@ -52,6 +52,8 @@ class Registration extends Component{
                         <TextField id="password" name="password" label="Mot de passe" lineDirection="center" className="md-cell--bottom" type="password" onChange={this.handleChangePassword}/>
                         <TextField id="repeat-password" name="repeat-password" label="Répéter le mot de passe" lineDirection="center" className="md-cell--bottom" type="password" onChange={this.handleChangePasswordRepeat}/>
                         <p className="error">{this.state.error}</p>
+                      {this.props.error && this.props.error.map((current, loop) => <p className="error" key={loop}>{current.message}</p>)}
+
                         <input type="checkbox" name="cgu" id="cgu" onChange={this.handleChangeCgu}/><label htmlFor="cgu" className="cursor cgu">J'accepte les <Link to="/cgu">Conditions Générales d'Utilisation</Link> du site Random Movie</label>
                         <div className="mt-3">
                             <button className="btn">Créer un compte</button>
@@ -67,4 +69,10 @@ const mapDispatchToProps = (dispatch) => ({
     register: ({username, email, password}) => dispatch(register({username, email, password}))
 });
 
-export default connect(undefined, mapDispatchToProps)(Registration);
+const mapStateToProps = (state) => {
+    return {
+        error: state.auth.error
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Registration);

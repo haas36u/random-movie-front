@@ -23,11 +23,12 @@ class Login extends Component{
     };
 
     render() {
-    
+
         return (
             <div id="registration-login">
                 <div className="registration-login_container-box">
                     <h5>Se connecter</h5>
+                  {this.props.error && <p className="error">Mauvais mot de passe / nom d'utilisateur</p>}
                     <form onSubmit={this.login}>
                         <TextField id="username" name="username" label="Nom d'utilisateur" lineDirection="center" className="md-cell--bottom" />
                         <TextField id="password" name="password" label="Mot de passe" lineDirection="center" className="md-cell--bottom" type="password" />
@@ -47,4 +48,10 @@ const mapDispatchToProps = (dispatch) => ({
     login: ({username, password}) => dispatch(login({username, password}))
 });
 
-export default connect(undefined, mapDispatchToProps)(Login);
+const mapStateToProps = (state) => {
+    return {
+        error: state.auth.errorLogin
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

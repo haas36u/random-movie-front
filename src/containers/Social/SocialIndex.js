@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 import {Avatar} from 'react-md';
 
 import SocialItem from '../../components/Social/SocialItem';
+import Loader from '../../components/Base/Loader';
 
 export default class SocialIndex extends Component {
 
@@ -18,8 +19,7 @@ export default class SocialIndex extends Component {
       actualityList: [],
       isFetching: false,
       currentPage: 1,
-      followedUsers: [],
-      // loader : this.loader
+      followedUsers: []
     };
   }
 
@@ -37,8 +37,7 @@ export default class SocialIndex extends Component {
     })
       .then((response) => {
         this.setState({total: response.data});
-
-        this.getActuality()
+        this.getActuality();
       });
   }
 
@@ -55,7 +54,6 @@ export default class SocialIndex extends Component {
     if (isAtEnd) {
       //User at the end of content. load more content
       if (!this.state.isFetching) {
-
         this.setState({isFetching: true});
 
         //get content from server
@@ -79,7 +77,8 @@ export default class SocialIndex extends Component {
             isFetching: false,
             currentCount: prevState.currentCount + response.data.length,
             actualityList: [...prevState.actualityList, ...response.data],
-            currentPage: prevState.currentPage + 1
+            currentPage: prevState.currentPage + 1,
+            loader: false
           }
         })
       });
@@ -113,7 +112,7 @@ export default class SocialIndex extends Component {
 
     return (
       <div id="social">
-        {/*{this.state.loader}*/}
+        <Loader show={this.state.loader}/>
         <div className="socialContainer">
           <div className="socialContainer__items">
             {
@@ -125,7 +124,7 @@ export default class SocialIndex extends Component {
             {
               (this.state.currentCount !== this.state.total) ?
                 <div id="content-end">
-                  Please wait. Loading...
+                 Nous chargeons le contenu pour vous...
                 </div> : null
             }
           </div>

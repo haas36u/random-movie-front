@@ -12,6 +12,7 @@ import CollectionItem from '../../components/Collection/CollectionItem';
 import CollectionAddModal from '../../components/Collection/CollectionAddModal';
 import CollectionAddMovieModal from '../../components/Collection/CollectionAddMovieModal';
 import TooltipIcon from '../../components/Badge/TooltipIcon';
+import Loader from '../../components/Base/Loader';
 var Trianglify = require('trianglify');
 
 export default class Profile extends Component {
@@ -40,7 +41,6 @@ export default class Profile extends Component {
             noDataNotation : null,
             achievements : null,
             selectedMovie: {id: null, cover: null, title: null},
-            loader: this.loader,
             userId: props.match.params.id,
             followBtnText: null,
             followBtnClass: null
@@ -54,8 +54,6 @@ export default class Profile extends Component {
         this.getCollections.getCollections();
         this.getUserMovies();
     }
-    
-    loader = <span className="spinner"><svg width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="lds-double-ring"><circle cx="50" cy="50" ng-attr-r="{{config.radius}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-dasharray="{{config.dasharray}}" fill="none" strokeLinecap="round" r="40" strokeWidth="4" stroke="#bd4030" strokeDasharray="62.83185307179586 62.83185307179586" transform="rotate(328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.3s" begin="0s" repeatCount="indefinite"></animateTransform></circle><circle cx="50" cy="50" ng-attr-r="{{config.radius2}}" ng-attr-stroke="{{config.c2}}" fill="none" strokeLinecap="round" r="35" strokeWidth="4" stroke="#e0b83e" strokeDasharray="54.97787143782138 54.97787143782138" strokeDashoffset="54.97787143782138" transform="rotate(-328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg> </span>;
 
      /*User*/
     getUser = () => {
@@ -219,7 +217,7 @@ export default class Profile extends Component {
     getCollections = {
 
         getCollections : () => {
-            this.setState({loader: this.loader});
+            this.setState({loader: true});
             const url = this.state.userId ? this.state.userId + '/collections' : 'collections';
             axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: {"Authorization" : localStorage.getItem('token')}})
             .then((response) => {
@@ -231,7 +229,7 @@ export default class Profile extends Component {
                     document.getElementById('userCollections').style.display = 'flex';
                 }
     
-                this.setState({collections: response.data, loader : null});
+                this.setState({collections: response.data, loader : false});
             });
         },
     
@@ -349,7 +347,7 @@ export default class Profile extends Component {
 
         return (
         <div id="user-profile">
-            {this.state.loader}
+            <Loader show={this.state.loader}/>
             <div className="user-profile__header background-trianglify" style={bgTriangle}>
                 <div className="container">
                     {

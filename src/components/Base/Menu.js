@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Avatar } from 'react-md';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { logout, isAuthenticated } from '../../actions/auth';
+import { logout, isAuthenticated, isAdmin } from '../../actions/auth';
 var Trianglify = require('trianglify');
 
 export default class Menu extends Component {
@@ -39,6 +39,7 @@ export default class Menu extends Component {
     render() {
         let userMenu;
         let notificationBell;
+        let adminLink;
         let avatar = require('../../images/avatar_default.jpg');
         let myPseudo = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).username : null;
 
@@ -65,6 +66,14 @@ export default class Menu extends Component {
             </li>
         }
 
+        if (isAuthenticated() && isAdmin()){
+            adminLink = (
+                <Link to="/admin">
+                    <span>Administration</span>
+                </Link>
+            );
+        } 
+
         let bgTriangle = {
             backgroundImage: 'url(' + Trianglify({ x_colors: 'Blues'}).png() + ')'
         }
@@ -88,6 +97,7 @@ export default class Menu extends Component {
                     <p className="cursor" onClick={logout}><i className="fas fa-sign-out-alt"></i>Se déconnecter</p>
                 </div>
                 <ul className="header_profile">
+          {adminLink}
                     {notificationBell}
                 {userMenu}     
                 </ul>
