@@ -221,33 +221,38 @@ export default class Profile extends Component {
             const url = this.state.userId ? this.state.userId + '/collections' : 'collections';
             axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/${url}`, headers: {"Authorization" : localStorage.getItem('token')}})
             .then((response) => {
-    
+
                 if (document.getElementById('userCollection')) {
                     document.getElementById('userCollection').style.display = 'none';
                 }
                 if (document.getElementById('userCollections')) {
                     document.getElementById('userCollections').style.display = 'flex';
                 }
-    
+
                 this.setState({collections: response.data, loader : false});
             });
         },
-    
+
         getCollection : (collectionId) => {
             var collection = this.state.collections.find(function(collection) {
                 return collection.id === collectionId;
             });
-    
+
             const privacy = collection.isPublic ? <i className="fas fa-globe-americas" title="Visible en public"></i> : <i className="fas fa-lock" title="Visible uniquement par vous"></i>;
-    
+
             const collectionUi = (
                 <div>
                     <div className="userCollection__header">
                         <h2>{collection.name}{privacy}</h2>
                         {!this.state.userId && <Link to={`/collections/${collection.id}/update`} className="btn">Modifier</Link>}
                     </div>
-    
-                    {collection.movies.length === 0 && <p className="noResult">Vous n'avez pas encore ajouté de film à la collection {collection.name}</p>}
+
+                  {collection.movies.length === 0 && <p className="noResult">Vous n'avez pas encore ajouté de film à la collection {collection.name}</p>}
+                    <p className="noResult">
+                      Pour ajouter un film à votre collection,
+                      veuillez cliquer sur le bouton <i className="fas fa-thumbtack"></i> dans la liste de films puis
+                      sélectionner votre collection
+                    </p>
                     <Grid>
                         {collection.movies.map((movie) => {
                             return (
@@ -259,14 +264,14 @@ export default class Profile extends Component {
                     </Grid>
                 </div>
             );
-    
+
             if (document.getElementById('userCollections')) {
                 document.getElementById('userCollections').style.display = 'none';
             }
             if (document.getElementById('userCollection')) {
                 document.getElementById('userCollection').style.display = 'block';
             }
-    
+
             this.setState({collection: collectionUi});
         }
     };
@@ -339,7 +344,7 @@ export default class Profile extends Component {
         let bgTriangle = {
             backgroundImage: 'url(' + Trianglify({ x_colors: 'Blues'}).png() + ')'
         }
-        
+
         let avatar = require('../../images/avatar_default.jpg');
         let tabIndex = this.props.location.query && this.props.location.query.tab ? this.props.location.query.tab : 0;
 
@@ -366,7 +371,7 @@ export default class Profile extends Component {
 
             <CollectionAddModal getCollections={this.getCollections.getCollections} isModal={true}/>
             <CollectionAddMovieModal movie={this.state.selectedMovie}/>
-            
+
             <TabsContainer defaultTabIndex={tabIndex}>
                 <Tabs className="container" tabId="profile-tab">
                     <Tab label="Résumé">
