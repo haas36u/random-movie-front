@@ -119,6 +119,18 @@ export default class SocialIndex extends Component {
       <div id="social">
         <Loader show={this.state.loader}/>
         <div className="socialContainer">
+          <div className="userFollow userFollowTop">
+            <h2>Vous suivez...</h2>
+            <div>
+              {this.state.followedUsers}
+
+              <Link to="/social/search" className="userFollow__user">
+                <i className="fas fa-plus-circle"></i>
+                <p>Chercher un abonné</p>
+              </Link>
+              <Link to="/social/users">Voir la liste complète</Link>
+            </div>
+          </div>
           <div className="socialContainer__items">
             {
               this.state.actualityList.length > 0 &&
@@ -137,7 +149,7 @@ export default class SocialIndex extends Component {
             }
           </div>
 
-          <div className="userFollow">
+          <div className="userFollow userFollowAside">
             <h2>Vous suivez...</h2>
             <div>
               {this.state.followedUsers}

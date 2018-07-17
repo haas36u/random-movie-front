@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { Grid, Cell, TextField } from 'react-md';
 import CollectionAddModal from '../../components/Collection/CollectionAddModal';
+import { isAuthenticated } from '../../actions/auth';
+import { isatty } from 'tty';
 
 export default class CollectionAddMovieModal extends Component {
 
@@ -16,7 +18,9 @@ export default class CollectionAddMovieModal extends Component {
     }
 
     componentDidMount() {
-        this.getCollections();
+        if (isAuthenticated()) {
+            this.getCollections();
+        }
     }
 
     getCollections = () => {
@@ -146,8 +150,6 @@ export default class CollectionAddMovieModal extends Component {
                         </Cell>
                         {this.state.collectionAction}
                     </Grid>
-
-                    
                 </div>
             </div>
         );
