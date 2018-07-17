@@ -10,6 +10,7 @@ import ActorCard from '../../components/Actor/ActorCard';
 import MovieCard from '../../components/Movie/MovieCard';
 import MovieActions from '../../components/Movie/MovieActions';
 import CollectionAddMovieModal from '../../components/Collection/CollectionAddMovieModal';
+import Loader from '../../components/Base/Loader';
 
 export default class MovieShow extends Component {
 
@@ -25,8 +26,7 @@ export default class MovieShow extends Component {
             similars : [],
             comments: [],
             commentModalVisible: false,
-            selectedMovie: {id: null, cover: null, title: null},
-            loader: this.loader
+            selectedMovie: {id: null, cover: null, title: null}
         };
     }
 
@@ -38,7 +38,6 @@ export default class MovieShow extends Component {
     }
 
     RATING = {1 : 'A éviter',  2 : 'Moyen', 3 : 'Super', 4 : 'Excellent', 5 : 'Incroyable'};
-    loader = <span className="spinner"><svg width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="lds-double-ring"><circle cx="50" cy="50" ng-attr-r="{{config.radius}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-dasharray="{{config.dasharray}}" fill="none" strokeLinecap="round" r="40" strokeWidth="4" stroke="#bd4030" strokeDasharray="62.83185307179586 62.83185307179586" transform="rotate(328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.3s" begin="0s" repeatCount="indefinite"></animateTransform></circle><circle cx="50" cy="50" ng-attr-r="{{config.radius2}}" ng-attr-stroke="{{config.c2}}" fill="none" strokeLinecap="round" r="35" strokeWidth="4" stroke="#e0b83e" strokeDasharray="54.97787143782138 54.97787143782138" strokeDashoffset="54.97787143782138" transform="rotate(-328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg> </span>;        
 
     /*MOVIE*/
     getMovie = () => {
@@ -72,7 +71,7 @@ export default class MovieShow extends Component {
                 )
             }
 
-            this.setState({movie : movie, userActions: userActions, communityNote: communityNote, loader: null});
+            this.setState({movie : movie, userActions: userActions, communityNote: communityNote, loader: false});
         })
         .catch(error => {
             console.log(error)
@@ -252,7 +251,7 @@ export default class MovieShow extends Component {
 
         return (
             <div id="movieShow">
-                {this.state.loader}
+                <Loader show={this.state.loader}/>
                 <div id="movie-container">
                     <CollectionAddMovieModal movie={this.state.selectedMovie}/>
                     <div className="container">

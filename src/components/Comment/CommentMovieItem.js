@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Avatar } from 'react-md';
 import moment from 'moment';
 import { Link } from 'react-router-dom';
+import TooltipIcon from '../../components/Badge/TooltipIcon';
 
 export default class CommentMovieItem extends Component {
 
@@ -21,9 +22,12 @@ export default class CommentMovieItem extends Component {
                     <p>{this.props.comment.content}</p>
                     {
                         this.props.canSignal &&
-                        <span className="right cursor" onClick={(e) => this.props.showModal(this.props.comment.id)}>
-                            Signaler le commentaire
-                        </span>
+                        <div className="right cursor signalComment" onClick={(e) => this.props.showModal(this.props.comment.id)}>
+                            <TooltipIcon tooltipLabel="Ce commentaire porte préjudice" tooltipPosition="top">
+
+                                <i class="fas fa-exclamation-circle"></i>
+                            </TooltipIcon>
+                        </div>
                     }
                 </div>
             </li>
