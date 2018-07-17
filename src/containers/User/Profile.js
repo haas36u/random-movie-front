@@ -98,7 +98,7 @@ export default class Profile extends Component {
                             <ProfileMovieCard movie={item.movie} showUserAction={false} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
                         </Cell>
                         <Cell size={10}>
-                            <CommentMovieItem comment={item} user={user}/>
+                            <CommentMovieItem comment={item} user={user} canSignal={false}/>
                         </Cell>
                     </Grid>
                 );

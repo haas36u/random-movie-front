@@ -132,8 +132,8 @@ export default class MovieShow extends Component {
 
             const comments = response.data.map((comment) => {
                 return (
-                    <Cell size={6} className="ml-0">
-                        <Grid className="pl-0" key={comment.id}>
+                    <Cell size={6} className="ml-0" key={comment.id}>
+                        <Grid className="pl-0">
                             <Cell size={2}>
                                 <div className="avatar_comments_container" style={avatarComments}></div>
                             </Cell>
