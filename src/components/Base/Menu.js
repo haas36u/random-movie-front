@@ -8,6 +8,7 @@ export default class Menu extends Component {
 
   render() {
     let userMenu;
+    let notificationBell;
     let avatar = require('../../images/avatar_default.jpg');
     let myPseudo = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).username : null;
 
@@ -22,9 +23,18 @@ export default class Menu extends Component {
     }
 
     if(isAuthenticated()) {
-        userMenu = <li>
-        <Avatar src={avatar} role="presentation" onClick={openNav}/>
-        </li>
+        userMenu = (
+        <li>
+            <Avatar src={avatar} role="presentation" onClick={openNav}/>
+        </li>);
+
+        notificationBell = (
+        <Link to="/notifications" className="notificationMenu">
+            <div className="notificationMenu--pastille">
+                2
+            </div>
+            <i className="fa fa-bell fa-fw"></i>
+        </Link>);
     }else{
         userMenu =  <li>
         <Link to="/login" onClick={closeNav}>
@@ -56,10 +66,7 @@ export default class Menu extends Component {
                 <p className="cursor" onClick={logout}><i className="fas fa-sign-out-alt"></i>Se déconnecter</p>
             </div>
             <ul className="header_profile">
-                <Link to="/notifications" className="notificationMenu">
-                    <div className="notificationMenu--pastille"></div>
-                    <i className="fa fa-bell fa-fw"></i>
-                </Link>
+                {notificationBell}
                {userMenu}     
             </ul>
         </span>
