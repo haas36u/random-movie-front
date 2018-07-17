@@ -1,14 +1,31 @@
-export default (state = {}, action) => {
+export default (state = {errorLogin: null}, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
-      return true;
-      
+      return {
+        ...state,
+        errorLogin:  null
+      };
+
     case 'LOGIN_ERROR':
-      return action.error;
-      
+      return {
+        ...state,
+        errorLogin: true
+      };
+    case 'REGISTER_SUCCESS':
+      return {
+        ...state,
+        error:  null
+      };
+
+    case 'REGISTRATION_ERROR':
+      return {
+        ...state,
+        error: action.error.response.data.violations
+      };
+
     case 'LOGOUT':
       return {};
-      
+
     default:
       return state;
   }

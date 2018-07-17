@@ -47,7 +47,7 @@ const loginSuccess = (token) => {
 const loginFailed = (error) => {
   return {
     type: "LOGIN_ERROR",
-    error
+    error: error
   }
 };
 
