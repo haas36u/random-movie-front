@@ -135,7 +135,10 @@ export default class Profile extends Component {
                 let statsData = [];
                 let statsLabels = [];
                 for (let i = 0; i < stats.length; i++) {
-                    if (i > 5) {
+                    if (i === 5) {
+                        statsData[5] = 0;
+                    }
+                    if (i >= 5) {
                         statsLabels[5] = 'Autres';
                         statsData[5] += parseInt(stats[i].nb_movies, 10);
                     } else {
@@ -145,7 +148,7 @@ export default class Profile extends Component {
                     nbWatchedMovies += parseInt(stats[i].nb_movies, 10);
                 }
 
-                const favortieMoviesTypeColor = [ '#CD6155', '#A93226', '#641E16', '#943126', '#CB4335', '#D98880']
+                const favortieMoviesTypeColor = [ '#CD6155', '#A93226', '#641E16', '#943126', '#CB4335', '#D98880'];
                 const favortieMoviesType = {
                     labels: statsLabels,
                     datasets: [{
@@ -161,9 +164,11 @@ export default class Profile extends Component {
                     }
                 };
 
-                if (stats.length > 6) {
-                    stats.splice(6, stats.length - 6);
+                if (stats.length > 5) {
+                    stats.splice(5, stats.length - 5);
                 }
+
+                if (statsData[5]) stats.push({nb_movies: statsData[5], name: 'Autres'});
 
                 const favortieMoviesTypeLegend = stats.map(function(stat, key){
                     return (
@@ -188,7 +193,7 @@ export default class Profile extends Component {
                 }
 
                 for (let i = 0; i < 5; i++) {
-                    if (parseInt(response.data[indexUserRating].mark, 10) === i +1 ) {
+                    if (response.data[indexUserRating] && parseInt(response.data[indexUserRating].mark, 10) === i +1 ) {
                         statsRating.push(response.data[indexUserRating].nb_notations);
                         indexUserRating++;
                     }
@@ -393,11 +398,11 @@ export default class Profile extends Component {
                                 </Grid>
                                 <Grid className="user-profile__rate-stats">
                                     <Cell size={3}>
-                                        <h4>Commentaires totales</h4>
+                                        <h4>Commentaire total</h4>
                                         <p>{this.state.nbComments}</p>
                                     </Cell>
                                     <Cell size={3}>
-                                        <h4>Notes totales</h4>
+                                        <h4>Note total</h4>
                                         <p>{this.state.nbNotations}</p>
                                     </Cell>
                                     <Cell size={6}>
