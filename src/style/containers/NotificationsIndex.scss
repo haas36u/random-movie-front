@@ -1,0 +1,15 @@
+#notifications {
+    margin-top: 2rem;
+
+    .notifications__actions {
+        justify-content: flex-end;
+
+        div {
+            margin-left: 1.5rem;
+        }
+    }
+
+    .notificationsContainer{
+        margin-top: 1rem;
+    }
+}
