@@ -18,7 +18,7 @@ export default class SocialItem extends Component {
     }
 
     markAsReaded = () => {
-        axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/notifications/${this.props.notif.id}/mark_as_seen`, headers : {"Authorization" : localStorage.getItem('token')}})
+        axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/notifications/${this.props.notif.notification.id}/mark_as_seen`, headers : {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             this.setState({notifSeen: true, markAsReadedText: null});
         });

@@ -113,6 +113,7 @@ export default class MovieShow extends Component {
     }
 
     changeMoviesList = (data) => {
+      window.scrollTo({top: 0, behavior: 'smooth'});
       let moviesList = data.data.map((item) => {
         item.attributes.id = item.attributes._id;
           return(

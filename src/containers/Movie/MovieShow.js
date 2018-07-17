@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Cell, DialogContainer, TextField, Chip } from 'react-md';
+import { Grid, Cell, DialogContainer, TextField, Chip, Snackbar } from 'react-md';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { isAuthenticated } from '../../actions/auth';
@@ -26,7 +26,8 @@ export default class MovieShow extends Component {
             similars : [],
             comments: [],
             commentModalVisible: false,
-            selectedMovie: {id: null, cover: null, title: null}
+            selectedMovie: {id: null, cover: null, title: null},
+            toasts : []
         };
     }
 
@@ -171,7 +172,8 @@ export default class MovieShow extends Component {
     sendComment = () => {
         axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/comments`, headers: {"Authorization" : localStorage.getItem('token')}, data: {content: this.state.comment, movie: 'api/movies/' + this.state.movie.id}})
         .then(() => {
-            this.setState({commentModalVisible: false});
+            this.hideCommentModal();
+            this.addToast('Commentaire ajouté');
         })
         .catch(error => {
             console.log(error)
@@ -198,6 +200,19 @@ export default class MovieShow extends Component {
         this.setState({selectedMovie: movie});
         if(document.getElementById('collectionAddMovieModal')) document.getElementById('collectionAddMovieModal').style.display = 'flex';
     }
+
+    addToast = (text, action, autohide = true) => {
+        this.setState((state) => {
+          const toasts = state.toasts.slice();
+          toasts.push({ text, action });
+          return { toasts, autohide };
+        });
+    };
+
+    dismissToast = () => {
+        const [, ...toasts] = this.state.toasts;
+        this.setState({ toasts });
+    };
 
     render() {
         
@@ -282,6 +297,8 @@ export default class MovieShow extends Component {
                         </Grid>
                     </div>
                 </div>
+
+                <Snackbar id="snackbar" toasts={this.state.toasts} autohide={true} onDismiss={this.dismissToast} />
 
                 <DialogContainer id="add-comment-container" visible={this.state.commentModalVisible} onHide={this.hideCommentModal} title="Ajouter un commentaire">
                     <TextField id="comment" rows={4} maxLength={1000} placeholder="Un petit commentaire..." onChange={this.handleChangeComment}/>
