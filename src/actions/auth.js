@@ -58,7 +58,7 @@ export const isAuthenticated = () => {
 
 export const isAdmin = () => {
   const roles = JSON.parse(localStorage.getItem('currentUser')).roles;
-  return roles.includes('ROLE_USER');
+  return roles.includes('ROLE_ADMIN');
 }
 
 const getTokenExpirationDate = (encodedToken) => {
