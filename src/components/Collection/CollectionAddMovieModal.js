@@ -20,7 +20,7 @@ export default class CollectionAddMovieModal extends Component {
     }
 
     getCollections = () => {
-        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/collections`, headers: {"Authorization" : localStorage.getItem('token')}})
+        axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/users/collections`, headers: {"Authorization" : localStorage.getItem('token')}})
         .then((response) => {
             const collections = this.createCollectionsData(response.data);
             this.createCollectionsUI(collections);
@@ -93,16 +93,16 @@ export default class CollectionAddMovieModal extends Component {
                 <ul>
                     {collectionsUIList}
                 </ul>
-                <div className="createCollection float-right">
+                <div className="createCollection" onClick={this.showCollectionAdd}>
                     <div>
                         <i className="fas fa-plus-circle"></i>
-                        <p onClick={this.showCollectionAdd}>Créer une collection</p>
+                        <p>Créer une collection</p>
                     </div>
                 </div>
                 <div className="text-right">
-                        <div className="btn mr-1 cancel" onClick={this.cancel}>Annuler</div>
-                        <div className="btn" onClick={this.saveMovieInCollection}>Ajouter à la collection</div>
-                    </div>
+                    <div className="btn mr-1 cancel" onClick={this.cancel}>Annuler</div>
+                    <div className="btn" onClick={this.saveMovieInCollection}>Ajouter à la collection</div>
+                </div>
             </Cell>
         )
     }

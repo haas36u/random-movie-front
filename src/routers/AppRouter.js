@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import axios from 'axios';
-import { isAuthenticated } from '../actions/auth';
+import { isAuthenticated, isAdmin } from '../actions/auth';
 
 import Homepage from '../containers/Homepage';
 import MovieIndex from '../containers/Movie/MovieIndex';
@@ -13,14 +13,17 @@ import SocialUserSearch from '../containers/Social/SocialUserSearch';
 import SocialUserIndex from '../containers/Social/SocialUserIndex';
 import Registration from '../containers/User/Registration';
 import RegistrationFavoriteMovies from '../containers/User/RegistrationFavoriteMovies';
+import AdminCommentsIndex from '../containers/Admin/Comment/AdminCommentsIndex';
 import Login from '../containers/User/Login';
 import Profile from '../containers/User/Profile';
+import NotificationsIndex from '../containers/Notifications/NotificationsIndex';
 import Cgu from '../containers/static/Cgu';
 import LegalMentions from '../containers/static/LegalMentions';
 
 import NotFoundPage from '../components/NotFoundPage';
 import Header from '../components/Base/Header';
 import Footer from '../components/Base/Footer';
+import TooltipIcon from '../components/Badge/TooltipIcon';
 import RegistrationFavoriteMoviesTypes from '../containers/User/RegistrationFavoriteMoviesType';
 
 const closeNav = (e) => {
@@ -51,6 +54,17 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     )} />
 )  
 
+const AdminRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={(props) => (
+      isAuthenticated() === true && isAdmin() === true
+        ? <Component {...props} />
+        : <Redirect to={{
+            pathname: '/login',
+            state: { from: props.location }
+          }} />
+    )} />
+)  
+
 const AppRouter = () => (
   <BrowserRouter>
     <div className="wrapper">
@@ -70,11 +84,18 @@ const AppRouter = () => (
                 <PrivateRoute path="/registration/select-movies-types" component={RegistrationFavoriteMoviesTypes} exact={true} />
                 <Route path="/login" component={Login} exact={true} />
                 <PrivateRoute path="/profile" component={Profile} exact={true} />
+                <PrivateRoute path="/profile/:id" component={Profile} />
+                <AdminRoute path="/admin" component={AdminCommentsIndex}/>
+                <PrivateRoute path="/notifications" component={NotificationsIndex} exact={true} />
                 <Route path="/cgu" component={Cgu} exact={true} />
                 <Route path="/legal-mentions" component={LegalMentions} exact={true} />
                 <Route component={NotFoundPage} />
             </Switch>
-            <img src={logo} alt="Logo Random Movie" title="Film aléatoire" onClick={randomAction} className="logo"/>
+            <div className="logo">
+                <TooltipIcon tooltipLabel="Film aléatoire" tooltipPosition="top"> 
+                    <img src={logo} alt="Logo Random Movie" onClick={randomAction} />
+                </TooltipIcon>
+            </div>
         </div>
         <Footer />
     </div>

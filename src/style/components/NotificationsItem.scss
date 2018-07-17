@@ -1,0 +1,44 @@
+.notifsItem {
+    border: 1px solid #c3c3c3;
+    border-radius: 4px;
+    padding: 1rem;
+    margin: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    .fas {
+        font-size: 1.5rem;
+        margin-right: 0.5rem;
+        color: #00008b;
+    }
+
+    .notifsItem--markAsReaded {
+        position: absolute;
+        right: 0.7rem;
+        top: 0.1rem;
+        font-size: 0.8rem;
+
+        &:hover{
+            cursor: pointer;
+        }
+    }
+
+    &.notSeen{
+        background-color: #EFEFF0;
+    }
+
+    h6 {
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    p {
+        margin: 0;
+
+        &:last-child{
+            font-size: 0.8rem;
+            color: $primary-color-light;
+        }
+    }
+}

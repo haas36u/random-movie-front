@@ -61,10 +61,16 @@ h5 {
     position: fixed;
     bottom: 2rem;
     left: 2rem;
-    width: 60px;
-    height: auto;
-    animation: bounce 4s ease infinite alternate;
-    cursor: pointer;
+
+    img {
+        width: 60px;
+        height: auto;
+        animation: bounce 4s ease infinite alternate;
+        
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }
   
 @keyframes bounce{

@@ -8,7 +8,7 @@ export default class NotationsMovieList extends Component {
         const stars = [];
         for (let i = 0; i < 5; i++) {
             if(this.props.notation.mark > i) stars.push(<i className="fas fa-star" key={i} style={{color: '#F0CC00'}}></i>);
-            else stars.push(<i className="fas fa-star" style={{color: '#989898'}}></i>);
+            else stars.push(<i className="fas fa-star" key={i} style={{color: '#989898'}}></i>);
         }
 
         return stars;

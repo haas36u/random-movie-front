@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { TextField } from 'react-md';
 import SocialUserItem from '../../components/Social/SocialUserItem';
+import Loader from '../../components/Base/Loader';
 
 export default class SocialIndex extends Component {
 
@@ -15,11 +16,16 @@ export default class SocialIndex extends Component {
         };
     }
 
+    componentDidMount() {
+        this.setState({loader: false});
+    }
+
     searchUser = (e) => {
         e.preventDefault();
         const username = e.target.elements.username.value.trim();
         if(!username) return;
 
+        this.setState({loader: true});
         axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/users?username=${username}`, headers : {"Authorization" : localStorage.getItem('token')}}).then((response) => {
             if(response.data.length === 0) return this.setState({searchedUsers: <p className="noResult">Aucun résultat trouvé</p>});
 
@@ -29,7 +35,7 @@ export default class SocialIndex extends Component {
                 )
             });
 
-            this.setState({searchedUsers: searchedUsers});
+            this.setState({searchedUsers: searchedUsers, loader: false});
         });
     }
 
@@ -37,6 +43,7 @@ export default class SocialIndex extends Component {
     
         return (
             <div id="social" className="socialUserSearch">
+                <Loader show={this.state.loader}/>
                 <div className="socialContainer social__item--background">
 
                     <h2><i className="fas fa-users"></i>Chercher un abonné</h2>

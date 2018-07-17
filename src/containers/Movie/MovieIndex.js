@@ -5,6 +5,7 @@ import Pagination from "react-js-pagination";
 
 import MovieCard from '../../components/Movie/MovieCard';
 import CollectionAddMovieModal from '../../components/Collection/CollectionAddMovieModal';
+import Loader from '../../components/Base/Loader';
 
 export default class MovieShow extends Component {
   
@@ -22,16 +23,18 @@ export default class MovieShow extends Component {
       currentPage: 1,
       itemsPerPage: 0,
       totalItems: 0,
-      selectedMovie: {id: null, cover: null, title: null}
+      selectedMovie: {id: null, cover: null, title: null},
+      paginationClass: 'pagination-container'
     };
   }
-  
+
   componentDidMount() {
-    if(this.props.location.query && this.props.location.query.movieTitle){
-          this.setState({movieTitle: this.props.location.query.movieTitle});
-          this.getMoviesByTitle(this.props.location.query.movieTitle);
-      }
-    else this.getMovies(this.state.url, 1);
+    if (this.props.location.query && this.props.location.query.movieTitle) {
+      this.setState({movieTitle: this.props.location.query.movieTitle});
+      this.getMoviesByTitle(this.props.location.query.movieTitle);
+    } else {
+      this.getMovies(this.state.url, 1);
+    }
 
     this.getMoviesGenre();
   }
@@ -46,7 +49,7 @@ export default class MovieShow extends Component {
     }
   
    getMoviesByTitle = (movieTitle, page = 1) => {
-      this.setState({typeOfRequest: 'searchByTitle', movieTitle: movieTitle});
+      this.setState({typeOfRequest: 'searchByTitle', movieTitle: movieTitle, loader: true});
       axios.get(`${process.env.REACT_APP_API_URL}/movies`, {
         params : {title: movieTitle, page: page},
         headers: {'Content-Type': 'application/vnd.api+json', "Authorization" : localStorage.getItem('token')}
@@ -80,7 +83,7 @@ export default class MovieShow extends Component {
     getMoviesByGenre = (page = 1) => {
       if(!this.state.genreId) return;
       
-      this.setState({typeOfRequest: 'searchByGenre'});
+      this.setState({typeOfRequest: 'searchByGenre', loader: true});
 
       axios.get(`${process.env.REACT_APP_API_URL}/genres/${this.state.genreId}/movies`, {
         params: {page: page},
@@ -95,7 +98,7 @@ export default class MovieShow extends Component {
     }
     
     getMovies = (url = 'movies/populars', page = 1) => {
-      this.setState(() => ({url: url, activePage: page, typeOfRequest: 'default'}));
+      this.setState(() => ({url: url, activePage: page, typeOfRequest: 'default', loader: true}));
 
       axios.get(`${process.env.REACT_APP_API_URL}/${url}`, {
         params: {page: page},
@@ -110,12 +113,19 @@ export default class MovieShow extends Component {
     }
 
     changeMoviesList = (data) => {
-      const moviesList = data.data.map((item) => {
+      let moviesList = data.data.map((item) => {
         item.attributes.id = item.attributes._id;
           return(
               <MovieCard key={item.id} movie={item.attributes} showUserAction={true} openCollectionAddMovieModal={this.openCollectionAddMovieModal}/>
           );
       });
+
+      if (moviesList.length === 0) {
+        moviesList = <p className="noResult--movies">Aucun film ne correspond à votre requête.</p>;
+        this.setState({paginationClass: 'pagination-container display-none'});
+      } else {
+        this.setState({paginationClass: 'pagination-container'});
+      }
 
       this.setState(() => {
         return {
@@ -123,6 +133,7 @@ export default class MovieShow extends Component {
           currentPage: data.meta.currentPage,
           itemsPerPage: data.meta.itemsPerPage,
           totalItems: data.meta.totalItems,
+          loader: false
         }
       });
     }
@@ -144,11 +155,10 @@ export default class MovieShow extends Component {
   }
   
   render() {
-   
-    if (!this.state) return <div>Loading...</div>;
-    
     return (
       <div id="movieIndex">
+        
+        <Loader show={this.state.loader}/>
         <Grid className="p-0">
           <Cell size={3} className="movie_tv_menu">
             <h2>Films</h2>
@@ -170,7 +180,7 @@ export default class MovieShow extends Component {
             <div className="movies-list">
               {this.state.moviesList}
             </div>
-            <div className="pagination-container">
+            <div className={this.state.paginationClass}>
               <Pagination
                 activePage={this.state.currentPage}
                 itemsCountPerPage={this.state.itemsPerPage}

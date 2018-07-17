@@ -1,64 +1,107 @@
 import React, { Component } from 'react';
 import { Avatar } from 'react-md';
+import axios from 'axios';
 import { Link } from 'react-router-dom';
-import { logout, isAuthenticated } from '../../actions/auth';
+import { logout, isAuthenticated, isAdmin } from '../../actions/auth';
 var Trianglify = require('trianglify');
 
 export default class Menu extends Component {
 
-  render() {
-    let userMenu;
-    let avatar = require('../../images/avatar_default.jpg');
-    let myPseudo = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).username : null;
+    constructor(props){
+        super(props);
+        this.state = {
+            nbNotifications: 0
+        };
+    }
 
-    const openNav = (e) => {
+    componentDidMount() {
+        if (isAuthenticated()) setInterval(this.getNotifications, 5000);
+    }
+
+    getNotifications = () => {
+        axios({method: 'get', url : `${process.env.REACT_APP_API_URL}/notifications/unseen`, headers : {"Authorization" : localStorage.getItem('token')}})
+        .then((response) => {
+            this.setState({nbNotifications : response.data});
+        });
+    }
+
+    openNav = (e) => {
         e.stopPropagation();
         document.getElementById("sidenav").style.width = "340px";
     }
 
-    const closeNav = (e) => {
+    closeNav = (e) => {
         e.stopPropagation();
         document.getElementById("sidenav").style.width = "0";
     }
 
-    if(isAuthenticated()) {
-        userMenu = <li>
-        <Avatar src={avatar} role="presentation" onClick={openNav}/>
-        </li>
-    }else{
-        userMenu =  <li>
-        <Link to="/login" onClick={closeNav}>
-            <span>Connexion</span>
-        </Link>
-        </li>
-    }
+    render() {
+        let userMenu;
+        let notificationBell;
+        let adminLink;
+        let avatar = require('../../images/avatar_default.jpg');
+        let myPseudo = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser')).username : null;
 
-    let bgTriangle = {
-        backgroundImage: 'url(' + Trianglify({ x_colors: 'Blues'}).png() + ')'
-    }
+        if(isAuthenticated()) {
+            userMenu = (
+            <li>
+                <Avatar src={avatar} role="presentation" onClick={this.openNav}/>
+            </li>);
 
-    return (
-        <span>
-            <div id="sidenav" onClick={openNav}>
-                <Link to="/profile" onClick={closeNav} className="sidenav_header background-trianglify" style={bgTriangle}>
-                    <Avatar src={avatar} role="presentation" />
-                    <p>{myPseudo}</p>
+            notificationBell = (
+            <Link to="/notifications" className="notificationMenu">
+                {this.state.nbNotifications > 0 &&
+                    <div className="notificationMenu--pastille">
+                        {this.state.nbNotifications}
+                    </div>
+                }
+                <i className="fa fa-bell fa-fw"></i>
+            </Link>);
+        }else{
+            userMenu =  (
+            <li>
+                <Link to="/login" onClick={this.closeNav}>
+                    <span>Connexion</span>
                 </Link>
-                <Link to="/social" onClick={closeNav}> <i className="far fa-newspaper"></i> Fils d'actualités</Link>
-                <Link to="/movies" onClick={closeNav}><i className="material-icons md-xl">local_movies</i>Films</Link>
-                <div className="line"></div>
-                <p>Profil</p>
-                <Link to="/profile" onClick={closeNav}><i className="material-icons md-xl">dashboard</i> Dashboard</Link>
-                <Link to={{ pathname: '/profile', query: { tab: 1 } }} onClick={closeNav}><i className="fas fa-th-list"></i>Collections</Link>
-                <Link to={{ pathname: '/profile', query: { tab: 2 } }} onClick={closeNav}><i className="fas fa-heart"></i>Favoris, déjà vus, à voir</Link>
-                <Link to={{ pathname: '/profile', query: { tab: 3 } }} onClick={closeNav}><i className="fas fa-star-half-alt"></i>Notes</Link>
-                <Link to={{ pathname: '/profile', query: { tab: 4 } }} onClick={closeNav}><i className="fas fa-comments"></i>Critiques</Link>
-                <p className="cursor" onClick={logout}><i className="fas fa-sign-out-alt"></i>Se déconnecter</p>
-            </div>
-            <ul className="header_profile">
-               {userMenu}     
-            </ul>
-        </span>
-    );
-  }
+            </li>)
+        }
+
+        if (isAuthenticated() && isAdmin()){
+            adminLink = (
+                <Link to="/admin" className="mr-1">
+                    <span>Administration</span>
+                </Link>
+            );
+        } 
+
+        let bgTriangle = {
+            backgroundImage: 'url(' + Trianglify({ x_colors: 'Blues'}).png() + ')'
+        }
+
+        return (
+            <span>
+                <div id="sidenav" onClick={this.openNav}>
+                    <Link to="/profile" onClick={this.closeNav} className="sidenav_header background-trianglify" style={bgTriangle}>
+                        <Avatar src={avatar} role="presentation" />
+                        <p>{myPseudo}</p>
+                    </Link>
+                    <Link to="/social" onClick={this.closeNav}> <i className="far fa-newspaper"></i> Fils d'actualités</Link>
+                    <Link to="/movies" onClick={this.closeNav}><i className="material-icons md-xl">local_movies</i>Films</Link>
+                    <div className="line"></div>
+                    <p>Profil</p>
+                    <Link to="/profile" onClick={this.closeNav}><i className="material-icons md-xl">dashboard</i> Dashboard</Link>
+                    <Link to={{ pathname: '/profile', query: { tab: 1 } }} onClick={this.closeNav}><i className="fas fa-th-list"></i>Collections</Link>
+                    <Link to={{ pathname: '/profile', query: { tab: 2 } }} onClick={this.closeNav}><i className="fas fa-heart"></i>Favoris, déjà vus, à voir</Link>
+                    <Link to={{ pathname: '/profile', query: { tab: 3 } }} onClick={this.closeNav}><i className="fas fa-star-half-alt"></i>Notes</Link>
+                    <Link to={{ pathname: '/profile', query: { tab: 4 } }} onClick={this.closeNav}><i className="fas fa-comments"></i>Critiques</Link>
+                    <p className="cursor" onClick={logout}><i className="fas fa-sign-out-alt"></i>Se déconnecter</p>
+                </div>
+                <ul className="header_profile">
+                    {adminLink}
+                    {notificationBell}
+                    {userMenu}     
+                </ul>
+            </span>
+        );
+    }
 }

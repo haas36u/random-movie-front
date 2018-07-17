@@ -108,13 +108,13 @@ export default class CollectionUpdate extends Component {
                 <form onSubmit={this.handleUpdateCollection}>
                     <Grid className="vertically-centered p-0 mt-3">
                         <Cell size={6}>
-                            <label>Titre de la collection</label>
+                            <label htmlFor="collection-name">Titre de la collection</label>
                         </Cell>
                         <Cell size={6}>
                             <TextField id="collection-name" name="name" value={this.state.collectionName} type="text" onChange={this.onChangeName}/>
                         </Cell>
                         <Cell size={6}>
-                            <label>Garder cette collection privée</label>
+                            <label htmlFor="collection-privacy">Garder cette collection privée</label>
                         </Cell>
                         <Cell size={6}>
                             <label className="switch">

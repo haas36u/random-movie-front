@@ -10,6 +10,7 @@ import ActorCard from '../../components/Actor/ActorCard';
 import MovieCard from '../../components/Movie/MovieCard';
 import MovieActions from '../../components/Movie/MovieActions';
 import CollectionAddMovieModal from '../../components/Collection/CollectionAddMovieModal';
+import Loader from '../../components/Base/Loader';
 
 export default class MovieShow extends Component {
 
@@ -23,9 +24,9 @@ export default class MovieShow extends Component {
             userActions : {},
             casting: [],
             similars : [],
+            comments: [],
             commentModalVisible: false,
-            selectedMovie: {id: null, cover: null, title: null},
-            loader: this.loader
+            selectedMovie: {id: null, cover: null, title: null}
         };
     }
 
@@ -33,10 +34,10 @@ export default class MovieShow extends Component {
         this.getMovie();
         this.getCasting();
         this.getSimilars();
+        this.getSelectionsOfComments();
     }
 
     RATING = {1 : 'A éviter',  2 : 'Moyen', 3 : 'Super', 4 : 'Excellent', 5 : 'Incroyable'};
-    loader = <span className="spinner"><svg width="150px"  height="150px"  xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" className="lds-double-ring"><circle cx="50" cy="50" ng-attr-r="{{config.radius}}" ng-attr-stroke="{{config.c1}}" ng-attr-stroke-dasharray="{{config.dasharray}}" fill="none" strokeLinecap="round" r="40" strokeWidth="4" stroke="#bd4030" strokeDasharray="62.83185307179586 62.83185307179586" transform="rotate(328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.3s" begin="0s" repeatCount="indefinite"></animateTransform></circle><circle cx="50" cy="50" ng-attr-r="{{config.radius2}}" ng-attr-stroke="{{config.c2}}" fill="none" strokeLinecap="round" r="35" strokeWidth="4" stroke="#e0b83e" strokeDasharray="54.97787143782138 54.97787143782138" strokeDashoffset="54.97787143782138" transform="rotate(-328.301 50 50)"><animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;-360 50 50" keyTimes="0;1" dur="2s" begin="0s" repeatCount="indefinite"></animateTransform></circle></svg> </span>;        
 
     /*MOVIE*/
     getMovie = () => {
@@ -70,7 +71,7 @@ export default class MovieShow extends Component {
                 )
             }
 
-            this.setState({movie : movie, userActions: userActions, communityNote: communityNote, loader: null});
+            this.setState({movie : movie, userActions: userActions, communityNote: communityNote, loader: false});
         })
         .catch(error => {
             console.log(error)
@@ -107,6 +108,53 @@ export default class MovieShow extends Component {
                 );
             });
             this.setState({similars : similars});
+        })
+        .catch(error => {
+            console.log(error)
+        });
+    }
+
+    getSelectionsOfComments = () => {
+        axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/selected-comments`)
+        .then((response) => {
+            var imgUrl = require('../../images/ryan_reynolds.jpg');
+            var avatarComments = {  
+                backgroundImage: 'url(' + imgUrl + ')'
+            }
+
+            const truncate = (string, length) => {
+                if (string.length > length)
+                    return string.substring(0,length)+'...';
+                else
+                    return string;
+            };
+
+            const comments = response.data.map((comment) => {
+                return (
+                    <Cell size={6} className="ml-0" key={comment.id}>
+                        <Grid className="pl-0">
+                            <Cell size={2}>
+                                <div className="avatar_comments_container" style={avatarComments}></div>
+                            </Cell>
+                            <Cell size={10}>
+                                <p className="m-0">Par {comment.user_username}</p>
+                                <p>{moment(comment.createdAt).fromNow()}</p>
+                            </Cell>
+                            <Cell size={12} className="ml-0">
+                                <p>{truncate(comment.content, 200)}</p>
+                            </Cell>
+                            {
+                                isAuthenticated() &&
+                                <Cell size={12} className="ml-0">
+                                    <Link to={`/movies/${this.props.match.params.id}/comments`} className="cursor text-gold">Lire la suite</Link>
+                                </Cell>
+                            }
+                        </Grid>
+                    </Cell>
+                );
+            });
+
+            this.setState({comments: comments});
         })
         .catch(error => {
             console.log(error)
@@ -152,14 +200,7 @@ export default class MovieShow extends Component {
     }
 
     render() {
-
-        if(!this.state ) return <div>Loading...</div>
-
-        var imgUrl = require('../../images/ryan_reynolds.jpg');
-        var avatarComments = {  
-            backgroundImage: 'url(' + imgUrl + ')'
-        }
-
+        
         const userRatingActions = () => {
             if(isAuthenticated()) {
                 return (
@@ -170,15 +211,15 @@ export default class MovieShow extends Component {
                                 <form>
                                     <fieldset className="starability-checkmark">
                                         <input type="radio" id="rate1" name="rating" value="1" onClick={(e) => this.sendNotation(1)}/>
-                                        <label for="rate1" title={this.RATING[1]}>1 star</label>
+                                        <label htmlFor="rate1" title={this.RATING[1]}>1 star</label>
                                         <input type="radio" id="rate2" name="rating" value="2" onClick={(e) => this.sendNotation(2)}/>
-                                        <label for="rate2" title={this.RATING[2]}>2 stars</label>
+                                        <label htmlFor="rate2" title={this.RATING[2]}>2 stars</label>
                                         <input type="radio" id="rate3" name="rating" value="3" onClick={(e) => this.sendNotation(3)}/>
-                                        <label for="rate3" title={this.RATING[3]}>3 stars</label>
+                                        <label htmlFor="rate3" title={this.RATING[3]}>3 stars</label>
                                         <input type="radio" id="rate4" name="rating" value="4" onClick={(e) => this.sendNotation(4)}/>
-                                        <label for="rate4" title={this.RATING[4]}>4 stars</label>
+                                        <label htmlFor="rate4" title={this.RATING[4]}>4 stars</label>
                                         <input type="radio" id="rate5" name="rating" value="5" onClick={(e) => this.sendNotation(5)}/>
-                                        <label for="rate5" title={this.RATING[5]}>5 stars</label>
+                                        <label htmlFor="rate5" title={this.RATING[5]}>5 stars</label>
                                     </fieldset>
                                 </form>
                                 {!this.state.movie.mark && <p className="text-italic" id="userNoRated">Vous n'avez pas encore noté ce film</p>}
@@ -195,10 +236,12 @@ export default class MovieShow extends Component {
         }
 
         const commentsAccess = () => {
-            if (isAuthenticated()) {
+            if (isAuthenticated() && this.state.comments.length > 0) {
                 return (
                     <Link to={`/movies/${this.state.movie.id}/comments`} className="right cursor text-gold">Voir tous les commentaires</Link>
                 )
+            } else if (isAuthenticated() && this.state.comments.length === 0) {
+                return;
             } else {
                 return (
                     <Link to="/login" className="right cursor">Se connecter pour voir les commentaires</Link>
@@ -206,19 +249,9 @@ export default class MovieShow extends Component {
             }
         }
 
-        const commentsSecondAccess = () => {
-            if (isAuthenticated()) {
-                return (
-                    <Cell size={12} className="ml-0">
-                        <Link to={`/movies/${this.state.movie.id}/comments`} className="cursor text-gold">Lire la suite</Link>
-                    </Cell>
-                )
-            }
-        }
-
         return (
             <div id="movieShow">
-                {this.state.loader}
+                <Loader show={this.state.loader}/>
                 <div id="movie-container">
                     <CollectionAddMovieModal movie={this.state.selectedMovie}/>
                     <div className="container">
@@ -269,42 +302,10 @@ export default class MovieShow extends Component {
                         <h5>Commentaires</h5>
                         {commentsAccess()}
                         <Grid className="pl-0">
-                            <Cell size={6} className="ml-0">
-                                <Grid className="pl-0">
-                                    <Cell size={2}>
-                                    <div className="avatar_comments_container" style={avatarComments}></div>
-                                    </Cell>
-                                    <Cell size={10}>
-                                        <p className="title_comments m-0">Commentaire positif le plus utile</p>
-                                        <p className="m-0">Par Ryan, le 22/02/2018</p>
-                                        <div>
-                                            <span> 4 étoiles</span>
-                                        </div>
-                                    </Cell>
-                                    <Cell size={12} className="ml-0">
-                                        <p>Un super contenu qu'on va réduire à 150 caractères</p>
-                                    </Cell>
-                                    {commentsSecondAccess()}
-                                </Grid>
-                            </Cell>
-                            <Cell size={6} className="ml-0">
-                                <Grid className="pl-0">
-                                    <Cell size={2}>
-                                    <div className="avatar_comments_container" style={avatarComments}></div>
-                                    </Cell>
-                                    <Cell size={9}>
-                                        <p className="title_comments m-0">Commentaire négatif le plus utile</p>
-                                        <p className="m-0">Par Ryan, le 22/02/2018</p>
-                                        <div>
-                                            <span> 4 étoiles</span>
-                                        </div>
-                                    </Cell>
-                                    <Cell size={12} className="ml-0">
-                                        <p>Un super contenu qu'on va réduire à 150 caractères</p>
-                                    </Cell>
-                                    {commentsSecondAccess()}
-                                </Grid>
-                            </Cell>
+                            {this.state.comments}
+                            {
+                                this.state.comments.length === 0 && <p>Aucun commentaire n'a été rédigé pour ce film...</p>
+                            }
                         </Grid>
                     </div>
                 </div>

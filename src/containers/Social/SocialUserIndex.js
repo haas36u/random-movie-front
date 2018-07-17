@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { TextField } from 'react-md';
 import SocialUserItem from '../../components/Social/SocialUserItem';
+import Loader from '../../components/Base/Loader';
 
 export default class SocialIndex extends Component {
 
@@ -24,7 +25,7 @@ export default class SocialIndex extends Component {
 
             this.createUsersUI(response.data);
 
-            this.setState({followedUsers: response.data});
+            this.setState({followedUsers: response.data, loader: false});
         });
     }
 
@@ -57,6 +58,7 @@ export default class SocialIndex extends Component {
     
         return (
             <div id="social" className="socialUserSearch">
+                <Loader show={this.state.loader}/>
                 <div className="socialContainer social__item--background">
 
                     <h2><i className="fas fa-users"></i>Abonnements</h2>
