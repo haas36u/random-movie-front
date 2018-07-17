@@ -18,8 +18,8 @@ export default class CollectionAddModal extends Component {
 
     handleAddCollection = (e) => {
         e.preventDefault();
-        const name = e.target.elements.name.value.trim();
         this.setState({loader : this.loader});
+        const name = e.target.elements.name.value.trim();
         axios({method: 'post', url: `${process.env.REACT_APP_API_URL}/collections`, headers: {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}, data: {name: name, isPublic : !this.state.isPrivate}})
         .then(() => {
             if (this.props.isModal) this.cancel();

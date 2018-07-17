@@ -39,6 +39,12 @@
         color: #000000;
       }
     }
+
+    .signalComment {
+      &>div {
+        margin: 0 !important;
+      }
+    }
   }
 
   /** PROFILE COMMENT SECTION **/
