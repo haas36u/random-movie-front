@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import axios from 'axios';
-import { isAuthenticated } from '../actions/auth';
+import { isAuthenticated, isAdmin } from '../actions/auth';
 
 import Homepage from '../containers/Homepage';
 import MovieIndex from '../containers/Movie/MovieIndex';
@@ -13,6 +13,7 @@ import SocialUserSearch from '../containers/Social/SocialUserSearch';
 import SocialUserIndex from '../containers/Social/SocialUserIndex';
 import Registration from '../containers/User/Registration';
 import RegistrationFavoriteMovies from '../containers/User/RegistrationFavoriteMovies';
+import AdminCommentsIndex from '../containers/Admin/Comment/AdminCommentsIndex';
 import Login from '../containers/User/Login';
 import Profile from '../containers/User/Profile';
 import Cgu from '../containers/static/Cgu';
@@ -52,6 +53,17 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
     )} />
 )  
 
+const AdminRoute = ({ component: Component, ...rest }) => (
+    <Route {...rest} render={(props) => (
+      isAuthenticated() === true && isAdmin() === true
+        ? <Component {...props} />
+        : <Redirect to={{
+            pathname: '/login',
+            state: { from: props.location }
+          }} />
+    )} />
+)  
+
 const AppRouter = () => (
   <BrowserRouter>
     <div className="wrapper">
@@ -72,6 +84,7 @@ const AppRouter = () => (
                 <Route path="/login" component={Login} exact={true} />
                 <PrivateRoute path="/profile" component={Profile} exact={true} />
                 <PrivateRoute path="/profile/:id" component={Profile} />
+                <AdminRoute path="/admin" component={AdminCommentsIndex}/>
                 <Route path="/cgu" component={Cgu} exact={true} />
                 <Route path="/legal-mentions" component={LegalMentions} exact={true} />
                 <Route component={NotFoundPage} />
