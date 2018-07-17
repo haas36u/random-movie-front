@@ -118,3 +118,19 @@ header {
     margin-left: 0.5rem;
   }
 }
+
+@media screen and (max-width: 850px){
+  header>ul>li {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 650px){
+  header {
+    padding: 0 0.5rem;
+
+    .searchContainer .search {
+      width: 200px;
+    }
+  }
+}

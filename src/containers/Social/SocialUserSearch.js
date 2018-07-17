@@ -46,7 +46,7 @@ export default class SocialIndex extends Component {
                 <Loader show={this.state.loader}/>
                 <div className="socialContainer social__item--background">
 
-                    <h2><i className="fas fa-users"></i>Chercher un abonné</h2>
+                    <h2><i className="fas fa-users"></i>Chercher un utilisateur</h2>
 
                     <form className="searchContainer" onSubmit={this.searchUser}>
                         <TextField id="search" placeholder="Rechercher" className="search" type="search" name="username"/>

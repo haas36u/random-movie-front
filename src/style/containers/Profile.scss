@@ -206,3 +206,15 @@
     max-width: none;
   }
 }
+
+@media screen and (max-width: 1230px){
+  #user-profile .user-profile__header {
+    padding: 2rem 1rem;
+  }
+}
+
+@media screen and (max-width: 860px){
+  .collection_vignette {
+    flex: 1 0 47% !important;
+  }
+}

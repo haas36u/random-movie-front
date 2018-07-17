@@ -356,9 +356,6 @@ export default class Profile extends Component {
             <div className="user-profile__header background-trianglify" style={bgTriangle}>
                 <div className="container">
                     {
-                        !this.state.userId && <a href="" className="btn right">Modifier</a>
-                    }
-                    {
                         this.state.userId && <div className={this.state.followBtnClass} onClick={this.followUser}>{this.state.followBtnText}</div>
                     }
                     <Avatar src={avatar} role="presentation" />

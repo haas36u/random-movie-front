@@ -16,6 +16,10 @@
         display: inline-block;
         vertical-align: top;
     }
+
+    .userFollowTop {
+        display: none;
+    }
     
     .socialContainer__items {
         width: 68%;
@@ -84,6 +88,28 @@
                 color: $secondary-color;
                 text-align: center;
             }
+        }
+    }
+}
+
+@media screen and (max-width: 700px){
+    #social {
+        .userFollowTop {
+            display: block;
+            width: 96%;
+            margin: 1% 2%;
+
+            &> div .userFollow__user{
+                flex-direction: row;
+            }
+        }
+        .userFollowAside {
+            display: none !important;
+        }
+
+        .socialContainer__items{
+            width: 96%;
+            margin: 1% 2%;
         }
     }
 }
