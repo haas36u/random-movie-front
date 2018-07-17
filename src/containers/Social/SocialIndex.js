@@ -29,6 +29,10 @@ export default class SocialIndex extends Component {
     this.getFollowedUsers();
   }
 
+  componentWillUnmount(){
+    window.removeEventListener('scroll', this.loadOnScroll);
+  }
+
   getTotalFeed = () => {
     axios({
       method: 'get',
@@ -44,6 +48,7 @@ export default class SocialIndex extends Component {
   loadOnScroll = () => {
     if (this.state.currentCount === this.state.total) return;
     let el = document.getElementById('content-end');
+    if (el === null) return;
     let rect = el.getBoundingClientRect();
     let isAtEnd = (
       // rect.top >= 0 &&
