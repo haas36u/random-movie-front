@@ -15,8 +15,7 @@ export default class Menu extends Component {
     }
 
     componentDidMount() {
-        // TODO remettre à 5000
-        if (isAuthenticated()) setInterval(this.getNotifications, 500000);
+        if (isAuthenticated()) setInterval(this.getNotifications, 5000);
     }
 
     getNotifications = () => {
