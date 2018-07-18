@@ -156,7 +156,7 @@ export default class SocialIndex extends Component {
 
               <Link to="/social/search" className="userFollow__user">
                 <i className="fas fa-plus-circle"></i>
-                <p>Chercher un abonné</p>
+                <p>Chercher un utilisateur</p>
               </Link>
               <Link to="/social/users">Voir la liste complète</Link>
             </div>
