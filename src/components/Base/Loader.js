@@ -10,7 +10,6 @@ export default class Loader extends Component{
     }
 
     componentWillReceiveProps(nextProps){
-        console.log(nextProps)
         this.setState({show: nextProps.show});
     }
 

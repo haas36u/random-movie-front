@@ -97,7 +97,7 @@ export default class RegistrationFavoriteMoviesTypes extends Component{
                         <p>Cela nous aidera à trouver des films que vous allez adorer !</p>
                         <div className="btn" onClick={this.save}>Continuer</div>
                     </Cell>
-                    <Cell size={8}>
+                    <Cell size={8} className="moviesTypesList">
                         <Grid>
                             {this.state.types}
                         </Grid>

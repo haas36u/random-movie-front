@@ -39,7 +39,6 @@ export default class MovieShow extends Component {
     this.getMoviesGenre();
   }
   
-  //TODO send two request instead of one !!!
     componentWillUpdate(nextProps, nextState){
       if(nextProps.location.query && nextProps.location.query.movieTitle && this.state.movieTitle !== nextProps.location.query.movieTitle){
         this.setState(
@@ -113,6 +112,7 @@ export default class MovieShow extends Component {
     }
 
     changeMoviesList = (data) => {
+      window.scrollTo({top: 0, behavior: 'smooth'});
       let moviesList = data.data.map((item) => {
         item.attributes.id = item.attributes._id;
           return(

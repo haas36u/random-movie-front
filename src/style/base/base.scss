@@ -59,8 +59,8 @@ h5 {
 
 .logo {
     position: fixed;
-    bottom: 2rem;
-    left: 2rem;
+    bottom: 1.5rem;
+    right: 1.5rem;
 
     img {
         width: 60px;
@@ -126,4 +126,12 @@ h5 {
     right: 0rem;
     bottom: 1rem;
     font-size: 1.1rem;
+}
+
+
+
+@media screen and (max-width: 1200px){
+    .container {
+        padding: 1rem;
+    }
 }

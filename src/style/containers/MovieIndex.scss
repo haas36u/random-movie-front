@@ -46,6 +46,10 @@
         color: $primary-color-light;
         padding: 0.4rem;
       }
+
+      .md-list--menu-restricted{
+        max-height: 180px !important;
+      }
       
       .search {
         margin-top: 1rem;
@@ -65,7 +69,7 @@
       background-color: #ffffff;
     }
   
-    ul li {
+    &>ul>li {
       margin: 1em 0;
       font-size: 1.2em;
     }
