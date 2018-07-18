@@ -92,7 +92,7 @@ export default class CollectionAddMovieModal extends Component {
                     <TextField id="collection-id" name="title" placeholder="Chercher une collection" type="search"/>
                     <button><i className="fas fa-search"></i></button>
                 </form>
-                <p className="noResult">Tous les tableaux</p>
+                <p className="noResult">Toutes les collections</p>
                 <ul>
                     {collectionsUIList}
                 </ul>
