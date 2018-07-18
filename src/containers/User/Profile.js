@@ -252,12 +252,14 @@ export default class Profile extends Component {
                         {!this.state.userId && <Link to={`/collections/${collection.id}/update`} className="btn">Modifier</Link>}
                     </div>
 
-                  {collection.movies.length === 0 && <p className="noResult">Vous n'avez pas encore ajouté de film à la collection {collection.name}</p>}
-                    <p className="noResult">
-                      Pour ajouter un film à votre collection,
-                      veuillez cliquer sur le bouton <i className="fas fa-thumbtack"></i> dans la liste de films puis
-                      sélectionner votre collection
-                    </p>
+                    {collection.movies.length === 0 && <p className="noResult">Vous n'avez pas encore ajouté de film à la collection {collection.name}</p>}
+                    {!this.state.userId && 
+                        <p className="noResult">
+                        Pour ajouter un film à votre collection,
+                        veuillez cliquer sur le bouton <i className="fas fa-thumbtack"></i> dans la liste de films puis
+                        sélectionner votre collection
+                        </p>
+                    }
                     <Grid>
                         {collection.movies.map((movie) => {
                             return (

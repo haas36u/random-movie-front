@@ -32,7 +32,7 @@ const closeNav = (e) => {
 }
 
 const randomAction = () => {
-    axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/movies/random`, headers : {"Authorization" : localStorage.getItem('token'), 'Content-Type': 'application/json'}})
+    axios({method: 'get', url: `${process.env.REACT_APP_API_URL}/movies/random`, headers : {"Authorization" : localStorage.getItem('token'), 'Accept': 'application/json'}})
     .then((response) => {
         window.location.href = '/movies/' + response.data.id;
     })

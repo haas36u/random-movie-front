@@ -53,7 +53,7 @@ export default class SocialItem extends Component {
         let headerContent;
         let userUI = <Link to={`/profile/${this.props.actuality.user.id}`} className="text-bold"> {this.props.actuality.user.username}</Link>;
         if (this.props.actuality.type === 'collection') {
-            headerContent = <p className="m-0"> {userUI} a partagé le tableau : <span className="text-bold link">{this.props.actuality.collection.name}</span></p>
+            headerContent = <p className="m-0"> {userUI} a partagé la collection : <span className="text-bold link">{this.props.actuality.collection.name}</span></p>
         } else if (this.props.actuality.type === 'follow') {
             headerContent = <p className="m-m">{userUI} vous suis</p>
         } else {
