@@ -3,13 +3,15 @@
     margin-top: 4rem;
   
     .description {
+
       h3, p.title {
         font-size: 2.2rem;
         font-weight: bold;
-        line-height: 2.2rem;
+        line-height: 3rem;
       }
       p:nth-child(2) {
         font-size: 1.2rem;
+        line-height: 1.5rem;
       }
       p:nth-child(3) {
         color: $primary-color;
@@ -18,6 +20,9 @@
       .btn {
         margin-top: 1rem;
       }
+    }
+    .moviesList {
+      margin-left: 310px;
     }
     .movies_gallery, .movies_genres_gallery {
       position: relative;
@@ -70,3 +75,23 @@
       }
     }
   }
+
+  .registration__selectMovies .description {
+    position: fixed;
+    width: 300px;
+  }
+
+
+@media screen and (max-width: 800px){
+  .registration__selectMovies .description {
+    position: initial;
+    width: 100%;
+  }
+  .registration__selectTypes .description {
+    width: 100%;
+  }
+  .registration__selectMovies .moviesList, .registration__selectTypes .moviesTypesList {
+    width: 100%;
+    margin: 0;
+  }
+}
