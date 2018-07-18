@@ -3,7 +3,6 @@ import axios from 'axios';
 import { Grid, Cell, TextField } from 'react-md';
 import CollectionAddModal from '../../components/Collection/CollectionAddModal';
 import { isAuthenticated } from '../../actions/auth';
-import { isatty } from 'tty';
 
 export default class CollectionAddMovieModal extends Component {
 
