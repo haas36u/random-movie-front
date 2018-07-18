@@ -118,7 +118,7 @@ export default class MovieShow extends Component {
     getSelectionsOfComments = () => {
         axios.get(`${process.env.REACT_APP_API_URL}/movies/${this.props.match.params.id}/selected-comments`)
         .then((response) => {
-            var imgUrl = require('../../images/ryan_reynolds.jpg');
+            var imgUrl = require('../../images//avatar_default.jpg');
             var avatarComments = {  
                 backgroundImage: 'url(' + imgUrl + ')'
             }

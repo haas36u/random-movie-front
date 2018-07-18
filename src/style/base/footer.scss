@@ -4,12 +4,14 @@ div.wrapper>footer {
   padding: 1.5rem 1rem;
 
   .container {
-    display: flex;
 
     h6 {
       flex-grow: 1;
       margin-bottom: 2rem;
       font-size: 0.9rem;
+      display: inline-block;
+      vertical-align: top;
+      margin-right: 3rem;
     }
   }
 
