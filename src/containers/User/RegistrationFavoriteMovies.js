@@ -35,7 +35,7 @@ export default class RegistrationFavoriteMovies extends Component{
 
             const moviesList = response.data.map(function(item, key){
                 return(
-                    <Cell className="p-1 movies_gallery" key={key}>
+                    <Cell className="movies_gallery" key={key}>
                         <i className="material-icons">check_circle</i>
                         <img src={item.cover} alt={item.cover} onClick={(e) => self.selectMovie(item.id, e)}/>
                     </Cell>
@@ -101,7 +101,7 @@ export default class RegistrationFavoriteMovies extends Component{
                         <div className="btn" onClick={this.save}>Continuer</div>
                     </Cell>
         
-                    <Cell size={8} className="m-0 moviesList">
+                    <Cell size={8} className="moviesList">
                         <Grid className="p-0">
                             {this.state.moviesPopularList}
                         </Grid>
